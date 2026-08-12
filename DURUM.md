@@ -15,8 +15,11 @@
 - **Tasarım dokümanı yazıldı:** `docs/2026-08-12-virusforge-design.md` (mimari + doğrulanmış registry + milestone planı).
 
 ## Şu an nerede kaldık
-- **Brainstorming/tasarım TAMAM, kullanıcı onayladı** ("buna başlayalım"). Tasarım dokümanı repo'da.
-- **SIRADA:** kullanıcı spec'i gözden geçirir → sonra **implementasyon planı** (writing-plans) → M1 iskeleti (`virusforge/` paketi + V00–V08,V19 modül klasörleri + environment.yml + cli).
+- **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.
+- **43 pytest yeşil** (config/util/provenance/module/registry/detect/parsers/tools/pipeline/e2e-dryrun). Sentetik fixture'larla; gerçek veri indirilmedi.
+- **CLI smoke:** araçsız bile uçtan uca koşuyor — V00 PASS, V19 PASS (rapor+provenance), diğerleri dürüstçe WARNING, V08 NOT_APPLICABLE. Çökme yok.
+- Commit'ler yerelde (push için gh auth bekliyor): d647cc5 (çekirdek), 19144d4 (tam hat).
+- **SIRADA:** (1) kullanıcı test örneğini söyleyecek → (2) `conda env create -f environment.yml` + DB indirme (checkv/genomad/pharokka/phabox/inphared, `setup/`) → (3) gerçek örnekte uçtan-uca smoke (exit 0, gerçek sonuçlar). Sonra M2 (RNA yolu).
 
 ## Milestone planı
 - **M1** — DNA/faj çekirdek (short+long+hybrid): V00→V01→V03→V04→V05→V06→V07→V08→V19. Yalın set (geNomad, Pharokka, PhaBOX, CheckV, Mash+INPHARED, SPAdes/Flye/Unicycler).
