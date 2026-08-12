@@ -41,6 +41,9 @@ class V19Report(Module):
             modules.append(data)
             provenance.extend(data.get("provenance", []))
 
+        # V19 kendini de PASS olarak ekle (rapor kendi summary'sinden önce üretiliyor)
+        modules.append({"code": "V19", "module": self.name, "status": "PASS",
+                        "metrics": {"note": "rapor + provenance üretildi"}})
         report = {
             "sample": Path(ctx.sample_dir).name,
             "mode": ctx.mode,
