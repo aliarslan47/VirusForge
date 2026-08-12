@@ -1,0 +1,1107 @@
+2 channel Terms of Service accepted
+Retrieving notices: - \ done
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+Solving environment: - \ | done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 26.1.1
+    latest version: 26.7.0
+
+Please update conda by running
+
+    $ conda update -n base -c conda-forge conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/ali/miniconda3/envs/virusforge
+
+  added / updated specs:
+    - fastp
+    - fastqc
+    - mash
+    - multiqc
+    - python=3.11
+    - quast
+    - spades
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    cpython-3.11.15            |  py311hd8ed1ab_2          47 KB  conda-forge
+    fontconfig-2.18.3          |       h27c8c51_0         290 KB  conda-forge
+    libglib-2.88.3             |       h45c3219_1         4.5 MB  conda-forge
+    libpsl-0.23.1              |       hf670292_0          71 KB  conda-forge
+    pydantic-core-2.46.4       |  py311h902ca64_0         1.8 MB  conda-forge
+    python-3.11.15             |h8ab3286_2_cpython        29.4 MB  conda-forge
+    python-gil-3.11.15         |       hd8ed1ab_2          47 KB  conda-forge
+    quast-5.3.0                |py311pl5321hc84137b_1        14.6 MB  bioconda
+    regex-2026.7.19            |  py311h49ec1c0_0         412 KB  conda-forge
+    rpds-py-2026.6.3           |  py311h1baac5b_0         293 KB  conda-forge
+    spades-4.3.0               |       hde4eca7_1        17.9 MB  bioconda
+    tiktoken-0.13.0            |  py311h5c31b33_0        1008 KB  conda-forge
+    typing-inspection-0.4.3    |     pyhcf101f3_0          20 KB  conda-forge
+    xorg-libice-1.1.2          |       h280c20c_0          61 KB  conda-forge
+    xorg-libxau-1.0.12         |       hb03c661_2          16 KB  conda-forge
+    xorg-libxdmcp-1.1.5        |       hb03c661_2          21 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        70.4 MB
+
+The following NEW packages will be INSTALLED:
+
+  _openmp_mutex      conda-forge/linux-64::_openmp_mutex-4.5-20_gnu 
+  _python_abi3_supp~ conda-forge/noarch::_python_abi3_support-1.0-hd8ed1ab_3 
+  alsa-lib           conda-forge/linux-64::alsa-lib-1.2.16.1-hb03c661_0 
+  annotated-types    conda-forge/noarch::annotated-types-0.8.0-pyhd8ed1ab_0 
+  attrs              conda-forge/noarch::attrs-26.1.0-pyhcf101f3_0 
+  backports.zstd     conda-forge/linux-64::backports.zstd-1.6.0-py311h6b1f9c4_0 
+  bedtools           bioconda/linux-64::bedtools-2.31.1-h13024bc_3 
+  blast              bioconda/linux-64::blast-2.16.0-h66d330f_5 
+  brotli             conda-forge/linux-64::brotli-1.2.0-hed03a55_1 
+  brotli-bin         conda-forge/linux-64::brotli-bin-1.2.0-hb03c661_1 
+  brotli-python      conda-forge/linux-64::brotli-python-1.2.0-py311h66f275b_1 
+  bwa                bioconda/linux-64::bwa-0.7.19-h577a1d6_1 
+  bzip2              conda-forge/linux-64::bzip2-1.0.8-hda65f42_10 
+  c-ares             conda-forge/linux-64::c-ares-1.34.8-h280c20c_1 
+  ca-certificates    conda-forge/noarch::ca-certificates-2026.7.22-hbd8a1cb_0 
+  cairo              conda-forge/linux-64::cairo-1.18.4-he90730b_1 
+  capnproto          conda-forge/linux-64::capnproto-1.3.0-h791c776_1 
+  certifi            conda-forge/noarch::certifi-2026.7.22-pyhd8ed1ab_0 
+  charset-normalizer conda-forge/noarch::charset-normalizer-3.4.9-pyhd8ed1ab_0 
+  circos             bioconda/noarch::circos-0.69.9-hdfd78af_0 
+  click              conda-forge/noarch::click-8.4.2-pyhc90fa1f_0 
+  coloredlogs        conda-forge/noarch::coloredlogs-15.0.1-pyhd8ed1ab_4 
+  colormath          conda-forge/noarch::colormath-3.0.0-pyhd8ed1ab_4 
+  contourpy          conda-forge/linux-64::contourpy-1.3.3-py311h724c32c_4 
+  cpython            conda-forge/noarch::cpython-3.11.15-py311hd8ed1ab_2 
+  curl               conda-forge/linux-64::curl-8.21.0-heca4667_4 
+  cycler             conda-forge/noarch::cycler-0.12.1-pyhcf101f3_2 
+  entrez-direct      bioconda/linux-64::entrez-direct-22.4-he881be0_0 
+  expat              conda-forge/linux-64::expat-2.8.1-hecca717_1 
+  fastp              bioconda/linux-64::fastp-1.3.6-h43da1c4_0 
+  fastqc             bioconda/noarch::fastqc-0.12.1-hdfd78af_0 
+  font-ttf-dejavu-s~ conda-forge/noarch::font-ttf-dejavu-sans-mono-2.37-hab24e00_0 
+  font-ttf-inconsol~ conda-forge/noarch::font-ttf-inconsolata-3.000-h77eed37_0 
+  font-ttf-source-c~ conda-forge/noarch::font-ttf-source-code-pro-2.038-h77eed37_0 
+  font-ttf-ubuntu    conda-forge/noarch::font-ttf-ubuntu-0.83-h77eed37_3 
+  fontconfig         conda-forge/linux-64::fontconfig-2.18.3-h27c8c51_0 
+  fonts-conda-ecosy~ conda-forge/noarch::fonts-conda-ecosystem-1-0 
+  fonts-conda-forge  conda-forge/noarch::fonts-conda-forge-1-hc364b38_1 
+  fonttools          conda-forge/linux-64::fonttools-4.63.0-py311h3778330_0 
+  freetype           conda-forge/linux-64::freetype-2.14.3-ha770c72_1 
+  fribidi            conda-forge/linux-64::fribidi-1.0.16-hb03c661_1 
+  giflib             conda-forge/linux-64::giflib-5.2.2-ha257d8a_1 
+  glimmerhmm         bioconda/linux-64::glimmerhmm-3.0.4-pl5321h503566f_10 
+  graphite2          conda-forge/linux-64::graphite2-1.3.15-h54a6638_1 
+  gsl                conda-forge/linux-64::gsl-2.8-hbf7d49c_1 
+  h2                 conda-forge/noarch::h2-4.4.1-pyhcf101f3_0 
+  harfbuzz           conda-forge/linux-64::harfbuzz-14.3.0-ha770c72_0 
+  hpack              conda-forge/noarch::hpack-4.2.0-pyhd8ed1ab_0 
+  humanfriendly      conda-forge/noarch::humanfriendly-10.0-pyh707e725_8 
+  humanize           conda-forge/noarch::humanize-4.16.0-pyhd8ed1ab_0 
+  hyperframe         conda-forge/noarch::hyperframe-6.1.0-pyhd8ed1ab_0 
+  icu                conda-forge/linux-64::icu-78.3-h54a6638_2 
+  idna               conda-forge/noarch::idna-3.18-pyhcf101f3_0 
+  importlib-metadata conda-forge/noarch::importlib-metadata-9.0.0-pyhcf101f3_0 
+  isa-l              conda-forge/linux-64::isa-l-2.32.1-hb03c661_0 
+  jinja2             conda-forge/noarch::jinja2-3.1.6-pyhcf101f3_1 
+  joblib             conda-forge/noarch::joblib-1.5.3-pyhd8ed1ab_0 
+  jsonschema         conda-forge/noarch::jsonschema-4.26.0-pyhcf101f3_0 
+  jsonschema-specif~ conda-forge/noarch::jsonschema-specifications-2025.9.1-pyhcf101f3_0 
+  k8                 bioconda/linux-64::k8-1.2-he8db53b_6 
+  kaleido-core       conda-forge/linux-64::kaleido-core-0.2.1-h3644ca4_0 
+  kernel-headers_li~ conda-forge/noarch::kernel-headers_linux-64-5.14.0-he073ed8_3 
+  keyutils           conda-forge/linux-64::keyutils-1.6.3-hb9d3cd8_0 
+  kiwisolver         conda-forge/linux-64::kiwisolver-1.5.0-py311h724c32c_0 
+  krb5               conda-forge/linux-64::krb5-1.22.2-hbde042b_1 
+  lcms2              conda-forge/linux-64::lcms2-2.19.1-h0c24ade_1 
+  ld_impl_linux-64   conda-forge/linux-64::ld_impl_linux-64-2.46.1-default_hbd61a6d_102 
+  lerc               conda-forge/linux-64::lerc-4.2.0-hdb68285_0 
+  libblas            conda-forge/linux-64::libblas-3.11.0-9_h4a7cf45_openblas 
+  libbrotlicommon    conda-forge/linux-64::libbrotlicommon-1.2.0-hb03c661_1 
+  libbrotlidec       conda-forge/linux-64::libbrotlidec-1.2.0-hb03c661_1 
+  libbrotlienc       conda-forge/linux-64::libbrotlienc-1.2.0-hb03c661_1 
+  libcblas           conda-forge/linux-64::libcblas-3.11.0-9_h0358290_openblas 
+  libcups            conda-forge/linux-64::libcups-2.3.3-h7a8fb5f_6 
+  libcurl            conda-forge/linux-64::libcurl-8.21.0-heca4667_4 
+  libdeflate         conda-forge/linux-64::libdeflate-1.25-hd45a770_1 
+  libedit            conda-forge/linux-64::libedit-3.1.20250104-pl5321h7949ede_0 
+  libev              conda-forge/linux-64::libev-4.33-h280c20c_3 
+  libexpat           conda-forge/linux-64::libexpat-2.8.1-hecca717_1 
+  libffi             conda-forge/linux-64::libffi-3.7.0-h3435931_0 
+  libfreetype        conda-forge/linux-64::libfreetype-2.14.3-ha770c72_1 
+  libfreetype6       conda-forge/linux-64::libfreetype6-2.14.3-h73754d4_1 
+  libgcc             conda-forge/linux-64::libgcc-16.1.0-ha9f2e26_1 
+  libgcc-ng          conda-forge/linux-64::libgcc-ng-16.1.0-h69a702a_1 
+  libgd              conda-forge/linux-64::libgd-2.3.3-h5fbf134_12 
+  libgfortran        conda-forge/linux-64::libgfortran-16.1.0-h69a702a_1 
+  libgfortran-ng     conda-forge/linux-64::libgfortran-ng-16.1.0-h69a702a_1 
+  libgfortran5       conda-forge/linux-64::libgfortran5-16.1.0-h79bb938_1 
+  libglib            conda-forge/linux-64::libglib-2.88.3-h45c3219_1 
+  libgomp            conda-forge/linux-64::libgomp-16.1.0-he0feb66_1 
+  libharfbuzz        conda-forge/linux-64::libharfbuzz-14.3.0-h17a8019_0 
+  libharfbuzz-devel  conda-forge/linux-64::libharfbuzz-devel-14.3.0-h17a8019_0 
+  libhwy             conda-forge/linux-64::libhwy-1.3.0-h4c17acf_1 
+  libiconv           conda-forge/linux-64::libiconv-1.18-h3b78370_2 
+  libidn2            conda-forge/linux-64::libidn2-2.3.8-hfac485b_1 
+  libjpeg-turbo      conda-forge/linux-64::libjpeg-turbo-3.2.0-hb03c661_1 
+  liblapack          conda-forge/linux-64::liblapack-3.11.0-9_h47877c9_openblas 
+  liblzma            conda-forge/linux-64::liblzma-5.8.3-hb03c661_1 
+  libnghttp2         conda-forge/linux-64::libnghttp2-1.68.1-h877daf1_0 
+  libnsl             conda-forge/linux-64::libnsl-2.0.1-hb9d3cd8_1 
+  libopenblas        conda-forge/linux-64::libopenblas-0.3.34-pthreads_h94d23a6_0 
+  libpng             conda-forge/linux-64::libpng-1.6.58-h421ea60_0 
+  libpsl             conda-forge/linux-64::libpsl-0.23.1-hf670292_0 
+  libraqm            conda-forge/linux-64::libraqm-0.11.0-h6406941_0 
+  libsqlite          conda-forge/linux-64::libsqlite-3.53.4-hf4e2dac_0 
+  libssh2            conda-forge/linux-64::libssh2-1.11.1-hcf80075_0 
+  libstdcxx          conda-forge/linux-64::libstdcxx-16.1.0-h934c35e_1 
+  libstdcxx-ng       conda-forge/linux-64::libstdcxx-ng-16.1.0-hdf11a46_1 
+  libtiff            conda-forge/linux-64::libtiff-4.7.2-h9d88235_0 
+  libunistring       conda-forge/linux-64::libunistring-0.9.10-h7f98852_0 
+  libuuid            conda-forge/linux-64::libuuid-2.42.2-h5347b49_0 
+  libwebp-base       conda-forge/linux-64::libwebp-base-1.6.0-hd42ef1d_1 
+  libxcb             conda-forge/linux-64::libxcb-1.17.0-h8a09558_0 
+  libxcrypt          conda-forge/linux-64::libxcrypt-4.4.38-h280c20c_0 
+  libzlib            conda-forge/linux-64::libzlib-1.3.2-h25fd6f3_3 
+  markdown           conda-forge/noarch::markdown-3.10.3-pyhcf101f3_0 
+  markdown-it-py     conda-forge/noarch::markdown-it-py-4.2.0-pyhd8ed1ab_0 
+  markupsafe         conda-forge/linux-64::markupsafe-3.0.3-py311h3778330_1 
+  mash               bioconda/linux-64::mash-2.3-hf85e966_11 
+  mathjax            conda-forge/linux-64::mathjax-2.7.7-ha770c72_3 
+  matplotlib-base    conda-forge/linux-64::matplotlib-base-3.11.1-py311he401cf6_2 
+  mdurl              conda-forge/noarch::mdurl-0.1.2-pyhd8ed1ab_1 
+  minimap2           bioconda/linux-64::minimap2-2.31-h118bc1c_0 
+  mpi                conda-forge/linux-64::mpi-1.0-openmpi 
+  multiqc            bioconda/noarch::multiqc-1.35-pyhdfd78af_1 
+  munkres            conda-forge/noarch::munkres-1.1.4-pyhd8ed1ab_1 
+  narwhals           conda-forge/noarch::narwhals-2.24.0-pyhcf101f3_0 
+  natsort            conda-forge/noarch::natsort-8.4.0-pyhcf101f3_2 
+  ncbi-vdb           bioconda/linux-64::ncbi-vdb-3.4.1-hd63eeec_0 
+  ncurses            conda-forge/linux-64::ncurses-6.6-hdb14827_1 
+  networkx           conda-forge/noarch::networkx-3.6.1-pyhcf101f3_0 
+  nspr               conda-forge/linux-64::nspr-4.40-h29cc59b_0 
+  nss                conda-forge/linux-64::nss-3.118-h445c969_0 
+  numpy              conda-forge/linux-64::numpy-2.4.6-py311h2e04523_0 
+  openjdk            conda-forge/linux-64::openjdk-25.0.2-ha668962_0 
+  openjpeg           conda-forge/linux-64::openjpeg-2.5.4-h55fea9a_0 
+  openmpi            conda-forge/linux-64::openmpi-4.1.6-hc5af2df_101 
+  openssl            conda-forge/linux-64::openssl-3.6.3-h35e630c_1 
+  packaging          conda-forge/noarch::packaging-26.3-pyhc364b38_0 
+  pcre2              conda-forge/linux-64::pcre2-10.47-haa7fec5_0 
+  perl               conda-forge/linux-64::perl-5.32.1-7_hd590300_perl5 
+  perl-archive-tar   bioconda/noarch::perl-archive-tar-3.12-pl5321hdfd78af_0 
+  perl-b-cow         conda-forge/linux-64::perl-b-cow-0.007-pl5321hb9d3cd8_1 
+  perl-carp          conda-forge/noarch::perl-carp-1.50-pl5321hd8ed1ab_0 
+  perl-clone         conda-forge/linux-64::perl-clone-0.46-pl5321hb9d3cd8_1 
+  perl-common-sense  conda-forge/noarch::perl-common-sense-3.75-pl5321hd8ed1ab_0 
+  perl-compress-raw~ conda-forge/linux-64::perl-compress-raw-bzip2-2.214-pl5321hda65f42_0 
+  perl-compress-raw~ conda-forge/linux-64::perl-compress-raw-zlib-2.214-pl5321h4dac143_0 
+  perl-config-gener~ bioconda/noarch::perl-config-general-2.67-pl5321hdfd78af_0 
+  perl-digest-perl-~ bioconda/noarch::perl-digest-perl-md5-1.91-pl5321hdfd78af_0 
+  perl-encode        conda-forge/linux-64::perl-encode-3.24-pl5321hb03c661_0 
+  perl-exporter      conda-forge/noarch::perl-exporter-5.74-pl5321hd8ed1ab_0 
+  perl-exporter-tiny conda-forge/noarch::perl-exporter-tiny-1.002002-pl5321hd8ed1ab_0 
+  perl-extutils-con~ conda-forge/linux-64::perl-extutils-config-0.008-pl5321ha770c72_0 
+  perl-extutils-hel~ conda-forge/linux-64::perl-extutils-helpers-0.026-pl5321ha770c72_0 
+  perl-extutils-ins~ conda-forge/linux-64::perl-extutils-installpaths-0.012-pl5321ha770c72_0 
+  perl-extutils-mak~ conda-forge/noarch::perl-extutils-makemaker-7.70-pl5321hd8ed1ab_0 
+  perl-extutils-pl2~ conda-forge/linux-64::perl-extutils-pl2bat-0.005-pl5321ha770c72_0 
+  perl-font-ttf      bioconda/noarch::perl-font-ttf-1.06-pl5321hdfd78af_1 
+  perl-gd            bioconda/linux-64::perl-gd-2.84-pl5321hc25ab4d_0 
+  perl-inc-latest    conda-forge/linux-64::perl-inc-latest-0.500-pl5321ha770c72_0 
+  perl-io-compress   bioconda/linux-64::perl-io-compress-2.216-pl5321h503566f_0 
+  perl-io-string     bioconda/noarch::perl-io-string-1.08-pl5321hdfd78af_4 
+  perl-io-zlib       bioconda/noarch::perl-io-zlib-1.15-pl5321hdfd78af_1 
+  perl-json          bioconda/noarch::perl-json-4.11-pl5321hdfd78af_0 
+  perl-json-xs       bioconda/linux-64::perl-json-xs-4.04-pl5321h9948957_0 
+  perl-list-moreuti~ bioconda/noarch::perl-list-moreutils-0.430-pl5321hdfd78af_0 
+  perl-list-moreuti~ bioconda/linux-64::perl-list-moreutils-xs-0.430-pl5321h7b50bb2_5 
+  perl-math-bezier   bioconda/noarch::perl-math-bezier-0.01-pl5321hdfd78af_2 
+  perl-math-round    conda-forge/linux-64::perl-math-round-0.07-pl5321ha770c72_0 
+  perl-math-vecstat  bioconda/noarch::perl-math-vecstat-0.08-pl5321hdfd78af_2 
+  perl-module-build  conda-forge/linux-64::perl-module-build-0.4234-pl5321ha770c72_1 
+  perl-module-build~ conda-forge/linux-64::perl-module-build-tiny-0.039-pl5321h166bdaf_0 
+  perl-module-imple~ conda-forge/linux-64::perl-module-implementation-0.09-pl5321ha770c72_1 
+  perl-module-runti~ conda-forge/linux-64::perl-module-runtime-0.016-pl5321ha770c72_1 
+  perl-number-format conda-forge/noarch::perl-number-format-1.76-pl5321hd8ed1ab_0 
+  perl-params-valid~ bioconda/linux-64::perl-params-validate-1.31-pl5321h7b50bb2_5 
+  perl-parent        conda-forge/noarch::perl-parent-0.243-pl5321hd8ed1ab_0 
+  perl-pathtools     conda-forge/linux-64::perl-pathtools-3.75-pl5321hb9d3cd8_2 
+  perl-readonly      conda-forge/linux-64::perl-readonly-2.05-pl5321ha770c72_0 
+  perl-regexp-common conda-forge/noarch::perl-regexp-common-2017060201-pl5321hd8ed1ab_0 
+  perl-scalar-list-~ conda-forge/linux-64::perl-scalar-list-utils-1.70-pl5321hb03c661_0 
+  perl-set-intspan   bioconda/noarch::perl-set-intspan-1.19-pl5321hdfd78af_2 
+  perl-statistics-b~ bioconda/noarch::perl-statistics-basic-1.6611-pl5321hdfd78af_3 
+  perl-storable      conda-forge/linux-64::perl-storable-3.15-pl5321hb9d3cd8_2 
+  perl-svg           conda-forge/noarch::perl-svg-2.87-pl5321hd8ed1ab_0 
+  perl-test-fatal    conda-forge/linux-64::perl-test-fatal-0.016-pl5321ha770c72_0 
+  perl-test-nowarni~ conda-forge/linux-64::perl-test-nowarnings-1.06-pl5321ha770c72_0 
+  perl-text-format   bioconda/noarch::perl-text-format-0.63-pl5321hdfd78af_0 
+  perl-time-hires    bioconda/linux-64::perl-time-hires-1.9764-pl5321h7b50bb2_6 
+  perl-try-tiny      conda-forge/linux-64::perl-try-tiny-0.31-pl5321ha770c72_0 
+  perl-types-serial~ bioconda/noarch::perl-types-serialiser-1.01-pl5321hdfd78af_0 
+  perl-xml-parser    conda-forge/linux-64::perl-xml-parser-2.44_01-pl5321hf2e2c51_1004 
+  pigz               conda-forge/linux-64::pigz-2.8-h421ea60_2 
+  pillow             conda-forge/linux-64::pillow-12.3.0-py311hf88fc01_0 
+  pip                conda-forge/noarch::pip-26.2.1-pyh8b19718_0 
+  pixman             conda-forge/linux-64::pixman-0.46.4-h54a6638_3 
+  plotly             conda-forge/noarch::plotly-6.9.0-pyhd8ed1ab_0 
+  polars             conda-forge/noarch::polars-1.43.2-pyh8da0edf_0 
+  polars-runtime-32  conda-forge/linux-64::polars-runtime-32-1.43.2-py310h9585f58_0 
+  polars-runtime-co~ conda-forge/linux-64::polars-runtime-compat-1.43.2-py310h761ce75_0 
+  pthread-stubs      conda-forge/linux-64::pthread-stubs-0.4-hb03c661_1003 
+  pyaml-env          conda-forge/noarch::pyaml-env-1.2.2-pyhd8ed1ab_0 
+  pydantic           conda-forge/noarch::pydantic-2.13.4-pyhcf101f3_0 
+  pydantic-core      conda-forge/linux-64::pydantic-core-2.46.4-py311h902ca64_0 
+  pygments           conda-forge/noarch::pygments-2.20.0-pyhd8ed1ab_0 
+  pyparsing          conda-forge/noarch::pyparsing-3.3.2-pyhcf101f3_0 
+  pysocks            conda-forge/noarch::pysocks-1.7.1-pyha55dd90_7 
+  python             conda-forge/linux-64::python-3.11.15-h8ab3286_2_cpython 
+  python-dateutil    conda-forge/noarch::python-dateutil-2.9.0.post0-pyhe01879c_2 
+  python-dotenv      conda-forge/noarch::python-dotenv-1.2.2-pyhcf101f3_0 
+  python-gil         conda-forge/noarch::python-gil-3.11.15-hd8ed1ab_2 
+  python-kaleido     conda-forge/noarch::python-kaleido-0.2.1-pyhd8ed1ab_0 
+  python_abi         conda-forge/noarch::python_abi-3.11-8_cp311 
+  pyyaml             conda-forge/linux-64::pyyaml-6.0.3-py311h3778330_1 
+  qhull              conda-forge/linux-64::qhull-2020.2-h434a139_5 
+  quast              bioconda/linux-64::quast-5.3.0-py311pl5321hc84137b_1 
+  readline           conda-forge/linux-64::readline-8.3-h853b02a_0 
+  referencing        conda-forge/noarch::referencing-0.37.0-pyhcf101f3_0 
+  regex              conda-forge/linux-64::regex-2026.7.19-py311h49ec1c0_0 
+  requests           conda-forge/noarch::requests-2.34.2-pyhcf101f3_0 
+  rich               conda-forge/noarch::rich-15.0.0-pyhcf101f3_0 
+  rich-click         conda-forge/noarch::rich-click-1.9.8-pyh8f84b5b_0 
+  rpds-py            conda-forge/linux-64::rpds-py-2026.6.3-py311h1baac5b_0 
+  rpsbproc           bioconda/linux-64::rpsbproc-0.5.1-hd6d6fdc_0 
+  setuptools         conda-forge/noarch::setuptools-84.0.0-pyh332efcf_0 
+  simplejson         conda-forge/linux-64::simplejson-4.1.1-py311h49ec1c0_0 
+  six                conda-forge/noarch::six-1.17.0-pyhe01879c_1 
+  spades             bioconda/linux-64::spades-4.3.0-hde4eca7_1 
+  spectra            conda-forge/noarch::spectra-0.0.11-pyhd8ed1ab_2 
+  sqlite             conda-forge/linux-64::sqlite-3.53.4-h04a0ce9_0 
+  sysroot_linux-64   conda-forge/noarch::sysroot_linux-64-2.34-h087de78_3 
+  tiktoken           conda-forge/linux-64::tiktoken-0.13.0-py311h5c31b33_0 
+  tk                 conda-forge/linux-64::tk-8.6.13-noxft_hd70dff1_3 
+  tqdm               conda-forge/noarch::tqdm-4.70.0-pyh8f84b5b_0 
+  typeguard          conda-forge/noarch::typeguard-4.6.0-pyhcf101f3_0 
+  typing-extensions  conda-forge/noarch::typing-extensions-4.16.0-h69aa097_0 
+  typing-inspection  conda-forge/noarch::typing-inspection-0.4.3-pyhcf101f3_0 
+  typing_extensions  conda-forge/noarch::typing_extensions-4.16.0-pyhcf101f3_0 
+  tzdata             conda-forge/noarch::tzdata-2026c-h151e31d_0 
+  unicodedata2       conda-forge/linux-64::unicodedata2-17.0.1-py311h49ec1c0_0 
+  urllib3            conda-forge/noarch::urllib3-2.7.0-pyhd8ed1ab_0 
+  wget               conda-forge/linux-64::wget-1.25.0-h653f8fd_1 
+  wheel              conda-forge/noarch::wheel-0.47.0-pyhd8ed1ab_0 
+  xorg-libice        conda-forge/linux-64::xorg-libice-1.1.2-h280c20c_0 
+  xorg-libsm         conda-forge/linux-64::xorg-libsm-1.2.6-he73a12e_0 
+  xorg-libx11        conda-forge/linux-64::xorg-libx11-1.8.13-he1eb515_0 
+  xorg-libxau        conda-forge/linux-64::xorg-libxau-1.0.12-hb03c661_2 
+  xorg-libxdmcp      conda-forge/linux-64::xorg-libxdmcp-1.1.5-hb03c661_2 
+  xorg-libxext       conda-forge/linux-64::xorg-libxext-1.3.7-hb03c661_0 
+  xorg-libxfixes     conda-forge/linux-64::xorg-libxfixes-6.0.2-hb03c661_0 
+  xorg-libxi         conda-forge/linux-64::xorg-libxi-1.8.3-hb03c661_0 
+  xorg-libxrandr     conda-forge/linux-64::xorg-libxrandr-1.5.5-hb03c661_0 
+  xorg-libxrender    conda-forge/linux-64::xorg-libxrender-0.9.12-hb9d3cd8_0 
+  xorg-libxt         conda-forge/linux-64::xorg-libxt-1.3.1-hb9d3cd8_0 
+  xorg-libxtst       conda-forge/linux-64::xorg-libxtst-1.2.5-hb9d3cd8_3 
+  yaml               conda-forge/linux-64::yaml-0.2.5-h280c20c_3 
+  zipp               conda-forge/noarch::zipp-4.1.0-pyhcf101f3_0 
+  zlib               conda-forge/linux-64::zlib-1.3.2-h25fd6f3_3 
+  zlib-ng            conda-forge/linux-64::zlib-ng-2.3.3-hceb46e0_1 
+  zstd               conda-forge/linux-64::zstd-1.5.7-hb78ec9c_6 
+
+
+
+Downloading and Extracting Packages: ...working...python-3.11.15       | 29.4 MB   |            |   0% 
+spades-4.3.0         | 17.9 MB   |            |   0% [A
+
+quast-5.3.0          | 14.6 MB   |            |   0% [A[A
+
+
+libglib-2.88.3       | 4.5 MB    |            |   0% [A[A[A
+
+
+
+pydantic-core-2.46.4 | 1.8 MB    |            |   0% [A[A[A[A
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   |            |   0% [A[A[A[A[A
+
+
+
+
+
+regex-2026.7.19      | 412 KB    |            |   0% [A[A[A[A[A[A
+
+
+
+
+
+
+rpds-py-2026.6.3     | 293 KB    |            |   0% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+fontconfig-2.18.3    | 290 KB    |            |   0% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+libpsl-0.23.1        | 71 KB     |            |   0% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+xorg-libice-1.1.2    | 61 KB     |            |   0% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+cpython-3.11.15      | 47 KB     |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+python-gil-3.11.15   | 47 KB     |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxdmcp-1.1.5  | 21 KB     |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+typing-inspection-0. | 20 KB     |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxau-1.0.12   | 16 KB     |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+quast-5.3.0          | 14.6 MB   |            |   0% [A[A
+
+
+
+pydantic-core-2.46.4 | 1.8 MB    | #######2   |  72% [A[A[A[A
+spades-4.3.0         | 17.9 MB   |            |   0% [Apython-3.11.15       | 29.4 MB   | 5          |   5% 
+
+
+libglib-2.88.3       | 4.5 MB    | #6         |  17% [A[A[A
+
+
+
+pydantic-core-2.46.4 | 1.8 MB    | ########## | 100% [A[A[A[A
+
+
+
+pydantic-core-2.46.4 | 1.8 MB    | ########## | 100% [A[A[A[A
+
+quast-5.3.0          | 14.6 MB   |            |   1% [A[A
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | 1          |   2% [A[A[A[A[A
+spades-4.3.0         | 17.9 MB   |            |   1% [A
+
+
+libglib-2.88.3       | 4.5 MB    | ###2       |  32% [A[A[A
+
+quast-5.3.0          | 14.6 MB   | 1          |   1% [A[Apython-3.11.15       | 29.4 MB   | #1         |  12% 
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | 9          |  10% [A[A[A[A[A
+spades-4.3.0         | 17.9 MB   | 2          |   2% [A
+
+
+libglib-2.88.3       | 4.5 MB    | #####1     |  52% [A[A[Apython-3.11.15       | 29.4 MB   | #7         |  18% 
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | #4         |  14% [A[A[A[A[A
+
+
+libglib-2.88.3       | 4.5 MB    | ######2    |  62% [A[A[Apython-3.11.15       | 29.4 MB   | ##1        |  21% 
+
+quast-5.3.0          | 14.6 MB   | 1          |   2% [A[A
+spades-4.3.0         | 17.9 MB   | 3          |   3% [A
+
+
+libglib-2.88.3       | 4.5 MB    | #######9   |  79% [A[A[A
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | ###        |  30% [A[A[A[A[Apython-3.11.15       | 29.4 MB   | ##6        |  26% 
+
+quast-5.3.0          | 14.6 MB   | 4          |   4% [A[A
+spades-4.3.0         | 17.9 MB   | 4          |   4% [A
+
+
+libglib-2.88.3       | 4.5 MB    | #########5 |  95% [A[A[A
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | ########## | 100% [A[A[A[A[A
+
+
+libglib-2.88.3       | 4.5 MB    | ########## | 100% [A[A[A
+
+
+
+
+
+regex-2026.7.19      | 412 KB    | 3          |   4% [A[A[A[A[A[A
+
+
+
+
+
+
+rpds-py-2026.6.3     | 293 KB    | 5          |   5% [A[A[A[A[A[A[Apython-3.11.15       | 29.4 MB   | ###2       |  33% 
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | ########## | 100% [A[A[A[A[A
+
+
+
+
+tiktoken-0.13.0      | 1008 KB   | ########## | 100% [A[A[A[A[A
+
+quast-5.3.0          | 14.6 MB   | 6          |   6% [A[A
+spades-4.3.0         | 17.9 MB   | 6          |   7% [A
+
+
+
+
+
+
+rpds-py-2026.6.3     | 293 KB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+regex-2026.7.19      | 412 KB    | #######3   |  74% [A[A[A[A[A[A
+
+
+
+
+
+
+rpds-py-2026.6.3     | 293 KB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+fontconfig-2.18.3    | 290 KB    | 5          |   6% [A[A[A[A[A[A[A[A
+
+
+
+
+
+regex-2026.7.19      | 412 KB    | ########## | 100% [A[A[A[A[A[A
+
+quast-5.3.0          | 14.6 MB   | 7          |   7% [A[Apython-3.11.15       | 29.4 MB   | ###7       |  37% 
+spades-4.3.0         | 17.9 MB   | 7          |   8% [A
+
+
+
+
+
+regex-2026.7.19      | 412 KB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+
+
+
+
+fontconfig-2.18.3    | 290 KB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+libpsl-0.23.1        | 71 KB     | ##2        |  23% [A[A[A[A[A[A[A[A[A
+
+
+libglib-2.88.3       | 4.5 MB    | ########## | 100% [A[A[A
+
+
+
+
+
+
+
+
+libpsl-0.23.1        | 71 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+xorg-libice-1.1.2    | 61 KB     | ##6        |  26% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+libpsl-0.23.1        | 71 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+xorg-libice-1.1.2    | 61 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+cpython-3.11.15      | 47 KB     | ###3       |  34% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+xorg-libice-1.1.2    | 61 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+fontconfig-2.18.3    | 290 KB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+fontconfig-2.18.3    | 290 KB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+cpython-3.11.15      | 47 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+python-gil-3.11.15   | 47 KB     | ###3       |  34% [A[A[A[A[A[A[A[A[A[A[A[A
+
+quast-5.3.0          | 14.6 MB   | 8          |   8% [A[A
+
+
+
+
+
+
+
+
+
+
+
+python-gil-3.11.15   | 47 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+cpython-3.11.15      | 47 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[Apython-3.11.15       | 29.4 MB   | ####1      |  41% 
+spades-4.3.0         | 17.9 MB   | 8          |   9% [A
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxdmcp-1.1.5  | 21 KB     | #######7   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+python-gil-3.11.15   | 47 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxdmcp-1.1.5  | 21 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxdmcp-1.1.5  | 21 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+typing-inspection-0. | 20 KB     | #######8   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+typing-inspection-0. | 20 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+typing-inspection-0. | 20 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxau-1.0.12   | 16 KB     | #########9 | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxau-1.0.12   | 16 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+xorg-libxau-1.0.12   | 16 KB     | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+quast-5.3.0          | 14.6 MB   | 9          |   9% [A[Apython-3.11.15       | 29.4 MB   | ####5      |  46% 
+spades-4.3.0         | 17.9 MB   | 9          |  10% [A
+
+quast-5.3.0          | 14.6 MB   | #          |  10% [A[Apython-3.11.15       | 29.4 MB   | ####9      |  50% 
+spades-4.3.0         | 17.9 MB   | #1         |  11% [A
+
+quast-5.3.0          | 14.6 MB   | #1         |  12% [A[Apython-3.11.15       | 29.4 MB   | #####4     |  55% 
+spades-4.3.0         | 17.9 MB   | #2         |  12% [Apython-3.11.15       | 29.4 MB   | #####9     |  59% 
+
+quast-5.3.0          | 14.6 MB   | #3         |  13% [A[A
+spades-4.3.0         | 17.9 MB   | #3         |  14% [A
+
+quast-5.3.0          | 14.6 MB   | #4         |  14% [A[Apython-3.11.15       | 29.4 MB   | ######3    |  64% 
+spades-4.3.0         | 17.9 MB   | #5         |  16% [A
+
+quast-5.3.0          | 14.6 MB   | #5         |  16% [A[Apython-3.11.15       | 29.4 MB   | ######8    |  68% 
+spades-4.3.0         | 17.9 MB   | #7         |  18% [A
+
+quast-5.3.0          | 14.6 MB   | #7         |  17% [A[A
+spades-4.3.0         | 17.9 MB   | #9         |  20% [Apython-3.11.15       | 29.4 MB   | #######2   |  72% 
+
+quast-5.3.0          | 14.6 MB   | #9         |  19% [A[A
+spades-4.3.0         | 17.9 MB   | ##2        |  22% [Apython-3.11.15       | 29.4 MB   | #######6   |  76% 
+
+quast-5.3.0          | 14.6 MB   | ##1        |  22% [A[A
+spades-4.3.0         | 17.9 MB   | ##4        |  25% [Apython-3.11.15       | 29.4 MB   | ########   |  80% 
+
+quast-5.3.0          | 14.6 MB   | ##3        |  23% [A[A
+spades-4.3.0         | 17.9 MB   | ##6        |  27% [Apython-3.11.15       | 29.4 MB   | ########4  |  84% 
+
+quast-5.3.0          | 14.6 MB   | ##5        |  26% [A[A
+spades-4.3.0         | 17.9 MB   | ##9        |  29% [Apython-3.11.15       | 29.4 MB   | ########7  |  88% 
+
+quast-5.3.0          | 14.6 MB   | ##7        |  28% [A[A
+spades-4.3.0         | 17.9 MB   | ###1       |  32% [Apython-3.11.15       | 29.4 MB   | #########1 |  91% 
+
+quast-5.3.0          | 14.6 MB   | ###        |  31% [A[A
+spades-4.3.0         | 17.9 MB   | ###4       |  35% [Apython-3.11.15       | 29.4 MB   | #########4 |  95% 
+
+quast-5.3.0          | 14.6 MB   | ###3       |  33% [A[A
+spades-4.3.0         | 17.9 MB   | ###7       |  37% [A
+
+quast-5.3.0          | 14.6 MB   | ###6       |  37% [A[Apython-3.11.15       | 29.4 MB   | #########8 |  98% 
+spades-4.3.0         | 17.9 MB   | ###9       |  40% [Apython-3.11.15       | 29.4 MB   | ########## | 100% 
+
+quast-5.3.0          | 14.6 MB   | ####       |  40% [A[A
+spades-4.3.0         | 17.9 MB   | ####3      |  43% [A
+
+quast-5.3.0          | 14.6 MB   | ####7      |  47% [A[A
+spades-4.3.0         | 17.9 MB   | ####7      |  48% [A
+
+quast-5.3.0          | 14.6 MB   | #####3     |  54% [A[A
+spades-4.3.0         | 17.9 MB   | #####2     |  52% [A
+
+quast-5.3.0          | 14.6 MB   | ######     |  60% [A[A
+spades-4.3.0         | 17.9 MB   | #####6     |  57% [A
+
+quast-5.3.0          | 14.6 MB   | ######6    |  67% [A[A
+spades-4.3.0         | 17.9 MB   | ######     |  61% [A
+
+quast-5.3.0          | 14.6 MB   | #######3   |  73% [A[A
+spades-4.3.0         | 17.9 MB   | ######5    |  65% [Apython-3.11.15       | 29.4 MB   | ########## | 100% 
+
+quast-5.3.0          | 14.6 MB   | ########   |  80% [A[A
+spades-4.3.0         | 17.9 MB   | ######9    |  70% [A
+
+quast-5.3.0          | 14.6 MB   | ########7  |  87% [A[A
+spades-4.3.0         | 17.9 MB   | #######3   |  74% [A
+
+quast-5.3.0          | 14.6 MB   | #########3 |  94% [A[A
+spades-4.3.0         | 17.9 MB   | #######8   |  78% [A
+
+quast-5.3.0          | 14.6 MB   | ########## | 100% [A[A
+spades-4.3.0         | 17.9 MB   | ########2  |  83% [A
+spades-4.3.0         | 17.9 MB   | #########2 |  93% [A
+spades-4.3.0         | 17.9 MB   | ########## | 100% [A
+spades-4.3.0         | 17.9 MB   | ########## | 100% [A
+spades-4.3.0         | 17.9 MB   | ########## | 100% [A
+
+quast-5.3.0          | 14.6 MB   | ########## | 100% [A[A                                                     
+                                                     [A
+
+                                                     [A[A
+
+
+                                                     [A[A[A
+
+
+
+                                                     [A[A[A[A
+
+
+
+
+                                                     [A[A[A[A[A
+
+
+
+
+
+                                                     [A[A[A[A[A[A
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A done
+Preparing transaction: - \ | / - \ | / - done
+Verifying transaction: | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+Executing transaction: - \ | / - \ | / - \ | / - \ | / - \ | / - \  
+For Linux 64, Open MPI is built with CUDA awareness but this support is disabled by default.
+To enable it, please set the environment variable OMPI_MCA_opal_cuda_support=true before
+launching your MPI processes. Equivalently, you can set the MCA parameter in the command line:
+mpiexec --mca opal_cuda_support 1 ...
+ 
+In addition, the UCX support is also built but disabled by default.
+To enable it, first install UCX (conda install -c conda-forge ucx). Then, set the environment
+variables OMPI_MCA_pml="ucx" OMPI_MCA_osc="ucx" before launching your MPI processes.
+Equivalently, you can set the MCA parameters in the command line:
+mpiexec --mca pml ucx --mca osc ucx ...
+Note that you might also need to set UCX_MEMTYPE_CACHE=n for CUDA awareness via UCX.
+Please consult UCX's documentation for detail.
+ 
+
+| / - \ | / - \ | / - \ | / - The default QUAST package does not include:
+* GRIDSS (needed for structural variants detection)
+* SILVA 16S rRNA database (needed for reference genome detection in metagenomic datasets)
+* BUSCO tools and databases (needed for searching BUSCO genes) -- works in Linux only!
+
+To be able to use those, please run
+    quast-download-gridss
+    quast-download-silva
+    quast-download-busco
+
+\ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done
+#
+# To activate this environment, use
+#
+#     $ conda activate virusforge
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+

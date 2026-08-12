@@ -55,6 +55,11 @@ class V04PolishQC(Module):
     code = "V04"
     dirname = "V04_POLISHING_VIRAL_QC"
 
+    def restore_artifacts(self, ctx: Context) -> None:
+        genome = self.module_dir(ctx.run_dir) / "04_standardized" / "viral_genome.fasta"
+        if genome.exists():
+            ctx.artifacts[self.code] = {"genome": str(genome)}
+
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
         threads = get(ctx.cfg, "general.threads", 8)

@@ -51,8 +51,11 @@ class V08PhageChar(Module):
 
         db = get(ctx.cfg, "tools.phabox.db", "databases/phabox")
         out = dirs["03_native_outputs"] / "phabox"
-        err = safe_run(tools.phabox_cmd(genome, out, db, get(ctx.cfg, "general.threads", 8)),
-                       dirs["07_logs"] / "phabox.log")
+        cmd = tools.phabox_cmd(
+            genome, out, db, get(ctx.cfg, "general.threads", 8),
+            conda_env=get(ctx.cfg, "tools.phabox.conda_env", None),
+            conda_bin=get(ctx.cfg, "tools.phabox.conda_bin", "conda"))
+        err = safe_run(cmd, dirs["07_logs"] / "phabox.log")
         final_dir = out / "final_prediction"
         if not err and final_dir.exists():
             metrics = parse_phabox(final_dir)

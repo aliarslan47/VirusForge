@@ -1,0 +1,1797 @@
+2 channel Terms of Service accepted
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+Solving environment: - \ | / - done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 26.1.1
+    latest version: 26.7.0
+
+Please update conda by running
+
+    $ conda update -n base -c conda-forge conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/ali/miniconda3/envs/virusforge
+
+  added / updated specs:
+    - checkv
+    - genomad
+    - pharokka
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    bx-python-0.14.0           |  py311h93bbee8_1         978 KB  bioconda
+    coverage-7.15.4            |  py311hc6a3e95_1         416 KB  conda-forge
+    cuda-cupti-12.9.79         |       h676940d_2         1.8 MB  conda-forge
+    diamond-2.0.4              |       hdb21b49_2         1.3 MB  bioconda
+    dnaapler-1.4.0             |     pyhdfd78af_0         2.7 MB  bioconda
+    genbank-0.121              |  py311h26ae33e_2          60 KB  bioconda
+    grpcio-1.78.1              |  py311h3aa0767_0         861 KB  conda-forge
+    kcounter-0.1.2             |  py311h78a2e26_0         235 KB  bioconda
+    libprotobuf-6.33.5         |       h538a264_2         3.5 MB  conda-forge
+    libxgboost-3.2.0           |cuda129_h54c741a_3       124.7 MB  conda-forge
+    pandas-3.0.5               |  py311h8032f78_1        14.5 MB  conda-forge
+    phanotate-1.6.7            |  py311hf552afe_4         109 KB  bioconda
+    pharokka-1.9.1             |     pyhdfd78af_0          72 KB  bioconda
+    platformdirs-4.11.2        |     pyhcf101f3_0          26 KB  conda-forge
+    protobuf-6.33.5            |  py311h3f0a9aa_2         477 KB  conda-forge
+    py-xgboost-3.2.0           |cuda129_pyha75543c_3         174 KB  conda-forge
+    pyhmmer-0.12.1             |  py311hc303176_0         3.2 MB  bioconda
+    python-crfsuite-0.9.12     |  py311hc665b79_0         319 KB  conda-forge
+    python-flatbuffers-25.12.19|     pyh9d96877_0          35 KB  conda-forge
+    pytokens-0.4.1             |  py311haee01d2_2         278 KB  conda-forge
+    tensorboard-data-server-0.7.0|  py311h97c413e_4         3.3 MB  conda-forge
+    tensorflow-2.19.1          |cuda128py311he515fd5_255          48 KB  conda-forge
+    tensorflow-base-2.19.1     |cuda128py311ha61ac8e_255       912.0 MB  conda-forge
+    trnascan-se-2.0.13         | pl5321hab16a5f_0         2.7 MB  bioconda
+    xgboost-3.2.0              |cuda129_pyh5c66634_3          22 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        1.05 GB
+
+The following NEW packages will be INSTALLED:
+
+  _x86_64-microarch~ conda-forge/noarch::_x86_64-microarch-level-3-3_skylake 
+  about-time         conda-forge/noarch::about-time-4.2.1-pyhd8ed1ab_1 
+  absl-py            conda-forge/noarch::absl-py-2.5.0-pyhd8ed1ab_0 
+  alive-progress     conda-forge/noarch::alive-progress-3.3.0-pyhd8ed1ab_0 
+  aragorn            bioconda/linux-64::aragorn-1.2.41-h7b50bb2_5 
+  archspec           conda-forge/noarch::archspec-0.2.5-pyhd8ed1ab_0 
+  aria2              conda-forge/linux-64::aria2-1.37.0-h4b33fff_4 
+  astunparse         conda-forge/noarch::astunparse-1.6.3-pyhd8ed1ab_3 
+  aws-c-auth         conda-forge/linux-64::aws-c-auth-0.10.4-h4610da3_2 
+  aws-c-cal          conda-forge/linux-64::aws-c-cal-0.9.15-h6bbde05_1 
+  aws-c-common       conda-forge/linux-64::aws-c-common-0.14.3-hb03c661_0 
+  aws-c-compression  conda-forge/linux-64::aws-c-compression-0.3.2-h01ee8f8_5 
+  aws-c-http         conda-forge/linux-64::aws-c-http-0.11.0-hbe094ff_5 
+  aws-c-io           conda-forge/linux-64::aws-c-io-0.27.5-h4f381ba_1 
+  aws-c-s3           conda-forge/linux-64::aws-c-s3-0.13.1-h7508075_1 
+  aws-c-sdkutils     conda-forge/linux-64::aws-c-sdkutils-0.2.7-h01ee8f8_3 
+  aws-checksums      conda-forge/linux-64::aws-checksums-0.2.10-h01ee8f8_5 
+  backports          conda-forge/noarch::backports-1.0-pyhd8ed1ab_5 
+  backports.tempfile conda-forge/noarch::backports.tempfile-1.0-py_0 
+  backports.weakref  conda-forge/noarch::backports.weakref-1.0.post1-pyhd8ed1ab_1003 
+  bcbio-gff          bioconda/noarch::bcbio-gff-0.7.1-pyhdfd78af_3 
+  biopython          conda-forge/linux-64::biopython-1.88-py311h49ec1c0_0 
+  black              conda-forge/noarch::black-26.5.1-pyh866005b_0 
+  bx-python          bioconda/linux-64::bx-python-0.14.0-py311h93bbee8_1 
+  cached-property    conda-forge/noarch::cached-property-1.5.2-hd8ed1ab_2 
+  cached_property    conda-forge/noarch::cached_property-1.5.2-pyha770c72_2 
+  checkv             bioconda/noarch::checkv-1.1.1-pyh106432d_1 
+  colorama           conda-forge/noarch::colorama-0.4.6-pyhd8ed1ab_1 
+  coverage           conda-forge/linux-64::coverage-7.15.4-py311hc6a3e95_1 
+  cuda-crt-tools     conda-forge/linux-64::cuda-crt-tools-12.9.86-ha770c72_2 
+  cuda-cudart        conda-forge/linux-64::cuda-cudart-12.9.79-h5888daf_0 
+  cuda-cudart_linux~ conda-forge/noarch::cuda-cudart_linux-64-12.9.79-h3f2d84a_0 
+  cuda-cupti         conda-forge/linux-64::cuda-cupti-12.9.79-h676940d_2 
+  cuda-nvcc-tools    conda-forge/linux-64::cuda-nvcc-tools-12.9.86-he02047a_2 
+  cuda-nvrtc         conda-forge/linux-64::cuda-nvrtc-12.9.86-hecca717_1 
+  cuda-nvtx          conda-forge/linux-64::cuda-nvtx-12.9.79-hecca717_1 
+  cuda-nvvm-tools    conda-forge/linux-64::cuda-nvvm-tools-12.9.86-h4bc722e_2 
+  cuda-version       conda-forge/noarch::cuda-version-12.9-h4f385c5_3 
+  cudnn              conda-forge/linux-64::cudnn-9.10.2.21-hbcb9cd8_0 
+  diamond            bioconda/linux-64::diamond-2.0.4-hdb21b49_2 
+  dnaapler           bioconda/noarch::dnaapler-1.4.0-pyhdfd78af_0 
+  exceptiongroup     conda-forge/noarch::exceptiongroup-1.3.1-pyhd8ed1ab_0 
+  flatbuffers        conda-forge/linux-64::flatbuffers-25.9.23-hb7d4c21_0 
+  gast               conda-forge/noarch::gast-0.7.0-pyhd8ed1ab_0 
+  gawk               conda-forge/linux-64::gawk-5.4.1-h0a3468a_0 
+  genbank            bioconda/linux-64::genbank-0.121-py311h26ae33e_2 
+  genomad            bioconda/noarch::genomad-1.12.0-pyhdfd78af_0 
+  gmp                conda-forge/linux-64::gmp-6.3.0-hac33072_2 
+  google-pasta       conda-forge/noarch::google-pasta-0.2.0-pyhd8ed1ab_2 
+  graphemeu          conda-forge/noarch::graphemeu-0.7.2-pyhc364b38_0 
+  grpcio             conda-forge/linux-64::grpcio-1.78.1-py311h3aa0767_0 
+  h5py               conda-forge/linux-64::h5py-3.16.0-nompi_py311hfef529e_102 
+  hdf5               conda-forge/linux-64::hdf5-2.2.0-nompi_hc529623_100 
+  hmmer              bioconda/linux-64::hmmer-3.4-h503566f_3 
+  infernal           bioconda/linux-64::infernal-1.1.5-pl5321h7b50bb2_4 
+  iniconfig          conda-forge/noarch::iniconfig-2.3.0-pyhd8ed1ab_0 
+  isort              conda-forge/noarch::isort-8.0.1-pyhd8ed1ab_0 
+  kcounter           bioconda/linux-64::kcounter-0.1.2-py311h78a2e26_0 
+  keras              conda-forge/noarch::keras-3.15.1-pyh753f3f9_0 
+  libabseil          conda-forge/linux-64::libabseil-20260107.1-cxx17_h7b12aa8_0 
+  libaec             conda-forge/linux-64::libaec-1.1.5-h088129d_0 
+  libasprintf        conda-forge/linux-64::libasprintf-0.25.1-h3f43e3d_1 
+  libcublas          conda-forge/linux-64::libcublas-12.9.2.10-h676940d_0 
+  libcudnn           conda-forge/linux-64::libcudnn-9.10.2.21-hf7e9902_0 
+  libcudnn-dev       conda-forge/linux-64::libcudnn-dev-9.10.2.21-h58dd1b1_0 
+  libcufft           conda-forge/linux-64::libcufft-11.4.1.4-hecca717_1 
+  libcurand          conda-forge/linux-64::libcurand-10.3.10.19-h676940d_1 
+  libcusolver        conda-forge/linux-64::libcusolver-11.7.5.82-h676940d_2 
+  libcusparse        conda-forge/linux-64::libcusparse-12.5.10.65-hecca717_2 
+  libgettextpo       conda-forge/linux-64::libgettextpo-0.25.1-h3f43e3d_1 
+  libgrpc            conda-forge/linux-64::libgrpc-1.78.1-h1d1128b_0 
+  libml_dtypes-head~ conda-forge/noarch::libml_dtypes-headers-0.5.4-h707e725_0 
+  libnvjitlink       conda-forge/linux-64::libnvjitlink-12.9.86-hecca717_2 
+  libprotobuf        conda-forge/linux-64::libprotobuf-6.33.5-h538a264_2 
+  libre2-11          conda-forge/linux-64::libre2-11-2025.11.05-h0dc7533_1 
+  libtensorflow_cc   conda-forge/linux-64::libtensorflow_cc-2.19.1-cuda128h5d964f1_255 
+  libtensorflow_fra~ conda-forge/linux-64::libtensorflow_framework-2.19.1-cuda128hc512d3a_255 
+  libxgboost         conda-forge/linux-64::libxgboost-3.2.0-cuda129_h54c741a_3 
+  libxml2            conda-forge/linux-64::libxml2-2.15.3-h49c6c72_0 
+  libxml2-16         conda-forge/linux-64::libxml2-16-2.15.3-hca6bf5a_0 
+  llvmlite           conda-forge/linux-64::llvmlite-0.48.0-py311h9d99eea_1 
+  loguru             conda-forge/noarch::loguru-0.7.3-pyh707e725_0 
+  minced             bioconda/noarch::minced-0.4.2-hdfd78af_1 
+  ml_dtypes          conda-forge/linux-64::ml_dtypes-0.5.4-np2py311h912ec1f_1 
+  mmseqs2            bioconda/linux-64::mmseqs2-18.8cc5c-hd6d6fdc_0 
+  mpfr               conda-forge/linux-64::mpfr-4.2.2-he0a73b1_0 
+  mypy_extensions    conda-forge/noarch::mypy_extensions-1.1.0-pyha770c72_0 
+  namex              conda-forge/noarch::namex-0.1.0-pyhd8ed1ab_0 
+  nccl               conda-forge/linux-64::nccl-2.30.7.1-h4d09622_0 
+  numba              conda-forge/linux-64::numba-0.66.0-py311hc665b79_1 
+  opt_einsum         conda-forge/noarch::opt_einsum-3.4.0-pyhd8ed1ab_1 
+  optree             conda-forge/linux-64::optree-0.19.1-py311hdf67eae_0 
+  pandas             conda-forge/linux-64::pandas-3.0.5-py311h8032f78_1 
+  pathspec           conda-forge/noarch::pathspec-1.1.1-pyhd8ed1ab_0 
+  patsy              conda-forge/noarch::patsy-1.0.2-pyhcf101f3_0 
+  phanotate          bioconda/linux-64::phanotate-1.6.7-py311hf552afe_4 
+  pharokka           bioconda/noarch::pharokka-1.9.1-pyhdfd78af_0 
+  platformdirs       conda-forge/noarch::platformdirs-4.11.2-pyhcf101f3_0 
+  pluggy             conda-forge/noarch::pluggy-1.6.0-pyhf9edf01_1 
+  protobuf           conda-forge/linux-64::protobuf-6.33.5-py311h3f0a9aa_2 
+  psutil             conda-forge/linux-64::psutil-7.2.2-py311haee01d2_0 
+  py-xgboost         conda-forge/noarch::py-xgboost-3.2.0-cuda129_pyha75543c_3 
+  pycirclize         conda-forge/noarch::pycirclize-1.10.1-pyhd8ed1ab_0 
+  pyhmmer            bioconda/linux-64::pyhmmer-0.12.1-py311hc303176_0 
+  pyrodigal          bioconda/linux-64::pyrodigal-3.7.1-py311h26ae33e_1 
+  pyrodigal-gv       bioconda/noarch::pyrodigal-gv-0.3.2-pyh7e72e81_0 
+  pyrodigal-rv       bioconda/noarch::pyrodigal-rv-0.1.0-pyh7e72e81_0 
+  pytest             conda-forge/noarch::pytest-9.1.1-pyhc364b38_2 
+  pytest-cov         conda-forge/noarch::pytest-cov-7.1.0-pyhcf101f3_0 
+  python-crfsuite    conda-forge/linux-64::python-crfsuite-0.9.12-py311hc665b79_0 
+  python-flatbuffers conda-forge/noarch::python-flatbuffers-25.12.19-pyh9d96877_0 
+  pytokens           conda-forge/linux-64::pytokens-0.4.1-py311haee01d2_2 
+  re2                conda-forge/linux-64::re2-2025.11.05-h5301d42_1 
+  s2n                conda-forge/linux-64::s2n-1.7.6-h7e3ee7f_0 
+  scikit-learn       conda-forge/linux-64::scikit-learn-1.9.0-np2py311ha15b03d_0 
+  scipy              conda-forge/linux-64::scipy-1.17.1-py311hbe70eeb_1 
+  seaborn-base       conda-forge/noarch::seaborn-base-0.13.2-pyhd8ed1ab_3 
+  snappy             conda-forge/linux-64::snappy-1.2.2-h03e3b7b_1 
+  statsmodels        conda-forge/linux-64::statsmodels-0.14.6-py311h0372a8f_0 
+  taxopy             bioconda/noarch::taxopy-0.14.0-pyhdfd78af_0 
+  tensorboard        conda-forge/noarch::tensorboard-2.19.0-pyhd8ed1ab_0 
+  tensorboard-data-~ conda-forge/linux-64::tensorboard-data-server-0.7.0-py311h97c413e_4 
+  tensorflow         conda-forge/linux-64::tensorflow-2.19.1-cuda128py311he515fd5_255 
+  tensorflow-base    conda-forge/linux-64::tensorflow-base-2.19.1-cuda128py311ha61ac8e_255 
+  termcolor          conda-forge/noarch::termcolor-3.3.0-pyhd8ed1ab_0 
+  textwrap3          conda-forge/noarch::textwrap3-0.9.2-py_0 
+  threadpoolctl      conda-forge/noarch::threadpoolctl-3.6.0-pyhecae5ae_0 
+  tomli              conda-forge/noarch::tomli-2.4.1-pyhcf101f3_0 
+  trnascan-se        bioconda/linux-64::trnascan-se-2.0.13-pl5321hab16a5f_0 
+  werkzeug           conda-forge/noarch::werkzeug-3.1.8-pyhcf101f3_0 
+  wrapt              conda-forge/linux-64::wrapt-2.3.0-py311h49ec1c0_0 
+  xgboost            conda-forge/noarch::xgboost-3.2.0-cuda129_pyh5c66634_3 
+
+
+
+Downloading and Extracting Packages: ...working...tensorflow-base-2.19 | 912.0 MB  |            |   0% 
+libxgboost-3.2.0     | 124.7 MB  |            |   0% [A
+
+pandas-3.0.5         | 14.5 MB   |            |   0% [A[A
+
+
+libprotobuf-6.33.5   | 3.5 MB    |            |   0% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    |            |   0% [A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    |            |   0% [A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    |            |   0% [A[A[A[A[A[A
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    |            |   0% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    |            |   0% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    |            |   0% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+grpcio-1.78.1        | 861 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+protobuf-6.33.5      | 477 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+coverage-7.15.4      | 416 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+python-crfsuite-0.9. | 319 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pytokens-0.4.1       | 278 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kcounter-0.1.2       | 235 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+py-xgboost-3.2.0     | 174 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+phanotate-1.6.7      | 109 KB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  |            |   0% [A
+
+pandas-3.0.5         | 14.5 MB   |            |   0% [A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    |            |   0% [A[A[A[A
+
+
+libprotobuf-6.33.5   | 3.5 MB    |            |   0% [A[A[A
+libxgboost-3.2.0     | 124.7 MB  | 2          |   2% [A
+
+pandas-3.0.5         | 14.5 MB   | #6         |  16% [A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | 3          |   4% [A[A[A[A
+
+
+libprotobuf-6.33.5   | 3.5 MB    | 3          |   3% [A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ##5        |  25% [A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+libxgboost-3.2.0     | 124.7 MB  | 3          |   3% [A
+
+
+
+tensorboard-data-ser | 3.3 MB    | 5          |   5% [A[A[A[A
+
+
+libprotobuf-6.33.5   | 3.5 MB    | 8          |   8% [A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | #2         |  13% [A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ###2       |  32% [A[A
+libxgboost-3.2.0     | 124.7 MB  | 4          |   4% [A
+
+
+
+tensorboard-data-ser | 3.3 MB    | #3         |  13% [A[A[A[A
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ##1        |  22% [A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ###7       |  38% [A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | #8         |  19% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ##5        |  26% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ##2        |  22% [A[A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ####3      |  43% [A[A
+libxgboost-3.2.0     | 124.7 MB  | 4          |   5% [Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ###4       |  34% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ##7        |  28% [A[A[A[A
+
+pandas-3.0.5         | 14.5 MB   | #####9     |  60% [A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+libxgboost-3.2.0     | 124.7 MB  | 6          |   6% [A
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ###9       |  40% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ###3       |  33% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ####7      |  48% [A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ######8    |  69% [A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ###7       |  38% [A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | 7          |   7% [Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | #####4     |  54% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ####2      |  43% [A[A[A[A
+
+pandas-3.0.5         | 14.5 MB   | #######6   |  76% [A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ######     |  60% [A[A[A
+libxgboost-3.2.0     | 124.7 MB  | 7          |   8% [A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ####7      |  48% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ######6    |  67% [A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ########3  |  83% [A[A
+libxgboost-3.2.0     | 124.7 MB  | 8          |   8% [A
+
+
+
+tensorboard-data-ser | 3.3 MB    | #####3     |  53% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | #######3   |  74% [A[A[A
+libxgboost-3.2.0     | 124.7 MB  | 8          |   9% [A
+
+
+
+tensorboard-data-ser | 3.3 MB    | #####9     |  60% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+pandas-3.0.5         | 14.5 MB   | ########8  |  89% [A[A
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ########   |  80% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ######7    |  67% [A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | 9          |   9% [Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ########7  |  87% [A[A[A
+
+pandas-3.0.5         | 14.5 MB   | #########4 |  94% [A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | #######5   |  75% [A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | 9          |  10% [Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | #########4 |  95% [A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ########3  |  84% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ########## | 100% [A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #          |  10% [A
+
+pandas-3.0.5         | 14.5 MB   | #########8 |  99% [A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    |            |   0% [A[A[A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | #########4 |  94% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+pandas-3.0.5         | 14.5 MB   | ########## | 100% [A[A
+libxgboost-3.2.0     | 124.7 MB  | #          |  11% [A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | 9          |  10% [A[A[A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ########## | 100% [A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    |            |   1% [A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+libprotobuf-6.33.5   | 3.5 MB    | ########## | 100% [A[A[A
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    |            |   1% [A[A[A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #1         |  11% [A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | #9         |  20% [A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | #3         |  13% [A[A[A[A[A[A
+
+
+
+tensorboard-data-ser | 3.3 MB    | ########## | 100% [A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | #2         |  13% [A[A[A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #1         |  12% [A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ##7        |  27% [A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | ##4        |  24% [A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   0% 
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ##4        |  25% [A[A[A[A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ###6       |  36% [A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #2         |  12% [A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | ###5       |  36% [A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ###7       |  38% [A[A[A[A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ####5      |  46% [A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #2         |  13% [A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | ####7      |  47% [A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | #####2     |  52% [A[A[A[A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | #####4     |  54% [A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | #####8     |  59% [A[A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #3         |  13% [Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ######7    |  68% [A[A[A[A[A[A[A
+
+pandas-3.0.5         | 14.5 MB   | ########## | 100% [A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ######3    |  63% [A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | #######    |  71% [A[A[A[A[A[A
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ########4  |  84% [A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #3         |  13% [A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | #######1   |  72% [A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | ########1  |  82% [A[A[A[A[A[A
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ########## | 100% [A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #3         |  14% [A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    |            |   1% [A[A[A[A[A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ########2  |  82% [A[A[A[A[A
+
+
+
+
+
+
+trnascan-se-2.0.13   | 2.7 MB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | #########4 |  94% [A[A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | ########## | 100% [A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #4         |  14% [A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    | ##2        |  23% [A[A[A[A[A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | #########3 |  93% [A[A[A[A[A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    | 1          |   1% [A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ########## | 100% [A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #4         |  14% [A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    | ####8      |  49% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    | 1          |   2% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    | ##9        |  30% [A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    | #######1   |  72% [A[A[A[A[A[A[A[A
+libxgboost-3.2.0     | 124.7 MB  | #4         |  15% [A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    | ###6       |  36% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+dnaapler-1.4.0       | 2.7 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    | #####5     |  55% [A[A[A[A[A[A[A[A[A
+
+
+
+
+pyhmmer-0.12.1       | 3.2 MB    | ########## | 100% [A[A[A[A[A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    | #########5 |  95% [A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #5         |  15% [A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    | #######2   |  72% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+cuda-cupti-12.9.79   | 1.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+grpcio-1.78.1        | 861 KB    | 1          |   2% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    | ########3  |  84% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #5         |  16% [A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+grpcio-1.78.1        | 861 KB    | #####7     |  58% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+protobuf-6.33.5      | 477 KB    | 3          |   3% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+coverage-7.15.4      | 416 KB    | 3          |   4% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+bx-python-0.14.0     | 978 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #5         |  16% [A
+
+
+
+
+
+
+
+
+
+
+grpcio-1.78.1        | 861 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+protobuf-6.33.5      | 477 KB    | #######3   |  74% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+grpcio-1.78.1        | 861 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+grpcio-1.78.1        | 861 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+diamond-2.0.4        | 1.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+protobuf-6.33.5      | 477 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+python-crfsuite-0.9. | 319 KB    | 5          |   5% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+coverage-7.15.4      | 416 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  |            |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #6         |  16% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+python-crfsuite-0.9. | 319 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pytokens-0.4.1       | 278 KB    | 5          |   6% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+py-xgboost-3.2.0     | 174 KB    | 9          |   9% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+py-xgboost-3.2.0     | 174 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  | 1          |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #6         |  17% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pytokens-0.4.1       | 278 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+python-crfsuite-0.9. | 319 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+python-crfsuite-0.9. | 319 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kcounter-0.1.2       | 235 KB    | 6          |   7% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+coverage-7.15.4      | 416 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+coverage-7.15.4      | 416 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+protobuf-6.33.5      | 477 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+phanotate-1.6.7      | 109 KB    | #4         |  15% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+phanotate-1.6.7      | 109 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  | 1          |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #7         |  18% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pytokens-0.4.1       | 278 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pytokens-0.4.1       | 278 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kcounter-0.1.2       | 235 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+py-xgboost-3.2.0     | 174 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+py-xgboost-3.2.0     | 174 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kcounter-0.1.2       | 235 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kcounter-0.1.2       | 235 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+phanotate-1.6.7      | 109 KB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  | 1          |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #8         |  18% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #8         |  19% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Atensorflow-base-2.19 | 912.0 MB  | 1          |   1% 
+libxgboost-3.2.0     | 124.7 MB  | #9         |  20% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   1% 
+libxgboost-3.2.0     | 124.7 MB  | ##         |  20% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##1        |  21% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##1        |  22% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##2        |  22% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##3        |  23% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##3        |  24% [A
+libxgboost-3.2.0     | 124.7 MB  | ##4        |  25% [Atensorflow-base-2.19 | 912.0 MB  | 1          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##5        |  25% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##5        |  26% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   2% tensorflow-base-2.19 | 912.0 MB  | 2          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##6        |  27% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##7        |  27% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   2% 
+libxgboost-3.2.0     | 124.7 MB  | ##8        |  28% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ##8        |  29% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ##9        |  29% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###        |  30% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###        |  31% [Atensorflow-base-2.19 | 912.0 MB  | 2          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###1       |  31% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###2       |  32% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###2       |  33% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###3       |  34% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###4       |  34% [A
+libxgboost-3.2.0     | 124.7 MB  | ###4       |  35% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   3% 
+libxgboost-3.2.0     | 124.7 MB  | ###5       |  36% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ###6       |  36% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ###7       |  37% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ###7       |  38% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ###8       |  39% [Atensorflow-base-2.19 | 912.0 MB  | 3          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ###9       |  39% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ####       |  40% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ####       |  41% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ####1      |  42% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ####2      |  42% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   4% 
+libxgboost-3.2.0     | 124.7 MB  | ####2      |  43% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   4% tensorflow-base-2.19 | 912.0 MB  | 4          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####3      |  44% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####4      |  44% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####5      |  45% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####5      |  46% [Atensorflow-base-2.19 | 912.0 MB  | 4          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####6      |  46% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####7      |  47% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####7      |  48% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####8      |  48% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####9      |  49% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   5% 
+libxgboost-3.2.0     | 124.7 MB  | ####9      |  50% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####      |  50% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####1     |  51% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####1     |  52% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####2     |  53% [Atensorflow-base-2.19 | 912.0 MB  | 5          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####3     |  53% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####3     |  54% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####4     |  55% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####5     |  55% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####5     |  56% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   6% 
+libxgboost-3.2.0     | 124.7 MB  | #####6     |  57% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | #####7     |  57% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | #####8     |  58% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | #####8     |  59% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | #####9     |  59% [Atensorflow-base-2.19 | 912.0 MB  | 6          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | ######     |  60% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | ######     |  61% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | ######1    |  62% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | ######2    |  62% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | ######2    |  63% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   7% 
+libxgboost-3.2.0     | 124.7 MB  | ######3    |  64% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######4    |  64% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######4    |  65% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######5    |  66% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######6    |  66% [Atensorflow-base-2.19 | 912.0 MB  | 7          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######6    |  67% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######7    |  68% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######8    |  68% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######8    |  69% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | ######9    |  70% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   8% 
+libxgboost-3.2.0     | 124.7 MB  | #######    |  70% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######    |  71% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######1   |  72% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######2   |  72% [Atensorflow-base-2.19 | 912.0 MB  | 8          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######2   |  73% [A
+libxgboost-3.2.0     | 124.7 MB  | #######3   |  74% [Atensorflow-base-2.19 | 912.0 MB  | 9          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######5   |  75% [A
+libxgboost-3.2.0     | 124.7 MB  | #######6   |  76% [A
+libxgboost-3.2.0     | 124.7 MB  | #######7   |  77% [Atensorflow-base-2.19 | 912.0 MB  | 9          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######8   |  78% [Atensorflow-base-2.19 | 912.0 MB  | 9          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | #######9   |  79% [Atensorflow-base-2.19 | 912.0 MB  | 9          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | ########   |  80% [Atensorflow-base-2.19 | 912.0 MB  | 9          |   9% 
+libxgboost-3.2.0     | 124.7 MB  | ########1  |  81% [Atensorflow-base-2.19 | 912.0 MB  | 9          |   9% tensorflow-base-2.19 | 912.0 MB  | 9          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########2  |  82% [Atensorflow-base-2.19 | 912.0 MB  | 9          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########2  |  83% [Atensorflow-base-2.19 | 912.0 MB  | 9          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########3  |  84% [Atensorflow-base-2.19 | 912.0 MB  | 9          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########4  |  85% [Atensorflow-base-2.19 | 912.0 MB  | 9          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########5  |  85% [Atensorflow-base-2.19 | 912.0 MB  | 9          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########6  |  86% [Atensorflow-base-2.19 | 912.0 MB  | #          |  10% 
+libxgboost-3.2.0     | 124.7 MB  | ########6  |  87% [Atensorflow-base-2.19 | 912.0 MB  | #          |  10% tensorflow-base-2.19 | 912.0 MB  | #          |  10% tensorflow-base-2.19 | 912.0 MB  | #          |  11% 
+libxgboost-3.2.0     | 124.7 MB  | ########7  |  87% [Atensorflow-base-2.19 | 912.0 MB  | #          |  11% 
+libxgboost-3.2.0     | 124.7 MB  | ########8  |  88% [Atensorflow-base-2.19 | 912.0 MB  | #          |  11% 
+libxgboost-3.2.0     | 124.7 MB  | ########8  |  89% [Atensorflow-base-2.19 | 912.0 MB  | #          |  11% 
+libxgboost-3.2.0     | 124.7 MB  | ########9  |  89% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  11% 
+libxgboost-3.2.0     | 124.7 MB  | ########9  |  90% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  11% 
+libxgboost-3.2.0     | 124.7 MB  | #########  |  90% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  11% 
+libxgboost-3.2.0     | 124.7 MB  | #########  |  91% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  11% 
+libxgboost-3.2.0     | 124.7 MB  | #########1 |  92% [A
+libxgboost-3.2.0     | 124.7 MB  | #########2 |  92% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########2 |  93% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########3 |  94% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########4 |  94% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########4 |  95% [Atensorflow-base-2.19 | 912.0 MB  | #1         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########5 |  96% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########6 |  96% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########6 |  97% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########7 |  98% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########8 |  98% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  12% 
+libxgboost-3.2.0     | 124.7 MB  | #########9 |  99% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  13% 
+libxgboost-3.2.0     | 124.7 MB  | #########9 | 100% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  13% 
+libxgboost-3.2.0     | 124.7 MB  | ########## | 100% [Atensorflow-base-2.19 | 912.0 MB  | #2         |  13% tensorflow-base-2.19 | 912.0 MB  | #3         |  13% tensorflow-base-2.19 | 912.0 MB  | #3         |  13% tensorflow-base-2.19 | 912.0 MB  | #3         |  13% tensorflow-base-2.19 | 912.0 MB  | #3         |  14% tensorflow-base-2.19 | 912.0 MB  | #3         |  14% tensorflow-base-2.19 | 912.0 MB  | #3         |  14% 
+libxgboost-3.2.0     | 124.7 MB  | ########## | 100% [Atensorflow-base-2.19 | 912.0 MB  | #4         |  14% tensorflow-base-2.19 | 912.0 MB  | #4         |  14% tensorflow-base-2.19 | 912.0 MB  | #4         |  15% tensorflow-base-2.19 | 912.0 MB  | #4         |  15% tensorflow-base-2.19 | 912.0 MB  | #4         |  15% tensorflow-base-2.19 | 912.0 MB  | #5         |  15% tensorflow-base-2.19 | 912.0 MB  | #5         |  15% tensorflow-base-2.19 | 912.0 MB  | #5         |  15% tensorflow-base-2.19 | 912.0 MB  | #5         |  16% tensorflow-base-2.19 | 912.0 MB  | #5         |  16% tensorflow-base-2.19 | 912.0 MB  | #6         |  16% tensorflow-base-2.19 | 912.0 MB  | #6         |  16% tensorflow-base-2.19 | 912.0 MB  | #6         |  16% tensorflow-base-2.19 | 912.0 MB  | #6         |  17% tensorflow-base-2.19 | 912.0 MB  | #6         |  17% tensorflow-base-2.19 | 912.0 MB  | #7         |  17% tensorflow-base-2.19 | 912.0 MB  | #7         |  17% tensorflow-base-2.19 | 912.0 MB  | #7         |  17% tensorflow-base-2.19 | 912.0 MB  | #7         |  18% tensorflow-base-2.19 | 912.0 MB  | #7         |  18% tensorflow-base-2.19 | 912.0 MB  | #7         |  18% tensorflow-base-2.19 | 912.0 MB  | #8         |  18% tensorflow-base-2.19 | 912.0 MB  | #8         |  18% tensorflow-base-2.19 | 912.0 MB  | #8         |  19% tensorflow-base-2.19 | 912.0 MB  | #8         |  19% tensorflow-base-2.19 | 912.0 MB  | #8         |  19% tensorflow-base-2.19 | 912.0 MB  | #9         |  19% tensorflow-base-2.19 | 912.0 MB  | #9         |  19% tensorflow-base-2.19 | 912.0 MB  | #9         |  19% tensorflow-base-2.19 | 912.0 MB  | #9         |  20% tensorflow-base-2.19 | 912.0 MB  | #9         |  20% tensorflow-base-2.19 | 912.0 MB  | ##         |  20% tensorflow-base-2.19 | 912.0 MB  | ##         |  20% tensorflow-base-2.19 | 912.0 MB  | ##         |  20% tensorflow-base-2.19 | 912.0 MB  | ##         |  21% tensorflow-base-2.19 | 912.0 MB  | ##         |  21% tensorflow-base-2.19 | 912.0 MB  | ##1        |  21% tensorflow-base-2.19 | 912.0 MB  | ##1        |  21% tensorflow-base-2.19 | 912.0 MB  | ##1        |  21% tensorflow-base-2.19 | 912.0 MB  | ##1        |  22% tensorflow-base-2.19 | 912.0 MB  | ##1        |  22% tensorflow-base-2.19 | 912.0 MB  | ##1        |  22% tensorflow-base-2.19 | 912.0 MB  | ##2        |  22% tensorflow-base-2.19 | 912.0 MB  | ##2        |  22% tensorflow-base-2.19 | 912.0 MB  | ##2        |  23% tensorflow-base-2.19 | 912.0 MB  | ##2        |  23% tensorflow-base-2.19 | 912.0 MB  | ##2        |  23% tensorflow-base-2.19 | 912.0 MB  | ##3        |  23% tensorflow-base-2.19 | 912.0 MB  | ##3        |  23% tensorflow-base-2.19 | 912.0 MB  | ##3        |  23% tensorflow-base-2.19 | 912.0 MB  | ##3        |  24% tensorflow-base-2.19 | 912.0 MB  | ##3        |  24% tensorflow-base-2.19 | 912.0 MB  | ##4        |  24% tensorflow-base-2.19 | 912.0 MB  | ##4        |  24% tensorflow-base-2.19 | 912.0 MB  | ##4        |  24% tensorflow-base-2.19 | 912.0 MB  | ##4        |  25% tensorflow-base-2.19 | 912.0 MB  | ##4        |  25% tensorflow-base-2.19 | 912.0 MB  | ##5        |  25% tensorflow-base-2.19 | 912.0 MB  | ##5        |  25% tensorflow-base-2.19 | 912.0 MB  | ##5        |  26% tensorflow-base-2.19 | 912.0 MB  | ##5        |  26% tensorflow-base-2.19 | 912.0 MB  | ##6        |  26% tensorflow-base-2.19 | 912.0 MB  | ##6        |  26% tensorflow-base-2.19 | 912.0 MB  | ##6        |  26% tensorflow-base-2.19 | 912.0 MB  | ##6        |  27% tensorflow-base-2.19 | 912.0 MB  | ##6        |  27% tensorflow-base-2.19 | 912.0 MB  | ##6        |  27% tensorflow-base-2.19 | 912.0 MB  | ##7        |  27% tensorflow-base-2.19 | 912.0 MB  | ##7        |  27% tensorflow-base-2.19 | 912.0 MB  | ##7        |  28% tensorflow-base-2.19 | 912.0 MB  | ##7        |  28% tensorflow-base-2.19 | 912.0 MB  | ##7        |  28% tensorflow-base-2.19 | 912.0 MB  | ##8        |  28% tensorflow-base-2.19 | 912.0 MB  | ##8        |  28% tensorflow-base-2.19 | 912.0 MB  | ##8        |  29% tensorflow-base-2.19 | 912.0 MB  | ##8        |  29% tensorflow-base-2.19 | 912.0 MB  | ##8        |  29% tensorflow-base-2.19 | 912.0 MB  | ##9        |  29% tensorflow-base-2.19 | 912.0 MB  | ##9        |  29% tensorflow-base-2.19 | 912.0 MB  | ##9        |  29% tensorflow-base-2.19 | 912.0 MB  | ##9        |  30% tensorflow-base-2.19 | 912.0 MB  | ##9        |  30% tensorflow-base-2.19 | 912.0 MB  | ###        |  30% tensorflow-base-2.19 | 912.0 MB  | ###        |  30% tensorflow-base-2.19 | 912.0 MB  | ###        |  30% tensorflow-base-2.19 | 912.0 MB  | ###        |  31% tensorflow-base-2.19 | 912.0 MB  | ###        |  31% tensorflow-base-2.19 | 912.0 MB  | ###        |  31% tensorflow-base-2.19 | 912.0 MB  | ###1       |  31% tensorflow-base-2.19 | 912.0 MB  | ###1       |  31% tensorflow-base-2.19 | 912.0 MB  | ###1       |  32% tensorflow-base-2.19 | 912.0 MB  | ###1       |  32% tensorflow-base-2.19 | 912.0 MB  | ###1       |  32% tensorflow-base-2.19 | 912.0 MB  | ###2       |  32% tensorflow-base-2.19 | 912.0 MB  | ###2       |  32% tensorflow-base-2.19 | 912.0 MB  | ###2       |  33% tensorflow-base-2.19 | 912.0 MB  | ###2       |  33% tensorflow-base-2.19 | 912.0 MB  | ###2       |  33% tensorflow-base-2.19 | 912.0 MB  | ###3       |  33% tensorflow-base-2.19 | 912.0 MB  | ###3       |  33% tensorflow-base-2.19 | 912.0 MB  | ###3       |  33% tensorflow-base-2.19 | 912.0 MB  | ###3       |  34% tensorflow-base-2.19 | 912.0 MB  | ###3       |  34% tensorflow-base-2.19 | 912.0 MB  | ###4       |  34% tensorflow-base-2.19 | 912.0 MB  | ###4       |  34% tensorflow-base-2.19 | 912.0 MB  | ###4       |  34% tensorflow-base-2.19 | 912.0 MB  | ###4       |  35% tensorflow-base-2.19 | 912.0 MB  | ###4       |  35% tensorflow-base-2.19 | 912.0 MB  | ###4       |  35% tensorflow-base-2.19 | 912.0 MB  | ###5       |  35% tensorflow-base-2.19 | 912.0 MB  | ###5       |  35% tensorflow-base-2.19 | 912.0 MB  | ###5       |  36% tensorflow-base-2.19 | 912.0 MB  | ###5       |  36% tensorflow-base-2.19 | 912.0 MB  | ###5       |  36% tensorflow-base-2.19 | 912.0 MB  | ###6       |  36% tensorflow-base-2.19 | 912.0 MB  | ###6       |  36% tensorflow-base-2.19 | 912.0 MB  | ###6       |  37% tensorflow-base-2.19 | 912.0 MB  | ###6       |  37% tensorflow-base-2.19 | 912.0 MB  | ###6       |  37% tensorflow-base-2.19 | 912.0 MB  | ###7       |  37% tensorflow-base-2.19 | 912.0 MB  | ###7       |  37% tensorflow-base-2.19 | 912.0 MB  | ###7       |  37% tensorflow-base-2.19 | 912.0 MB  | ###7       |  38% tensorflow-base-2.19 | 912.0 MB  | ###7       |  38% tensorflow-base-2.19 | 912.0 MB  | ###8       |  38% tensorflow-base-2.19 | 912.0 MB  | ###8       |  38% tensorflow-base-2.19 | 912.0 MB  | ###8       |  38% tensorflow-base-2.19 | 912.0 MB  | ###8       |  39% tensorflow-base-2.19 | 912.0 MB  | ###8       |  39% tensorflow-base-2.19 | 912.0 MB  | ###8       |  39% tensorflow-base-2.19 | 912.0 MB  | ###9       |  39% tensorflow-base-2.19 | 912.0 MB  | ###9       |  39% tensorflow-base-2.19 | 912.0 MB  | ###9       |  40% tensorflow-base-2.19 | 912.0 MB  | ###9       |  40% tensorflow-base-2.19 | 912.0 MB  | ###9       |  40% tensorflow-base-2.19 | 912.0 MB  | ####       |  40% tensorflow-base-2.19 | 912.0 MB  | ####       |  40% tensorflow-base-2.19 | 912.0 MB  | ####       |  41% tensorflow-base-2.19 | 912.0 MB  | ####       |  41% tensorflow-base-2.19 | 912.0 MB  | ####       |  41% tensorflow-base-2.19 | 912.0 MB  | ####1      |  41% tensorflow-base-2.19 | 912.0 MB  | ####1      |  41% tensorflow-base-2.19 | 912.0 MB  | ####1      |  41% tensorflow-base-2.19 | 912.0 MB  | ####1      |  42% tensorflow-base-2.19 | 912.0 MB  | ####1      |  42% tensorflow-base-2.19 | 912.0 MB  | ####2      |  42% tensorflow-base-2.19 | 912.0 MB  | ####2      |  42% tensorflow-base-2.19 | 912.0 MB  | ####2      |  42% tensorflow-base-2.19 | 912.0 MB  | ####2      |  43% tensorflow-base-2.19 | 912.0 MB  | ####2      |  43% tensorflow-base-2.19 | 912.0 MB  | ####2      |  43% tensorflow-base-2.19 | 912.0 MB  | ####3      |  43% tensorflow-base-2.19 | 912.0 MB  | ####3      |  43% tensorflow-base-2.19 | 912.0 MB  | ####3      |  44% tensorflow-base-2.19 | 912.0 MB  | ####3      |  44% tensorflow-base-2.19 | 912.0 MB  | ####3      |  44% tensorflow-base-2.19 | 912.0 MB  | ####4      |  44% tensorflow-base-2.19 | 912.0 MB  | ####4      |  44% tensorflow-base-2.19 | 912.0 MB  | ####4      |  45% tensorflow-base-2.19 | 912.0 MB  | ####4      |  45% tensorflow-base-2.19 | 912.0 MB  | ####5      |  45% tensorflow-base-2.19 | 912.0 MB  | ####5      |  45% tensorflow-base-2.19 | 912.0 MB  | ####5      |  45% tensorflow-base-2.19 | 912.0 MB  | ####5      |  46% tensorflow-base-2.19 | 912.0 MB  | ####5      |  46% tensorflow-base-2.19 | 912.0 MB  | ####6      |  46% tensorflow-base-2.19 | 912.0 MB  | ####6      |  46% tensorflow-base-2.19 | 912.0 MB  | ####6      |  46% tensorflow-base-2.19 | 912.0 MB  | ####6      |  47% tensorflow-base-2.19 | 912.0 MB  | ####6      |  47% tensorflow-base-2.19 | 912.0 MB  | ####6      |  47% tensorflow-base-2.19 | 912.0 MB  | ####7      |  47% tensorflow-base-2.19 | 912.0 MB  | ####7      |  47% tensorflow-base-2.19 | 912.0 MB  | ####7      |  48% tensorflow-base-2.19 | 912.0 MB  | ####7      |  48% tensorflow-base-2.19 | 912.0 MB  | ####7      |  48% tensorflow-base-2.19 | 912.0 MB  | ####8      |  48% tensorflow-base-2.19 | 912.0 MB  | ####8      |  48% tensorflow-base-2.19 | 912.0 MB  | ####8      |  49% tensorflow-base-2.19 | 912.0 MB  | ####8      |  49% tensorflow-base-2.19 | 912.0 MB  | ####8      |  49% tensorflow-base-2.19 | 912.0 MB  | ####9      |  49% tensorflow-base-2.19 | 912.0 MB  | ####9      |  49% tensorflow-base-2.19 | 912.0 MB  | ####9      |  49% tensorflow-base-2.19 | 912.0 MB  | ####9      |  50% tensorflow-base-2.19 | 912.0 MB  | ####9      |  50% tensorflow-base-2.19 | 912.0 MB  | #####      |  50% tensorflow-base-2.19 | 912.0 MB  | #####      |  50% tensorflow-base-2.19 | 912.0 MB  | #####      |  50% tensorflow-base-2.19 | 912.0 MB  | #####      |  51% tensorflow-base-2.19 | 912.0 MB  | #####      |  51% tensorflow-base-2.19 | 912.0 MB  | #####      |  51% tensorflow-base-2.19 | 912.0 MB  | #####1     |  51% tensorflow-base-2.19 | 912.0 MB  | #####1     |  51% tensorflow-base-2.19 | 912.0 MB  | #####1     |  52% tensorflow-base-2.19 | 912.0 MB  | #####1     |  52% tensorflow-base-2.19 | 912.0 MB  | #####1     |  52% tensorflow-base-2.19 | 912.0 MB  | #####2     |  52% tensorflow-base-2.19 | 912.0 MB  | #####2     |  52% tensorflow-base-2.19 | 912.0 MB  | #####2     |  53% tensorflow-base-2.19 | 912.0 MB  | #####2     |  53% tensorflow-base-2.19 | 912.0 MB  | #####2     |  53% tensorflow-base-2.19 | 912.0 MB  | #####3     |  53% tensorflow-base-2.19 | 912.0 MB  | #####3     |  53% tensorflow-base-2.19 | 912.0 MB  | #####3     |  53% tensorflow-base-2.19 | 912.0 MB  | #####3     |  54% tensorflow-base-2.19 | 912.0 MB  | #####3     |  54% tensorflow-base-2.19 | 912.0 MB  | #####4     |  54% tensorflow-base-2.19 | 912.0 MB  | #####4     |  54% tensorflow-base-2.19 | 912.0 MB  | #####4     |  54% tensorflow-base-2.19 | 912.0 MB  | #####4     |  55% tensorflow-base-2.19 | 912.0 MB  | #####4     |  55% tensorflow-base-2.19 | 912.0 MB  | #####4     |  55% tensorflow-base-2.19 | 912.0 MB  | #####5     |  55% tensorflow-base-2.19 | 912.0 MB  | #####5     |  55% tensorflow-base-2.19 | 912.0 MB  | #####5     |  56% tensorflow-base-2.19 | 912.0 MB  | #####5     |  56% tensorflow-base-2.19 | 912.0 MB  | #####5     |  56% tensorflow-base-2.19 | 912.0 MB  | #####6     |  56% tensorflow-base-2.19 | 912.0 MB  | #####6     |  56% tensorflow-base-2.19 | 912.0 MB  | #####6     |  57% tensorflow-base-2.19 | 912.0 MB  | #####6     |  57% tensorflow-base-2.19 | 912.0 MB  | #####6     |  57% tensorflow-base-2.19 | 912.0 MB  | #####7     |  57% tensorflow-base-2.19 | 912.0 MB  | #####7     |  57% tensorflow-base-2.19 | 912.0 MB  | #####7     |  57% tensorflow-base-2.19 | 912.0 MB  | #####7     |  58% tensorflow-base-2.19 | 912.0 MB  | #####7     |  58% tensorflow-base-2.19 | 912.0 MB  | #####8     |  58% tensorflow-base-2.19 | 912.0 MB  | #####8     |  58% tensorflow-base-2.19 | 912.0 MB  | #####8     |  58% tensorflow-base-2.19 | 912.0 MB  | #####8     |  59% tensorflow-base-2.19 | 912.0 MB  | #####8     |  59% tensorflow-base-2.19 | 912.0 MB  | #####8     |  59% tensorflow-base-2.19 | 912.0 MB  | #####9     |  59% tensorflow-base-2.19 | 912.0 MB  | #####9     |  59% tensorflow-base-2.19 | 912.0 MB  | #####9     |  60% tensorflow-base-2.19 | 912.0 MB  | #####9     |  60% tensorflow-base-2.19 | 912.0 MB  | #####9     |  60% tensorflow-base-2.19 | 912.0 MB  | ######     |  60% tensorflow-base-2.19 | 912.0 MB  | ######     |  60% tensorflow-base-2.19 | 912.0 MB  | ######     |  61% tensorflow-base-2.19 | 912.0 MB  | ######     |  61% tensorflow-base-2.19 | 912.0 MB  | ######     |  61% tensorflow-base-2.19 | 912.0 MB  | ######1    |  61% tensorflow-base-2.19 | 912.0 MB  | ######1    |  61% tensorflow-base-2.19 | 912.0 MB  | ######1    |  61% tensorflow-base-2.19 | 912.0 MB  | ######1    |  62% tensorflow-base-2.19 | 912.0 MB  | ######1    |  62% tensorflow-base-2.19 | 912.0 MB  | ######2    |  62% tensorflow-base-2.19 | 912.0 MB  | ######2    |  62% tensorflow-base-2.19 | 912.0 MB  | ######2    |  62% tensorflow-base-2.19 | 912.0 MB  | ######2    |  63% tensorflow-base-2.19 | 912.0 MB  | ######2    |  63% tensorflow-base-2.19 | 912.0 MB  | ######2    |  63% tensorflow-base-2.19 | 912.0 MB  | ######3    |  63% tensorflow-base-2.19 | 912.0 MB  | ######3    |  63% tensorflow-base-2.19 | 912.0 MB  | ######3    |  64% tensorflow-base-2.19 | 912.0 MB  | ######3    |  64% tensorflow-base-2.19 | 912.0 MB  | ######4    |  64% tensorflow-base-2.19 | 912.0 MB  | ######4    |  64% tensorflow-base-2.19 | 912.0 MB  | ######4    |  65% tensorflow-base-2.19 | 912.0 MB  | ######4    |  65% tensorflow-base-2.19 | 912.0 MB  | ######4    |  65% tensorflow-base-2.19 | 912.0 MB  | ######5    |  65% tensorflow-base-2.19 | 912.0 MB  | ######5    |  65% tensorflow-base-2.19 | 912.0 MB  | ######5    |  66% tensorflow-base-2.19 | 912.0 MB  | ######5    |  66% tensorflow-base-2.19 | 912.0 MB  | ######5    |  66% tensorflow-base-2.19 | 912.0 MB  | ######6    |  66% tensorflow-base-2.19 | 912.0 MB  | ######6    |  66% tensorflow-base-2.19 | 912.0 MB  | ######6    |  66% tensorflow-base-2.19 | 912.0 MB  | ######6    |  67% tensorflow-base-2.19 | 912.0 MB  | ######6    |  67% tensorflow-base-2.19 | 912.0 MB  | ######7    |  67% tensorflow-base-2.19 | 912.0 MB  | ######7    |  67% tensorflow-base-2.19 | 912.0 MB  | ######7    |  67% tensorflow-base-2.19 | 912.0 MB  | ######7    |  68% tensorflow-base-2.19 | 912.0 MB  | ######7    |  68% tensorflow-base-2.19 | 912.0 MB  | ######7    |  68% tensorflow-base-2.19 | 912.0 MB  | ######8    |  68% tensorflow-base-2.19 | 912.0 MB  | ######8    |  68% tensorflow-base-2.19 | 912.0 MB  | ######8    |  69% tensorflow-base-2.19 | 912.0 MB  | ######8    |  69% tensorflow-base-2.19 | 912.0 MB  | ######8    |  69% tensorflow-base-2.19 | 912.0 MB  | ######9    |  69% tensorflow-base-2.19 | 912.0 MB  | ######9    |  69% tensorflow-base-2.19 | 912.0 MB  | ######9    |  70% tensorflow-base-2.19 | 912.0 MB  | ######9    |  70% tensorflow-base-2.19 | 912.0 MB  | ######9    |  70% tensorflow-base-2.19 | 912.0 MB  | #######    |  70% tensorflow-base-2.19 | 912.0 MB  | #######    |  70% tensorflow-base-2.19 | 912.0 MB  | #######    |  70% tensorflow-base-2.19 | 912.0 MB  | #######    |  71% tensorflow-base-2.19 | 912.0 MB  | #######    |  71% tensorflow-base-2.19 | 912.0 MB  | #######1   |  71% tensorflow-base-2.19 | 912.0 MB  | #######1   |  71% tensorflow-base-2.19 | 912.0 MB  | #######1   |  71% tensorflow-base-2.19 | 912.0 MB  | #######1   |  72% tensorflow-base-2.19 | 912.0 MB  | #######1   |  72% tensorflow-base-2.19 | 912.0 MB  | #######1   |  72% tensorflow-base-2.19 | 912.0 MB  | #######2   |  72% tensorflow-base-2.19 | 912.0 MB  | #######2   |  72% tensorflow-base-2.19 | 912.0 MB  | #######2   |  73% tensorflow-base-2.19 | 912.0 MB  | #######2   |  73% tensorflow-base-2.19 | 912.0 MB  | #######2   |  73% tensorflow-base-2.19 | 912.0 MB  | #######3   |  73% tensorflow-base-2.19 | 912.0 MB  | #######3   |  73% tensorflow-base-2.19 | 912.0 MB  | #######3   |  74% tensorflow-base-2.19 | 912.0 MB  | #######3   |  74% tensorflow-base-2.19 | 912.0 MB  | #######3   |  74% tensorflow-base-2.19 | 912.0 MB  | #######4   |  74% tensorflow-base-2.19 | 912.0 MB  | #######4   |  74% tensorflow-base-2.19 | 912.0 MB  | #######4   |  74% tensorflow-base-2.19 | 912.0 MB  | #######4   |  75% tensorflow-base-2.19 | 912.0 MB  | #######4   |  75% tensorflow-base-2.19 | 912.0 MB  | #######5   |  75% tensorflow-base-2.19 | 912.0 MB  | #######5   |  75% tensorflow-base-2.19 | 912.0 MB  | #######5   |  75% tensorflow-base-2.19 | 912.0 MB  | #######5   |  76% tensorflow-base-2.19 | 912.0 MB  | #######5   |  76% tensorflow-base-2.19 | 912.0 MB  | #######5   |  76% tensorflow-base-2.19 | 912.0 MB  | #######6   |  76% tensorflow-base-2.19 | 912.0 MB  | #######6   |  76% tensorflow-base-2.19 | 912.0 MB  | #######6   |  77% tensorflow-base-2.19 | 912.0 MB  | #######6   |  77% tensorflow-base-2.19 | 912.0 MB  | #######6   |  77% tensorflow-base-2.19 | 912.0 MB  | #######7   |  77% tensorflow-base-2.19 | 912.0 MB  | #######7   |  77% tensorflow-base-2.19 | 912.0 MB  | #######7   |  78% tensorflow-base-2.19 | 912.0 MB  | #######7   |  78% tensorflow-base-2.19 | 912.0 MB  | #######7   |  78% tensorflow-base-2.19 | 912.0 MB  | #######8   |  78% tensorflow-base-2.19 | 912.0 MB  | #######8   |  78% tensorflow-base-2.19 | 912.0 MB  | #######8   |  78% tensorflow-base-2.19 | 912.0 MB  | #######8   |  79% tensorflow-base-2.19 | 912.0 MB  | #######8   |  79% tensorflow-base-2.19 | 912.0 MB  | #######9   |  79% tensorflow-base-2.19 | 912.0 MB  | #######9   |  79% tensorflow-base-2.19 | 912.0 MB  | #######9   |  79% tensorflow-base-2.19 | 912.0 MB  | #######9   |  80% tensorflow-base-2.19 | 912.0 MB  | #######9   |  80% tensorflow-base-2.19 | 912.0 MB  | #######9   |  80% tensorflow-base-2.19 | 912.0 MB  | ########   |  80% tensorflow-base-2.19 | 912.0 MB  | ########   |  80% tensorflow-base-2.19 | 912.0 MB  | ########   |  81% tensorflow-base-2.19 | 912.0 MB  | ########   |  81% tensorflow-base-2.19 | 912.0 MB  | ########   |  81% tensorflow-base-2.19 | 912.0 MB  | ########1  |  81% tensorflow-base-2.19 | 912.0 MB  | ########1  |  81% tensorflow-base-2.19 | 912.0 MB  | ########1  |  81% tensorflow-base-2.19 | 912.0 MB  | ########1  |  82% tensorflow-base-2.19 | 912.0 MB  | ########1  |  82% tensorflow-base-2.19 | 912.0 MB  | ########2  |  82% tensorflow-base-2.19 | 912.0 MB  | ########2  |  82% tensorflow-base-2.19 | 912.0 MB  | ########2  |  82% tensorflow-base-2.19 | 912.0 MB  | ########2  |  83% tensorflow-base-2.19 | 912.0 MB  | ########3  |  83% tensorflow-base-2.19 | 912.0 MB  | ########3  |  83% tensorflow-base-2.19 | 912.0 MB  | ########3  |  83% tensorflow-base-2.19 | 912.0 MB  | ########3  |  84% tensorflow-base-2.19 | 912.0 MB  | ########3  |  84% tensorflow-base-2.19 | 912.0 MB  | ########4  |  84% tensorflow-base-2.19 | 912.0 MB  | ########4  |  84% tensorflow-base-2.19 | 912.0 MB  | ########4  |  84% tensorflow-base-2.19 | 912.0 MB  | ########4  |  85% tensorflow-base-2.19 | 912.0 MB  | ########4  |  85% tensorflow-base-2.19 | 912.0 MB  | ########4  |  85% tensorflow-base-2.19 | 912.0 MB  | ########5  |  85% tensorflow-base-2.19 | 912.0 MB  | ########5  |  85% tensorflow-base-2.19 | 912.0 MB  | ########5  |  86% tensorflow-base-2.19 | 912.0 MB  | ########5  |  86% tensorflow-base-2.19 | 912.0 MB  | ########5  |  86% tensorflow-base-2.19 | 912.0 MB  | ########6  |  86% tensorflow-base-2.19 | 912.0 MB  | ########6  |  86% tensorflow-base-2.19 | 912.0 MB  | ########6  |  87% tensorflow-base-2.19 | 912.0 MB  | ########6  |  87% tensorflow-base-2.19 | 912.0 MB  | ########6  |  87% tensorflow-base-2.19 | 912.0 MB  | ########7  |  87% tensorflow-base-2.19 | 912.0 MB  | ########7  |  87% tensorflow-base-2.19 | 912.0 MB  | ########7  |  87% tensorflow-base-2.19 | 912.0 MB  | ########7  |  88% tensorflow-base-2.19 | 912.0 MB  | ########7  |  88% tensorflow-base-2.19 | 912.0 MB  | ########8  |  88% tensorflow-base-2.19 | 912.0 MB  | ########8  |  88% tensorflow-base-2.19 | 912.0 MB  | ########8  |  88% tensorflow-base-2.19 | 912.0 MB  | ########8  |  89% tensorflow-base-2.19 | 912.0 MB  | ########8  |  89% tensorflow-base-2.19 | 912.0 MB  | ########9  |  89% tensorflow-base-2.19 | 912.0 MB  | ########9  |  89% tensorflow-base-2.19 | 912.0 MB  | ########9  |  89% tensorflow-base-2.19 | 912.0 MB  | ########9  |  90% tensorflow-base-2.19 | 912.0 MB  | ########9  |  90% tensorflow-base-2.19 | 912.0 MB  | ########9  |  90% tensorflow-base-2.19 | 912.0 MB  | #########  |  90% tensorflow-base-2.19 | 912.0 MB  | #########  |  90% tensorflow-base-2.19 | 912.0 MB  | #########  |  91% tensorflow-base-2.19 | 912.0 MB  | #########  |  91% tensorflow-base-2.19 | 912.0 MB  | #########  |  91% tensorflow-base-2.19 | 912.0 MB  | #########1 |  91% tensorflow-base-2.19 | 912.0 MB  | #########1 |  91% tensorflow-base-2.19 | 912.0 MB  | #########1 |  92% tensorflow-base-2.19 | 912.0 MB  | #########1 |  92% tensorflow-base-2.19 | 912.0 MB  | #########1 |  92% tensorflow-base-2.19 | 912.0 MB  | #########2 |  92% tensorflow-base-2.19 | 912.0 MB  | #########2 |  92% tensorflow-base-2.19 | 912.0 MB  | #########2 |  92% tensorflow-base-2.19 | 912.0 MB  | #########2 |  93% tensorflow-base-2.19 | 912.0 MB  | #########2 |  93% tensorflow-base-2.19 | 912.0 MB  | #########3 |  93% tensorflow-base-2.19 | 912.0 MB  | #########3 |  93% tensorflow-base-2.19 | 912.0 MB  | #########3 |  93% tensorflow-base-2.19 | 912.0 MB  | #########3 |  94% tensorflow-base-2.19 | 912.0 MB  | #########3 |  94% tensorflow-base-2.19 | 912.0 MB  | #########3 |  94% tensorflow-base-2.19 | 912.0 MB  | #########4 |  94% tensorflow-base-2.19 | 912.0 MB  | #########4 |  94% tensorflow-base-2.19 | 912.0 MB  | #########4 |  95% tensorflow-base-2.19 | 912.0 MB  | #########4 |  95% tensorflow-base-2.19 | 912.0 MB  | #########4 |  95% tensorflow-base-2.19 | 912.0 MB  | #########5 |  95% tensorflow-base-2.19 | 912.0 MB  | #########5 |  95% tensorflow-base-2.19 | 912.0 MB  | #########5 |  95% tensorflow-base-2.19 | 912.0 MB  | #########5 |  96% tensorflow-base-2.19 | 912.0 MB  | #########5 |  96% tensorflow-base-2.19 | 912.0 MB  | #########6 |  96% tensorflow-base-2.19 | 912.0 MB  | #########6 |  96% tensorflow-base-2.19 | 912.0 MB  | #########6 |  96% tensorflow-base-2.19 | 912.0 MB  | #########6 |  97% tensorflow-base-2.19 | 912.0 MB  | #########6 |  97% tensorflow-base-2.19 | 912.0 MB  | #########7 |  97% tensorflow-base-2.19 | 912.0 MB  | #########7 |  97% tensorflow-base-2.19 | 912.0 MB  | #########7 |  97% tensorflow-base-2.19 | 912.0 MB  | #########7 |  98% tensorflow-base-2.19 | 912.0 MB  | #########7 |  98% tensorflow-base-2.19 | 912.0 MB  | #########7 |  98% tensorflow-base-2.19 | 912.0 MB  | #########8 |  98% tensorflow-base-2.19 | 912.0 MB  | #########8 |  98% tensorflow-base-2.19 | 912.0 MB  | #########8 |  99% tensorflow-base-2.19 | 912.0 MB  | #########8 |  99% tensorflow-base-2.19 | 912.0 MB  | #########8 |  99% tensorflow-base-2.19 | 912.0 MB  | #########9 |  99% tensorflow-base-2.19 | 912.0 MB  | #########9 |  99% tensorflow-base-2.19 | 912.0 MB  | #########9 |  99% tensorflow-base-2.19 | 912.0 MB  | #########9 | 100% tensorflow-base-2.19 | 912.0 MB  | #########9 | 100% tensorflow-base-2.19 | 912.0 MB  | ########## | 100% tensorflow-base-2.19 | 912.0 MB  | ########## | 100% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A                                                     
+                                                     [A
+
+                                                     [A[A
+
+
+                                                     [A[A[A
+
+
+
+                                                     [A[A[A[A
+
+
+
+
+                                                     [A[A[A[A[A
+
+
+
+
+
+                                                     [A[A[A[A[A[A
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A done
+Preparing transaction: | / - \ | / - done
+Verifying transaction: | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+Executing transaction: - \ | / - \ | / - \ | / - \ | / - \ | / - \ | 
+     CheckV v1.1.1 an external database which needs to be downloaded
+     and unarchived. The link for the database can be found in CheckV's
+     instructions at https://bitbucket.org/berkeleylab/checkv/
+
+
+
+/ - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done

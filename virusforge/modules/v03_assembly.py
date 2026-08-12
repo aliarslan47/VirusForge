@@ -35,6 +35,11 @@ class V03Assembly(Module):
     code = "V03"
     dirname = "V03_VIRAL_ASSEMBLY"
 
+    def restore_artifacts(self, ctx: Context) -> None:
+        draft = self.module_dir(ctx.run_dir) / "04_standardized" / "draft_viral_genome.fasta"
+        if draft.exists():
+            ctx.artifacts[self.code] = {"draft": str(draft)}
+
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
         if ctx.mode == "ASSEMBLY_INPUT":

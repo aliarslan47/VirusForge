@@ -1,6 +1,7 @@
 """Pipeline orkestrasyonu: V00 → ... → V19, moda göre yönlendirme + resume."""
 from __future__ import annotations
 
+import json
 from datetime import datetime
 from pathlib import Path
 
@@ -45,6 +46,13 @@ def run(sample_dir, out_root, cfg=None, modules=None, clock=None, resume=True) -
     for cls in modules:
         mod = cls()
         if resume and mod.is_done(run_dir):
+            # resume: sonuç + artifact'leri diskten geri yükle (aşağı akış modülleri için)
+            try:
+                data = json.loads((mod.module_dir(run_dir) / f"{mod.code}_summary.json").read_text())
+                ctx.results[mod.code] = data.get("metrics", {})
+            except Exception:
+                pass
+            mod.restore_artifacts(ctx)
             _log(run_dir, f"{mod.code} atlandı (resume — zaten bitmiş)")
             continue
         _log(run_dir, f"{mod.code} başladı")

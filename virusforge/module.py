@@ -102,5 +102,9 @@ class Module:
         """Resume için: summary varsa bitmiş say (Kapatma Dayanıklılığı)."""
         return (self.module_dir(run_dir) / f"{self.code}_summary.json").exists()
 
+    def restore_artifacts(self, ctx: "Context") -> None:
+        """Resume: modül atlandığında ctx.artifacts'ı diskten geri yükle (alt sınıflar override eder)."""
+        return None
+
     def run(self, ctx: Context) -> ModuleResult:  # pragma: no cover - soyut
         raise NotImplementedError

@@ -79,6 +79,10 @@ def pharokka_cmd(genome, out_dir, db, threads=8):
             "-t", str(threads), "-f"]
 
 
-def phabox_cmd(genome, out_dir, db, threads=8):
-    return ["phabox2", "--task", "end_to_end", "--contigs", str(genome),
+def phabox_cmd(genome, out_dir, db, threads=8, conda_env=None, conda_bin="conda"):
+    base = ["phabox2", "--task", "end_to_end", "--contigs", str(genome),
             "--outpth", str(out_dir), "--dbdir", str(db), "--threads", str(threads)]
+    # phabox pandas-2 uyumsuz → kendi izole env'inde çalıştır (conda run)
+    if conda_env:
+        return [conda_bin, "run", "-n", conda_env, *base]
+    return base

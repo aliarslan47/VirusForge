@@ -1,0 +1,162 @@
++ source /home/ali/miniconda3/etc/profile.d/conda.sh
+++ export CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ export _CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ _CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/home/ali/miniconda3/bin/python
+++ CONDA_PYTHON_EXE=/home/ali/miniconda3/bin/python
+++ export _CONDA_ROOT=/home/ali/miniconda3
+++ _CONDA_ROOT=/home/ali/miniconda3
+++ '[' -z x ']'
++ conda activate virusforge
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate virusforge
++ '[' -n '' ']'
++ local ask_conda
+++ PS1=
+++ __conda_exe shell.posix activate virusforge
+++ '[' -n '' ']'
+++ /home/ali/miniconda3/bin/conda shell.posix activate virusforge
++ ask_conda='. "/home/ali/miniconda3/etc/conda/deactivate.d/libglib_deactivate.sh"
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+PS1='\''(virusforge) '\''
+export PATH='\''/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/miniconda3/envs/virusforge/bin:/home/ali/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/aliar/AppData/Local/agy/bin:/mnt/c/Users/aliar/AppData/Local/Microsoft/WindowsApps:/snap/bin:/home/ali/.claude/plugins/cache/claude-plugins-official/superpowers/6.2.0/bin'\''
+export CONDA_PREFIX='\''/home/ali/miniconda3/envs/virusforge'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''virusforge'\''
+export CONDA_PROMPT_MODIFIER='\''(virusforge) '\''
+export CONDA_PREFIX_1='\''/home/ali/miniconda3'\''
+export CONDA_EXE='\''/home/ali/miniconda3/bin/conda'\''
+export _CONDA_EXE='\''/home/ali/miniconda3/bin/conda'\''
+export CONDA_PYTHON_EXE='\''/home/ali/miniconda3/bin/python'\''
+export _CONDA_ROOT='\''/home/ali/miniconda3'\''
+. "/home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/libglib_activate.sh"
+. "/home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/libxml2-split_activate.sh"
+. "/home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/openjdk_activate.sh"'
++ eval '. "/home/ali/miniconda3/etc/conda/deactivate.d/libglib_deactivate.sh"
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+PS1='\''(virusforge) '\''
+export PATH='\''/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/miniconda3/envs/virusforge/bin:/home/ali/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/aliar/AppData/Local/agy/bin:/mnt/c/Users/aliar/AppData/Local/Microsoft/WindowsApps:/snap/bin:/home/ali/.claude/plugins/cache/claude-plugins-official/superpowers/6.2.0/bin'\''
+export CONDA_PREFIX='\''/home/ali/miniconda3/envs/virusforge'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''virusforge'\''
+export CONDA_PROMPT_MODIFIER='\''(virusforge) '\''
+export CONDA_PREFIX_1='\''/home/ali/miniconda3'\''
+export CONDA_EXE='\''/home/ali/miniconda3/bin/conda'\''
+export _CONDA_EXE='\''/home/ali/miniconda3/bin/conda'\''
+export CONDA_PYTHON_EXE='\''/home/ali/miniconda3/bin/python'\''
+export _CONDA_ROOT='\''/home/ali/miniconda3'\''
+. "/home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/libglib_activate.sh"
+. "/home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/libxml2-split_activate.sh"
+. "/home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/openjdk_activate.sh"'
+++ . /home/ali/miniconda3/etc/conda/deactivate.d/libglib_deactivate.sh
++++ export GSETTINGS_SCHEMA_DIR=
++++ GSETTINGS_SCHEMA_DIR=
++++ unset GSETTINGS_SCHEMA_DIR_CONDA_BACKUP
++++ '[' -z ']'
++++ unset GSETTINGS_SCHEMA_DIR
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ PS1='(virusforge) '
+++ export 'PATH=/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/miniconda3/envs/virusforge/bin:/home/ali/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/aliar/AppData/Local/agy/bin:/mnt/c/Users/aliar/AppData/Local/Microsoft/WindowsApps:/snap/bin:/home/ali/.claude/plugins/cache/claude-plugins-official/superpowers/6.2.0/bin'
+++ PATH='/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/.local/bin:/home/ali/miniconda3/envs/virusforge/bin:/home/ali/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/aliar/AppData/Local/agy/bin:/mnt/c/Users/aliar/AppData/Local/Microsoft/WindowsApps:/snap/bin:/home/ali/.claude/plugins/cache/claude-plugins-official/superpowers/6.2.0/bin'
+++ export CONDA_PREFIX=/home/ali/miniconda3/envs/virusforge
+++ CONDA_PREFIX=/home/ali/miniconda3/envs/virusforge
+++ export CONDA_SHLVL=2
+++ CONDA_SHLVL=2
+++ export CONDA_DEFAULT_ENV=virusforge
+++ CONDA_DEFAULT_ENV=virusforge
+++ export 'CONDA_PROMPT_MODIFIER=(virusforge) '
+++ CONDA_PROMPT_MODIFIER='(virusforge) '
+++ export CONDA_PREFIX_1=/home/ali/miniconda3
+++ CONDA_PREFIX_1=/home/ali/miniconda3
+++ export CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ export _CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ _CONDA_EXE=/home/ali/miniconda3/bin/conda
+++ export CONDA_PYTHON_EXE=/home/ali/miniconda3/bin/python
+++ CONDA_PYTHON_EXE=/home/ali/miniconda3/bin/python
+++ export _CONDA_ROOT=/home/ali/miniconda3
+++ _CONDA_ROOT=/home/ali/miniconda3
+++ . /home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/libglib_activate.sh
++++ export GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
++++ GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
++++ export GSETTINGS_SCHEMA_DIR=/home/ali/miniconda3/envs/virusforge/share/glib-2.0/schemas
++++ GSETTINGS_SCHEMA_DIR=/home/ali/miniconda3/envs/virusforge/share/glib-2.0/schemas
+++ . /home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/libxml2-split_activate.sh
++++ test -n ''
++++ xml_catalog_files_libxml2=
++++ XML_CATALOG_FILES=
++++ conda_catalog_files=
++++ ifs_libxml2=' 	
+'
++++ IFS=' '
++++ rem=/home/ali/miniconda3/envs/virusforge
++++ for pre in ${rem}
++++ test '' = /home/ali/miniconda3/envs/virusforge
++++ conda_catalog_files=/home/ali/miniconda3/envs/virusforge
++++ rem=
++++ IFS=' 	
+'
++++ conda_catalog_files='file:///home/ali/miniconda3/envs/virusforge/etc/xml/catalog file:///etc/xml/catalog'
++++ export 'XML_CATALOG_FILES=file:///home/ali/miniconda3/envs/virusforge/etc/xml/catalog file:///etc/xml/catalog'
++++ XML_CATALOG_FILES='file:///home/ali/miniconda3/envs/virusforge/etc/xml/catalog file:///etc/xml/catalog'
++++ unset conda_catalog_files ifs_libxml2 rem
+++ . /home/ali/miniconda3/envs/virusforge/etc/conda/activate.d/openjdk_activate.sh
++++ '[' '' ']'
++++ export JAVA_HOME=/home/ali/miniconda3/envs/virusforge/lib/jvm
++++ JAVA_HOME=/home/ali/miniconda3/envs/virusforge/lib/jvm
++++ '[' '' ']'
++++ export JAVA_LD_LIBRARY_PATH=/home/ali/miniconda3/envs/virusforge/lib/jvm/lib/server
++++ JAVA_LD_LIBRARY_PATH=/home/ali/miniconda3/envs/virusforge/lib/jvm/lib/server
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ cd /home/ali/VirusForge/databases
++ echo '### CheckV DB'
+### CheckV DB
++ checkv download_database .
++ tail -3
+2026-08-12 17:58:50.987 | Run time: 150.95 seconds
+2026-08-12 17:58:50.987 | Peak mem: 1.6 GB
+Download completed successfully.
++ echo '### geNomad DB'
+### geNomad DB
++ genomad download-database .
++ tail -3
+[17:58:54] Requesting                                                           
+           https://portal.nersc.gov/genomad/__data__/genomad_db_v1.9.tar.gz.    
+
++ echo '### Pharokka DB'
+### Pharokka DB
++ install_databases.py -o pharokka
++ tail -3
+|████████████████████████████████████████| 656.2M/656.2M [100%] in 1:51.7 (5.87M/s) 
+2026-08-12 18:02:37.021 | INFO     | databases:instantiate_install:145 - Database file download OK: a63c485241b900a11989bd1821bfbb09
+2026-08-12 18:02:37.021 | INFO     | databases:instantiate_install:151 - Extracting DB tarball: file=pharokka/pharokka_v1.8.0_databases.tar.gz, output=pharokka
++ echo '### path bağlama'
+### path bağlama
++ '[' -d checkv-db-v1.5 ']'
++ ln -sfn checkv-db-v1.5 checkv
++ '[' -d genomad_db ']'
++ echo '### DB LISTE'
+### DB LISTE
++ ls -la
+total 410820
+drwxr-xr-x  5 ali ali      4096 Aug 12 18:02 .
+drwxr-xr-x 15 ali ali      4096 Aug 12 17:57 ..
+lrwxrwxrwx  1 ali ali        14 Aug 12 18:02 checkv -> checkv-db-v1.5
+drwxrwx---  4 ali ali      4096 Jan 11  2023 checkv-db-v1.5
+-rw-r--r--  1 ali ali 420656791 Aug 12 18:00 genomad_db_v1.9.tar.gz
+drwxr-xr-x  2 ali ali      4096 Aug 12 17:58 inphared
+drwxr-xr-x  2 ali ali      4096 Aug 12 18:02 pharokka

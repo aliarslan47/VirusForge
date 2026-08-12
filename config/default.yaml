@@ -34,6 +34,8 @@ tools:
     db: databases/checkv
   phabox:
     db: databases/phabox
+    conda_env: vf_phabox          # phabox izole env (pandas<2 uyumlu)
+    conda_bin: /home/ali/miniconda3/bin/conda
 
 optional:                # default kapalı (tasarım kararı)
   virsorter2: false

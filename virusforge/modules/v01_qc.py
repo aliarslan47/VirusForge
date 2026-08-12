@@ -44,6 +44,17 @@ class V01ReadQC(Module):
     code = "V01"
     dirname = "V01_READ_QC_PREPROCESSING"
 
+    def restore_artifacts(self, ctx: Context) -> None:
+        w = self.module_dir(ctx.run_dir) / "02_work"
+        art = {}
+        for key, fn in (("clean_r1", "clean_R1.fastq.gz"),
+                        ("clean_r2", "clean_R2.fastq.gz"),
+                        ("clean_long", "clean_long.fastq")):
+            if (w / fn).exists():
+                art[key] = str(w / fn)
+        if art:
+            ctx.artifacts[self.code] = art
+
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
         threads = get(ctx.cfg, "general.threads", 8)

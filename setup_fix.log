@@ -1,0 +1,3884 @@
++ CONDA=/home/ali/miniconda3/bin/conda
++ echo '### 1) ana env: diamond 2.x'
+### 1) ana env: diamond 2.x
++ /home/ali/miniconda3/bin/conda install -n virusforge -c conda-forge -c bioconda -y 'diamond>=2.1'
+2 channel Terms of Service accepted
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / done
+Solving environment: \ | / - \ | / - \ done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 26.1.1
+    latest version: 26.7.0
+
+Please update conda by running
+
+    $ conda update -n base -c conda-forge conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/ali/miniconda3/envs/virusforge
+
+  added / updated specs:
+    - diamond[version='>=2.1']
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    checkv-1.1.1               |     pyh106432d_0          40 KB  bioconda
+    phabox-2.1.0               |     pyhdfd78af_0          52 KB  bioconda
+    ------------------------------------------------------------
+                                           Total:          92 KB
+
+The following packages will be UPDATED:
+
+  diamond                                          0.9.10-0 --> 2.2.5-he361c42_0 
+
+The following packages will be DOWNGRADED:
+
+  phabox                                 2.1.6-pyhdfd78af_0 --> 2.1.0-pyhdfd78af_0 
+
+The following packages will be REVISED:
+
+  checkv                                 1.1.1-pyh106432d_1 --> 1.1.1-pyh106432d_0 
+
+
+
+Downloading and Extracting Packages: ...working...phabox-2.1.0         | 52 KB     |            |   0% 
+checkv-1.1.1         | 40 KB     |            |   0% [A
+checkv-1.1.1         | 40 KB     | ###9       |  40% [A
+checkv-1.1.1         | 40 KB     | ########## | 100% [A
+checkv-1.1.1         | 40 KB     | ########## | 100% [Aphabox-2.1.0         | 52 KB     | ###        |  31% phabox-2.1.0         | 52 KB     | ########## | 100% phabox-2.1.0         | 52 KB     | ########## | 100%                                                      
+                                                     [A done
+Preparing transaction: / done
+Verifying transaction: \ | / done
+Executing transaction: \ | / - \ | / 
+     CheckV v1.1.1 an external database which needs to be downloaded
+     and unarchived. The link for the database can be found in CheckV's
+     instructions at https://bitbucket.org/berkeleylab/checkv/
+
+
+
+- \ | / - \ | / done
++ echo '### 2) ayrı phabox env (pandas uyumlu)'
+### 2) ayrı phabox env (pandas uyumlu)
++ /home/ali/miniconda3/bin/conda create -n vf_phabox -c conda-forge -c bioconda -y phabox
+2 channel Terms of Service accepted
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+Solving environment: - \ | done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 26.1.1
+    latest version: 26.7.0
+
+Please update conda by running
+
+    $ conda update -n base -c conda-forge conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/ali/miniconda3/envs/vf_phabox
+
+  added / updated specs:
+    - phabox
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    aiohttp-3.14.3             |  py312h5d8c7f2_0         1.0 MB  conda-forge
+    aws-c-auth-0.7.22          |       h96bc93b_2         103 KB  conda-forge
+    aws-c-cal-0.6.14           |       h88a6e22_1          46 KB  conda-forge
+    aws-c-common-0.9.19        |       h4ab18f5_0         221 KB  conda-forge
+    aws-c-compression-0.2.18   |       h83b837d_6          19 KB  conda-forge
+    aws-c-event-stream-0.4.2   |      ha47c788_12          53 KB  conda-forge
+    aws-c-http-0.8.1           |      h29d6fba_17         190 KB  conda-forge
+    aws-c-io-0.14.8            |       h21d4f22_5         154 KB  conda-forge
+    aws-c-mqtt-0.10.4          |       h759edc4_4         160 KB  conda-forge
+    aws-c-s3-0.5.9             |       h594631b_3         107 KB  conda-forge
+    aws-c-sdkutils-0.1.16      |       h83b837d_2          54 KB  conda-forge
+    aws-checksums-0.1.18       |       h83b837d_6          49 KB  conda-forge
+    aws-crt-cpp-0.26.9         |       he3a8b3b_0         332 KB  conda-forge
+    aws-sdk-cpp-1.11.329       |       hba8bd5f_3         3.5 MB  conda-forge
+    biopython-1.88             |  py312h4c3975b_0         3.1 MB  conda-forge
+    brotli-1.1.0               |       hb03c661_4          19 KB  conda-forge
+    brotli-bin-1.1.0           |       hb03c661_4          19 KB  conda-forge
+    brotli-python-1.1.0        |  py312h1289d80_4         346 KB  conda-forge
+    cffi-2.1.1                 |  py312h00755a8_1         293 KB  conda-forge
+    contourpy-1.3.3            |  py312h0a2e395_4         313 KB  conda-forge
+    cpython-3.12.13            |  py312hd8ed1ab_1          45 KB  conda-forge
+    datasets-4.0.0             |     pyhcf101f3_0         348 KB  conda-forge
+    diamond-0.9.14             |       h2e03b76_4         550 KB  bioconda
+    dill-0.3.8                 |     pyhd8ed1ab_0          86 KB  conda-forge
+    fonttools-4.63.0           |  py312h8a5da7c_0         2.9 MB  conda-forge
+    frozenlist-1.8.0           |  py312h447239a_0          54 KB  conda-forge
+    fsspec-2025.3.0            |     pyhd8ed1ab_0         138 KB  conda-forge
+    huggingface_hub-0.36.0     |     pyhd8ed1ab_0         331 KB  conda-forge
+    joblib-1.5.1               |     pyhd8ed1ab_0         219 KB  conda-forge
+    kiwisolver-1.5.0           |  py312h0a2e395_0          75 KB  conda-forge
+    libabseil-20240116.2       | cxx17_he02047a_1         1.2 MB  conda-forge
+    libarrow-16.1.0            |   hcb6531f_6_cpu         7.9 MB  conda-forge
+    libarrow-acero-16.1.0      |   hac33072_6_cpu         585 KB  conda-forge
+    libarrow-dataset-16.1.0    |   hac33072_6_cpu         566 KB  conda-forge
+    libarrow-substrait-16.1.0  |   h7e0c224_6_cpu         537 KB  conda-forge
+    libbrotlicommon-1.1.0      |       hb03c661_4          68 KB  conda-forge
+    libbrotlidec-1.1.0         |       hb03c661_4          33 KB  conda-forge
+    libbrotlienc-1.1.0         |       hb03c661_4         283 KB  conda-forge
+    libgoogle-cloud-2.24.0     |       h2736e30_0         1.2 MB  conda-forge
+    libgoogle-cloud-storage-2.24.0|       h3d9a0c8_0         735 KB  conda-forge
+    libgrpc-1.62.2             |       h15f2491_0         7.0 MB  conda-forge
+    libhwloc-2.11.2            |default_he43201b_1000         2.3 MB  conda-forge
+    libparquet-16.1.0          |   h6a7eafb_6_cpu         1.1 MB  conda-forge
+    libprotobuf-4.25.3         |       h08a7969_0         2.7 MB  conda-forge
+    libre2-11-2023.09.01       |       h5a48ba9_2         227 KB  conda-forge
+    libthrift-0.19.0           |       hb90f79a_1         400 KB  conda-forge
+    libtorch-2.4.1             |cpu_mkl_he3c781b_100        49.4 MB  conda-forge
+    libutf8proc-2.8.0          |       hf23e847_1          79 KB  conda-forge
+    matplotlib-base-3.10.1     |  py312hd3ec401_0         7.9 MB  conda-forge
+    mkl-2023.2.0               |   ha770c72_50498       156.2 MB  conda-forge
+    multidict-6.7.1            |  py312h8a5da7c_0          98 KB  conda-forge
+    multiprocess-0.70.16       |  py312h66e93f0_1         333 KB  conda-forge
+    openjpeg-2.5.2             |       h488ebb8_0         334 KB  conda-forge
+    orc-2.0.1                  |       h17fec99_1        1006 KB  conda-forge
+    pandas-3.0.5               |  py312h8ecdadd_1        14.2 MB  conda-forge
+    phabox-2.1.13              |     pyhdfd78af_1          67 KB  bioconda
+    pillow-10.3.0              |  py312hdcec9eb_0        40.0 MB  conda-forge
+    prodigal-gv-2.11.0         |       he4a0461_4         693 KB  bioconda
+    propcache-0.5.2            |  py312h8a5da7c_0          50 KB  conda-forge
+    pyarrow-16.1.0             |  py312h8da182e_1          26 KB  conda-forge
+    pyarrow-core-16.1.0        |py312h5429d62_1_cpu         4.2 MB  conda-forge
+    python-gil-3.12.13         |       hd8ed1ab_1          45 KB  conda-forge
+    python-xxhash-3.7.0        |  py312h0d868a3_0          24 KB  conda-forge
+    pytorch-2.4.1              |cpu_mkl_py312hf535c18_100        33.1 MB  conda-forge
+    pyyaml-6.0.3               |  py312h8a5da7c_1         194 KB  conda-forge
+    re2-2023.09.01             |       h7f4b329_2          26 KB  conda-forge
+    regex-2026.7.19            |  py312h4c3975b_0         405 KB  conda-forge
+    s2n-1.4.15                 |       he19d79f_0         341 KB  conda-forge
+    safetensors-0.8.0          |  py312h868fb18_0         491 KB  conda-forge
+    scikit-learn-1.3.2         |  py312h394d371_2         9.0 MB  conda-forge
+    tbb-2021.13.0              |       hceb3a55_1         172 KB  conda-forge
+    tokenizers-0.19.1          |  py312hfef1a59_0         2.6 MB  conda-forge
+    transformers-4.43.4        |     pyhd8ed1ab_0         3.3 MB  conda-forge
+    unicodedata2-17.0.1        |  py312h4c3975b_0         401 KB  conda-forge
+    yarl-1.24.5                |  py312h8a5da7c_0         167 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:       366.3 MB
+
+The following NEW packages will be INSTALLED:
+
+  _openmp_mutex      conda-forge/linux-64::_openmp_mutex-4.5-7_kmp_llvm 
+  _python_abi3_supp~ conda-forge/noarch::_python_abi3_support-1.0-hd8ed1ab_3 
+  accelerate         conda-forge/noarch::accelerate-1.14.0-pyhcf101f3_0 
+  aiohappyeyeballs   conda-forge/noarch::aiohappyeyeballs-2.7.1-pyhd8ed1ab_0 
+  aiohttp            conda-forge/linux-64::aiohttp-3.14.3-py312h5d8c7f2_0 
+  aiosignal          conda-forge/noarch::aiosignal-1.4.0-pyhd8ed1ab_0 
+  aragorn            bioconda/linux-64::aragorn-1.2.41-h7b50bb2_5 
+  attrs              conda-forge/noarch::attrs-26.1.0-pyhcf101f3_0 
+  aws-c-auth         conda-forge/linux-64::aws-c-auth-0.7.22-h96bc93b_2 
+  aws-c-cal          conda-forge/linux-64::aws-c-cal-0.6.14-h88a6e22_1 
+  aws-c-common       conda-forge/linux-64::aws-c-common-0.9.19-h4ab18f5_0 
+  aws-c-compression  conda-forge/linux-64::aws-c-compression-0.2.18-h83b837d_6 
+  aws-c-event-stream conda-forge/linux-64::aws-c-event-stream-0.4.2-ha47c788_12 
+  aws-c-http         conda-forge/linux-64::aws-c-http-0.8.1-h29d6fba_17 
+  aws-c-io           conda-forge/linux-64::aws-c-io-0.14.8-h21d4f22_5 
+  aws-c-mqtt         conda-forge/linux-64::aws-c-mqtt-0.10.4-h759edc4_4 
+  aws-c-s3           conda-forge/linux-64::aws-c-s3-0.5.9-h594631b_3 
+  aws-c-sdkutils     conda-forge/linux-64::aws-c-sdkutils-0.1.16-h83b837d_2 
+  aws-checksums      conda-forge/linux-64::aws-checksums-0.1.18-h83b837d_6 
+  aws-crt-cpp        conda-forge/linux-64::aws-crt-cpp-0.26.9-he3a8b3b_0 
+  aws-sdk-cpp        conda-forge/linux-64::aws-sdk-cpp-1.11.329-hba8bd5f_3 
+  biopython          conda-forge/linux-64::biopython-1.88-py312h4c3975b_0 
+  blast              bioconda/linux-64::blast-2.16.0-hc155240_3 
+  brotli             conda-forge/linux-64::brotli-1.1.0-hb03c661_4 
+  brotli-bin         conda-forge/linux-64::brotli-bin-1.1.0-hb03c661_4 
+  brotli-python      conda-forge/linux-64::brotli-python-1.1.0-py312h1289d80_4 
+  bzip2              conda-forge/linux-64::bzip2-1.0.8-hda65f42_10 
+  c-ares             conda-forge/linux-64::c-ares-1.34.8-h280c20c_1 
+  ca-certificates    conda-forge/noarch::ca-certificates-2026.7.22-hbd8a1cb_0 
+  certifi            conda-forge/noarch::certifi-2026.7.22-pyhd8ed1ab_0 
+  cffi               conda-forge/linux-64::cffi-2.1.1-py312h00755a8_1 
+  charset-normalizer conda-forge/noarch::charset-normalizer-3.4.9-pyhd8ed1ab_0 
+  contourpy          conda-forge/linux-64::contourpy-1.3.3-py312h0a2e395_4 
+  cpython            conda-forge/noarch::cpython-3.12.13-py312hd8ed1ab_1 
+  curl               conda-forge/linux-64::curl-8.8.0-he654da7_1 
+  cycler             conda-forge/noarch::cycler-0.12.1-pyhcf101f3_2 
+  datasets           conda-forge/noarch::datasets-4.0.0-pyhcf101f3_0 
+  diamond            bioconda/linux-64::diamond-0.9.14-h2e03b76_4 
+  dill               conda-forge/noarch::dill-0.3.8-pyhd8ed1ab_0 
+  entrez-direct      bioconda/linux-64::entrez-direct-22.4-he881be0_0 
+  fasttree           bioconda/linux-64::fasttree-2.2.0-h7b50bb2_1 
+  filelock           conda-forge/noarch::filelock-3.32.2-pyhd8ed1ab_0 
+  fonttools          conda-forge/linux-64::fonttools-4.63.0-py312h8a5da7c_0 
+  freetype           conda-forge/linux-64::freetype-2.12.1-h267a509_2 
+  frozenlist         conda-forge/linux-64::frozenlist-1.8.0-py312h447239a_0 
+  fsspec             conda-forge/noarch::fsspec-2025.3.0-pyhd8ed1ab_0 
+  gawk               conda-forge/linux-64::gawk-5.4.1-h0a3468a_0 
+  gflags             conda-forge/linux-64::gflags-2.2.2-h5888daf_1005 
+  glog               conda-forge/linux-64::glog-0.7.1-hbabe93e_0 
+  gmp                conda-forge/linux-64::gmp-6.3.0-hac33072_2 
+  gmpy2              conda-forge/linux-64::gmpy2-2.3.0-py312hcaba1f9_1 
+  h2                 conda-forge/noarch::h2-4.4.1-pyhcf101f3_0 
+  hf-xet             conda-forge/linux-64::hf-xet-1.5.2-py310hb823017_2 
+  hpack              conda-forge/noarch::hpack-4.2.0-pyhd8ed1ab_0 
+  huggingface_hub    conda-forge/noarch::huggingface_hub-0.36.0-pyhd8ed1ab_0 
+  hyperframe         conda-forge/noarch::hyperframe-6.1.0-pyhd8ed1ab_0 
+  icu                conda-forge/linux-64::icu-73.2-h59595ed_0 
+  idna               conda-forge/noarch::idna-3.18-pyhcf101f3_0 
+  jinja2             conda-forge/noarch::jinja2-3.1.6-pyhcf101f3_1 
+  joblib             conda-forge/noarch::joblib-1.5.1-pyhd8ed1ab_0 
+  kcounter           bioconda/linux-64::kcounter-0.1.2-py312ha170aba_0 
+  keyutils           conda-forge/linux-64::keyutils-1.6.3-hb9d3cd8_0 
+  kiwisolver         conda-forge/linux-64::kiwisolver-1.5.0-py312h0a2e395_0 
+  krb5               conda-forge/linux-64::krb5-1.21.3-h659f571_0 
+  lcms2              conda-forge/linux-64::lcms2-2.16-hb7c19ff_0 
+  ld_impl_linux-64   conda-forge/linux-64::ld_impl_linux-64-2.46.1-bootstrap_ha15bf96_2 
+  lerc               conda-forge/linux-64::lerc-4.2.0-hdb68285_0 
+  libabseil          conda-forge/linux-64::libabseil-20240116.2-cxx17_he02047a_1 
+  libarrow           conda-forge/linux-64::libarrow-16.1.0-hcb6531f_6_cpu 
+  libarrow-acero     conda-forge/linux-64::libarrow-acero-16.1.0-hac33072_6_cpu 
+  libarrow-dataset   conda-forge/linux-64::libarrow-dataset-16.1.0-hac33072_6_cpu 
+  libarrow-substrait conda-forge/linux-64::libarrow-substrait-16.1.0-h7e0c224_6_cpu 
+  libasprintf        conda-forge/linux-64::libasprintf-0.25.1-h3f43e3d_1 
+  libblas            conda-forge/linux-64::libblas-3.11.0-9_h4a7cf45_openblas 
+  libbrotlicommon    conda-forge/linux-64::libbrotlicommon-1.1.0-hb03c661_4 
+  libbrotlidec       conda-forge/linux-64::libbrotlidec-1.1.0-hb03c661_4 
+  libbrotlienc       conda-forge/linux-64::libbrotlienc-1.1.0-hb03c661_4 
+  libcblas           conda-forge/linux-64::libcblas-3.11.0-9_h0358290_openblas 
+  libcrc32c          conda-forge/linux-64::libcrc32c-1.1.2-h9c3ff4c_0 
+  libcurl            conda-forge/linux-64::libcurl-8.8.0-hca28451_1 
+  libdeflate         conda-forge/linux-64::libdeflate-1.25-hd45a770_1 
+  libedit            conda-forge/linux-64::libedit-3.1.20250104-pl5321h7949ede_0 
+  libev              conda-forge/linux-64::libev-4.33-h280c20c_3 
+  libevent           conda-forge/linux-64::libevent-2.1.12-hf998b51_1 
+  libexpat           conda-forge/linux-64::libexpat-2.8.1-hecca717_1 
+  libffi             conda-forge/linux-64::libffi-3.7.0-h3435931_0 
+  libgcc             conda-forge/linux-64::libgcc-16.1.0-ha9f2e26_1 
+  libgcc-ng          conda-forge/linux-64::libgcc-ng-16.1.0-h69a702a_1 
+  libgettextpo       conda-forge/linux-64::libgettextpo-0.25.1-h3f43e3d_1 
+  libgfortran        conda-forge/linux-64::libgfortran-16.1.0-h69a702a_1 
+  libgfortran5       conda-forge/linux-64::libgfortran5-16.1.0-h79bb938_1 
+  libgomp            conda-forge/linux-64::libgomp-16.1.0-he0feb66_1 
+  libgoogle-cloud    conda-forge/linux-64::libgoogle-cloud-2.24.0-h2736e30_0 
+  libgoogle-cloud-s~ conda-forge/linux-64::libgoogle-cloud-storage-2.24.0-h3d9a0c8_0 
+  libgrpc            conda-forge/linux-64::libgrpc-1.62.2-h15f2491_0 
+  libhwloc           conda-forge/linux-64::libhwloc-2.11.2-default_he43201b_1000 
+  libiconv           conda-forge/linux-64::libiconv-1.18-h3b78370_2 
+  libidn2            conda-forge/linux-64::libidn2-2.3.8-hfac485b_1 
+  libjpeg-turbo      conda-forge/linux-64::libjpeg-turbo-3.2.0-hb03c661_1 
+  liblapack          conda-forge/linux-64::liblapack-3.11.0-9_h47877c9_openblas 
+  liblzma            conda-forge/linux-64::liblzma-5.8.3-hb03c661_1 
+  liblzma-devel      conda-forge/linux-64::liblzma-devel-5.8.3-hb03c661_1 
+  libnghttp2         conda-forge/linux-64::libnghttp2-1.58.0-h47da74e_1 
+  libnsl             conda-forge/linux-64::libnsl-2.0.1-hb9d3cd8_1 
+  libopenblas        conda-forge/linux-64::libopenblas-0.3.34-pthreads_h94d23a6_0 
+  libparquet         conda-forge/linux-64::libparquet-16.1.0-h6a7eafb_6_cpu 
+  libpng             conda-forge/linux-64::libpng-1.6.43-h2797004_0 
+  libprotobuf        conda-forge/linux-64::libprotobuf-4.25.3-h08a7969_0 
+  libre2-11          conda-forge/linux-64::libre2-11-2023.09.01-h5a48ba9_2 
+  libsqlite          conda-forge/linux-64::libsqlite-3.46.0-hde9e2c9_0 
+  libssh2            conda-forge/linux-64::libssh2-1.11.0-h0841786_0 
+  libstdcxx          conda-forge/linux-64::libstdcxx-16.1.0-h934c35e_1 
+  libstdcxx-ng       conda-forge/linux-64::libstdcxx-ng-16.1.0-hdf11a46_1 
+  libthrift          conda-forge/linux-64::libthrift-0.19.0-hb90f79a_1 
+  libtiff            conda-forge/linux-64::libtiff-4.6.0-h1dd3fc0_3 
+  libtorch           conda-forge/linux-64::libtorch-2.4.1-cpu_mkl_he3c781b_100 
+  libunistring       conda-forge/linux-64::libunistring-0.9.10-h7f98852_0 
+  libutf8proc        conda-forge/linux-64::libutf8proc-2.8.0-hf23e847_1 
+  libuuid            conda-forge/linux-64::libuuid-2.42.2-h5347b49_0 
+  libuv              conda-forge/linux-64::libuv-1.52.1-h280c20c_1 
+  libwebp-base       conda-forge/linux-64::libwebp-base-1.6.0-hd42ef1d_1 
+  libxcb             conda-forge/linux-64::libxcb-1.15-h0b41bf4_0 
+  libxcrypt          conda-forge/linux-64::libxcrypt-4.4.38-h280c20c_0 
+  libxml2            conda-forge/linux-64::libxml2-2.12.7-hc051c1a_1 
+  libzlib            conda-forge/linux-64::libzlib-1.2.13-h4ab18f5_6 
+  llvm-openmp        conda-forge/linux-64::llvm-openmp-22.1.8-h4922eb0_0 
+  lz4-c              conda-forge/linux-64::lz4-c-1.9.4-hcb278e6_0 
+  mafft              conda-forge/linux-64::mafft-7.526-h4bc722e_0 
+  markupsafe         conda-forge/linux-64::markupsafe-3.0.3-py312h8a5da7c_1 
+  matplotlib-base    conda-forge/linux-64::matplotlib-base-3.10.1-py312hd3ec401_0 
+  mcl                bioconda/linux-64::mcl-22.282-pl5321h7b50bb2_4 
+  mkl                conda-forge/linux-64::mkl-2023.2.0-ha770c72_50498 
+  mpc                conda-forge/linux-64::mpc-1.4.0-he0a73b1_0 
+  mpfr               conda-forge/linux-64::mpfr-4.2.2-he0a73b1_0 
+  mpmath             conda-forge/noarch::mpmath-1.4.1-pyhd8ed1ab_0 
+  multidict          conda-forge/linux-64::multidict-6.7.1-py312h8a5da7c_0 
+  multiprocess       conda-forge/linux-64::multiprocess-0.70.16-py312h66e93f0_1 
+  munkres            conda-forge/noarch::munkres-1.1.4-pyhd8ed1ab_1 
+  ncbi-vdb           bioconda/linux-64::ncbi-vdb-3.4.1-hd63eeec_0 
+  ncurses            conda-forge/linux-64::ncurses-6.6-hdb14827_1 
+  networkx           conda-forge/noarch::networkx-3.6.1-pyhcf101f3_0 
+  numpy              conda-forge/linux-64::numpy-1.26.4-py312heda63a1_0 
+  openjpeg           conda-forge/linux-64::openjpeg-2.5.2-h488ebb8_0 
+  openssl            conda-forge/linux-64::openssl-3.6.3-h35e630c_1 
+  orc                conda-forge/linux-64::orc-2.0.1-h17fec99_1 
+  packaging          conda-forge/noarch::packaging-26.3-pyhc364b38_0 
+  pandas             conda-forge/linux-64::pandas-3.0.5-py312h8ecdadd_1 
+  perl               conda-forge/linux-64::perl-5.32.1-7_hd590300_perl5 
+  perl-archive-tar   bioconda/noarch::perl-archive-tar-3.12-pl5321hdfd78af_0 
+  perl-carp          conda-forge/noarch::perl-carp-1.50-pl5321hd8ed1ab_0 
+  perl-common-sense  conda-forge/noarch::perl-common-sense-3.75-pl5321hd8ed1ab_0 
+  perl-compress-raw~ conda-forge/linux-64::perl-compress-raw-bzip2-2.214-pl5321hda65f42_0 
+  perl-compress-raw~ conda-forge/linux-64::perl-compress-raw-zlib-2.214-pl5321h4dac143_0 
+  perl-encode        conda-forge/linux-64::perl-encode-3.24-pl5321hb03c661_0 
+  perl-exporter      conda-forge/noarch::perl-exporter-5.74-pl5321hd8ed1ab_0 
+  perl-exporter-tiny conda-forge/noarch::perl-exporter-tiny-1.002002-pl5321hd8ed1ab_0 
+  perl-extutils-mak~ conda-forge/noarch::perl-extutils-makemaker-7.70-pl5321hd8ed1ab_0 
+  perl-io-compress   bioconda/linux-64::perl-io-compress-2.216-pl5321h503566f_0 
+  perl-io-zlib       bioconda/noarch::perl-io-zlib-1.15-pl5321hdfd78af_1 
+  perl-json          bioconda/noarch::perl-json-4.11-pl5321hdfd78af_0 
+  perl-json-xs       bioconda/linux-64::perl-json-xs-4.04-pl5321h9948957_0 
+  perl-list-moreuti~ bioconda/noarch::perl-list-moreutils-0.430-pl5321hdfd78af_0 
+  perl-list-moreuti~ bioconda/linux-64::perl-list-moreutils-xs-0.430-pl5321h7b50bb2_5 
+  perl-parent        conda-forge/noarch::perl-parent-0.243-pl5321hd8ed1ab_0 
+  perl-pathtools     conda-forge/linux-64::perl-pathtools-3.75-pl5321hb9d3cd8_2 
+  perl-scalar-list-~ conda-forge/linux-64::perl-scalar-list-utils-1.70-pl5321hb03c661_0 
+  perl-storable      conda-forge/linux-64::perl-storable-3.15-pl5321hb9d3cd8_2 
+  perl-types-serial~ bioconda/noarch::perl-types-serialiser-1.01-pl5321hdfd78af_0 
+  phabox             bioconda/noarch::phabox-2.1.13-pyhdfd78af_1 
+  pillow             conda-forge/linux-64::pillow-10.3.0-py312hdcec9eb_0 
+  pip                conda-forge/noarch::pip-26.2.1-pyh8b19718_0 
+  prodigal-gv        bioconda/linux-64::prodigal-gv-2.11.0-he4a0461_4 
+  propcache          conda-forge/linux-64::propcache-0.5.2-py312h8a5da7c_0 
+  psutil             conda-forge/linux-64::psutil-7.2.2-py312h5253ce2_0 
+  pthread-stubs      conda-forge/linux-64::pthread-stubs-0.4-hb03c661_1003 
+  pyarrow            conda-forge/linux-64::pyarrow-16.1.0-py312h8da182e_1 
+  pyarrow-core       conda-forge/linux-64::pyarrow-core-16.1.0-py312h5429d62_1_cpu 
+  pycparser          conda-forge/noarch::pycparser-3.0-pyhcf101f3_0 
+  pyparsing          conda-forge/noarch::pyparsing-3.3.2-pyhcf101f3_0 
+  pysocks            conda-forge/noarch::pysocks-1.7.1-pyha55dd90_7 
+  python             conda-forge/linux-64::python-3.12.3-hab00c5b_0_cpython 
+  python-dateutil    conda-forge/noarch::python-dateutil-2.9.0.post0-pyhe01879c_2 
+  python-gil         conda-forge/noarch::python-gil-3.12.13-hd8ed1ab_1 
+  python-xxhash      conda-forge/linux-64::python-xxhash-3.7.0-py312h0d868a3_0 
+  python_abi         conda-forge/noarch::python_abi-3.12-8_cp312 
+  pytorch            conda-forge/linux-64::pytorch-2.4.1-cpu_mkl_py312hf535c18_100 
+  pyyaml             conda-forge/linux-64::pyyaml-6.0.3-py312h8a5da7c_1 
+  qhull              conda-forge/linux-64::qhull-2020.2-h434a139_5 
+  re2                conda-forge/linux-64::re2-2023.09.01-h7f4b329_2 
+  readline           conda-forge/linux-64::readline-8.3-h853b02a_0 
+  regex              conda-forge/linux-64::regex-2026.7.19-py312h4c3975b_0 
+  requests           conda-forge/noarch::requests-2.34.2-pyhcf101f3_0 
+  rpsbproc           bioconda/linux-64::rpsbproc-0.5.0-h6a68c12_1 
+  s2n                conda-forge/linux-64::s2n-1.4.15-he19d79f_0 
+  safetensors        conda-forge/linux-64::safetensors-0.8.0-py312h868fb18_0 
+  scikit-learn       conda-forge/linux-64::scikit-learn-1.3.2-py312h394d371_2 
+  scipy              conda-forge/linux-64::scipy-1.17.1-py312h54fa4ab_1 
+  seaborn-base       conda-forge/noarch::seaborn-base-0.13.2-pyhd8ed1ab_3 
+  setuptools         conda-forge/noarch::setuptools-84.0.0-pyh332efcf_0 
+  six                conda-forge/noarch::six-1.17.0-pyhe01879c_1 
+  sleef              conda-forge/linux-64::sleef-3.9.0-ha0421bc_0 
+  snappy             conda-forge/linux-64::snappy-1.2.2-h03e3b7b_1 
+  sympy              conda-forge/noarch::sympy-1.14.0-pyh2585a3b_106 
+  tbb                conda-forge/linux-64::tbb-2021.13.0-hceb3a55_1 
+  threadpoolctl      conda-forge/noarch::threadpoolctl-3.6.0-pyhecae5ae_0 
+  tk                 conda-forge/linux-64::tk-8.6.13-noxft_h4845f30_101 
+  tokenizers         conda-forge/linux-64::tokenizers-0.19.1-py312hfef1a59_0 
+  tqdm               conda-forge/noarch::tqdm-4.70.0-pyh8f84b5b_0 
+  transformers       conda-forge/noarch::transformers-4.43.4-pyhd8ed1ab_0 
+  typing-extensions  conda-forge/noarch::typing-extensions-4.16.0-h69aa097_0 
+  typing_extensions  conda-forge/noarch::typing_extensions-4.16.0-pyhcf101f3_0 
+  tzdata             conda-forge/noarch::tzdata-2026c-h151e31d_0 
+  unicodedata2       conda-forge/linux-64::unicodedata2-17.0.1-py312h4c3975b_0 
+  urllib3            conda-forge/noarch::urllib3-2.5.0-pyhd8ed1ab_0 
+  wget               conda-forge/linux-64::wget-1.21.4-hda4d442_0 
+  wheel              conda-forge/noarch::wheel-0.47.0-pyhd8ed1ab_0 
+  xorg-libxau        conda-forge/linux-64::xorg-libxau-1.0.12-hb03c661_2 
+  xorg-libxdmcp      conda-forge/linux-64::xorg-libxdmcp-1.1.5-hb03c661_2 
+  xxhash             conda-forge/linux-64::xxhash-0.8.3-hec8ed23_1 
+  xz                 conda-forge/linux-64::xz-5.8.3-ha02ee65_1 
+  xz-gpl-tools       conda-forge/linux-64::xz-gpl-tools-5.8.3-ha02ee65_1 
+  xz-tools           conda-forge/linux-64::xz-tools-5.8.3-hb03c661_1 
+  yaml               conda-forge/linux-64::yaml-0.2.5-h280c20c_3 
+  yarl               conda-forge/linux-64::yarl-1.24.5-py312h8a5da7c_0 
+  zlib               conda-forge/linux-64::zlib-1.2.13-h4ab18f5_6 
+  zstandard          conda-forge/linux-64::zstandard-0.23.0-py312h4c3975b_3 
+  zstd               conda-forge/linux-64::zstd-1.5.6-ha6fb4c9_0 
+
+
+
+Downloading and Extracting Packages: ...working...mkl-2023.2.0         | 156.2 MB  |            |   0% 
+libtorch-2.4.1       | 49.4 MB   |            |   0% [A
+
+pillow-10.3.0        | 40.0 MB   |            |   0% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   |            |   0% [A[A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   |            |   0% [A[A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    |            |   0% [A[A[A[A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    |            |   0% [A[A[A[A[A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    |            |   0% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    |            |   0% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    |            |   0% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20240116.2 | 1.2 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgoogle-cloud-2.24 | 1.2 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  |            |   1% 
+
+
+
+pandas-3.0.5         | 14.2 MB   | #9         |  19% [A[A[A[A
+libtorch-2.4.1       | 49.4 MB   |            |   0% [A
+libtorch-2.4.1       | 49.4 MB   |            |   0% [A
+
+
+pytorch-2.4.1        | 33.1 MB   |            |   0% [A[A[Amkl-2023.2.0         | 156.2 MB  | 1          |   2% 
+
+pillow-10.3.0        | 40.0 MB   |            |   0% [A[A
+libtorch-2.4.1       | 49.4 MB   |            |   0% [A
+
+
+pytorch-2.4.1        | 33.1 MB   |            |   0% [A[A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | ###8       |  38% [A[A[A[Amkl-2023.2.0         | 156.2 MB  | 2          |   2% 
+
+
+pytorch-2.4.1        | 33.1 MB   |            |   0% [A[A[A
+libtorch-2.4.1       | 49.4 MB   |            |   0% [Amkl-2023.2.0         | 156.2 MB  | 3          |   3% 
+
+
+pytorch-2.4.1        | 33.1 MB   |            |   1% [A[A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | #####4     |  54% [A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   |            |   0% [A[A
+libtorch-2.4.1       | 49.4 MB   |            |   0% [Amkl-2023.2.0         | 156.2 MB  | 3          |   4% 
+
+pillow-10.3.0        | 40.0 MB   |            |   0% [A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | ######4    |  64% [A[A[A[Amkl-2023.2.0         | 156.2 MB  | 4          |   4% 
+libtorch-2.4.1       | 49.4 MB   |            |   1% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | 1          |   1% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   |            |   0% [A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | #######3   |  74% [A[A[A[Amkl-2023.2.0         | 156.2 MB  | 5          |   5% 
+libtorch-2.4.1       | 49.4 MB   |            |   1% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | 2          |   2% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   |            |   1% [A[A
+libtorch-2.4.1       | 49.4 MB   | 1          |   1% [Amkl-2023.2.0         | 156.2 MB  | 6          |   6% 
+
+
+
+pandas-3.0.5         | 14.2 MB   | ########2  |  82% [A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 2          |   3% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | 1          |   1% [A[A
+libtorch-2.4.1       | 49.4 MB   | 1          |   1% [Amkl-2023.2.0         | 156.2 MB  | 6          |   7% 
+
+
+pytorch-2.4.1        | 33.1 MB   | 3          |   3% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | 1          |   1% [A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | ########9  |  89% [A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 1          |   1% [Amkl-2023.2.0         | 156.2 MB  | 7          |   7% 
+
+pillow-10.3.0        | 40.0 MB   | 1          |   2% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 3          |   3% [A[A[Amkl-2023.2.0         | 156.2 MB  | 7          |   8% 
+libtorch-2.4.1       | 49.4 MB   | 1          |   2% [A
+
+pillow-10.3.0        | 40.0 MB   | 2          |   2% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 3          |   4% [A[A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | #########5 |  95% [A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 1          |   2% [Amkl-2023.2.0         | 156.2 MB  | 8          |   8% 
+
+pillow-10.3.0        | 40.0 MB   | 2          |   3% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 4          |   4% [A[A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | ########## | 100% [A[A[A[Amkl-2023.2.0         | 156.2 MB  | 9          |   9% 
+libtorch-2.4.1       | 49.4 MB   | 1          |   2% [A
+
+pillow-10.3.0        | 40.0 MB   | 3          |   3% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 4          |   5% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    |            |   0% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | 9          |  10% 
+libtorch-2.4.1       | 49.4 MB   | 2          |   2% [A
+
+pillow-10.3.0        | 40.0 MB   | 3          |   4% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 5          |   5% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | 4          |   5% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 2          |   3% [Amkl-2023.2.0         | 156.2 MB  | #          |  10% 
+
+pillow-10.3.0        | 40.0 MB   | 4          |   4% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 5          |   6% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | 9          |   9% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 2          |   3% [A
+
+pillow-10.3.0        | 40.0 MB   | 4          |   5% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 6          |   7% [A[A[Amkl-2023.2.0         | 156.2 MB  | #          |  11% 
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #4         |  14% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 3          |   3% [A
+
+pillow-10.3.0        | 40.0 MB   | 5          |   5% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 7          |   7% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #8         |  19% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #1         |  11% 
+libtorch-2.4.1       | 49.4 MB   | 3          |   4% [A
+
+pillow-10.3.0        | 40.0 MB   | 6          |   6% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 7          |   8% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ##4        |  24% [A[A[A[A[A
+
+
+
+pandas-3.0.5         | 14.2 MB   | ########## | 100% [A[A[A[Amkl-2023.2.0         | 156.2 MB  | #1         |  12% 
+libtorch-2.4.1       | 49.4 MB   | 4          |   4% [A
+
+pillow-10.3.0        | 40.0 MB   | 6          |   7% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 8          |   9% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ##9        |  29% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 4          |   5% [Amkl-2023.2.0         | 156.2 MB  | #2         |  12% 
+
+pillow-10.3.0        | 40.0 MB   | 7          |   7% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | 9          |   9% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ###4       |  34% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 5          |   5% [A
+
+pillow-10.3.0        | 40.0 MB   | 8          |   8% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #          |  10% [A[A[Amkl-2023.2.0         | 156.2 MB  | #2         |  13% 
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ###8       |  39% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 5          |   6% [A
+
+pillow-10.3.0        | 40.0 MB   | 8          |   9% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #          |  11% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ####4      |  44% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #3         |  13% 
+libtorch-2.4.1       | 49.4 MB   | 6          |   6% [A
+
+pillow-10.3.0        | 40.0 MB   | 9          |   9% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #1         |  12% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ####8      |  49% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #3         |  13% 
+libtorch-2.4.1       | 49.4 MB   | 7          |   7% [A
+
+pillow-10.3.0        | 40.0 MB   | #          |  10% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #2         |  13% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #####3     |  54% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 7          |   8% [Amkl-2023.2.0         | 156.2 MB  | #3         |  14% 
+
+pillow-10.3.0        | 40.0 MB   | #          |  11% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #3         |  13% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #####8     |  59% [A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | 8          |   8% [A
+
+pillow-10.3.0        | 40.0 MB   | #1         |  12% [A[Amkl-2023.2.0         | 156.2 MB  | #4         |  14% 
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ######4    |  64% [A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #4         |  14% [A[A[A
+libtorch-2.4.1       | 49.4 MB   | 8          |   9% [A
+
+pillow-10.3.0        | 40.0 MB   | #2         |  12% [A[Amkl-2023.2.0         | 156.2 MB  | #4         |  14% 
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ######9    |  69% [A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #5         |  15% [A[A[A
+libtorch-2.4.1       | 49.4 MB   | 9          |  10% [A
+
+pillow-10.3.0        | 40.0 MB   | #2         |  13% [A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #######4   |  74% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #4         |  15% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #5         |  16% [A[A[A
+libtorch-2.4.1       | 49.4 MB   | #          |  10% [A
+
+pillow-10.3.0        | 40.0 MB   | #3         |  14% [A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #######9   |  79% [A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #6         |  17% [A[A[Amkl-2023.2.0         | 156.2 MB  | #5         |  15% 
+libtorch-2.4.1       | 49.4 MB   | #          |  11% [A
+
+pillow-10.3.0        | 40.0 MB   | #4         |  15% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #7         |  18% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ########4  |  84% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #5         |  15% 
+libtorch-2.4.1       | 49.4 MB   | #1         |  11% [A
+
+pillow-10.3.0        | 40.0 MB   | #5         |  15% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #8         |  19% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ########9  |  89% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #5         |  16% 
+libtorch-2.4.1       | 49.4 MB   | #2         |  12% [A
+
+pillow-10.3.0        | 40.0 MB   | #6         |  16% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #9         |  20% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #########4 |  95% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #5         |  16% 
+libtorch-2.4.1       | 49.4 MB   | #2         |  13% [A
+
+pillow-10.3.0        | 40.0 MB   | #6         |  17% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##         |  21% [A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | #########9 | 100% [A[A[A[A[A
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ########## | 100% [A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #6         |  16% 
+libtorch-2.4.1       | 49.4 MB   | #3         |  13% [A
+
+pillow-10.3.0        | 40.0 MB   | #7         |  18% [A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    |            |   0% [A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##1        |  22% [A[A[Amkl-2023.2.0         | 156.2 MB  | #6         |  16% 
+libtorch-2.4.1       | 49.4 MB   | #4         |  14% [A
+
+pillow-10.3.0        | 40.0 MB   | #8         |  19% [A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | 4          |   5% [A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##2        |  23% [A[A[Amkl-2023.2.0         | 156.2 MB  | #6         |  17% 
+
+pillow-10.3.0        | 40.0 MB   | #9         |  19% [A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | 9          |   9% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #4         |  15% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##3        |  24% [A[A[Amkl-2023.2.0         | 156.2 MB  | #7         |  17% 
+
+
+
+
+scikit-learn-1.3.2   | 9.0 MB    | ########## | 100% [A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##         |  20% [A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #4         |  15% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #5         |  15% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##4        |  25% [A[A[Amkl-2023.2.0         | 156.2 MB  | #7         |  17% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #9         |  20% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##1        |  21% [A[A
+libtorch-2.4.1       | 49.4 MB   | #5         |  16% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##5        |  26% [A[A[Amkl-2023.2.0         | 156.2 MB  | #7         |  18% 
+
+pillow-10.3.0        | 40.0 MB   | ##1        |  22% [A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ##5        |  25% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #6         |  17% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##6        |  27% [A[A[Amkl-2023.2.0         | 156.2 MB  | #7         |  18% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ##9        |  30% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##2        |  23% [A[A
+libtorch-2.4.1       | 49.4 MB   | #7         |  17% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##7        |  27% [A[A[Amkl-2023.2.0         | 156.2 MB  | #8         |  18% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ###4       |  35% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##3        |  24% [A[A
+libtorch-2.4.1       | 49.4 MB   | #7         |  18% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##8        |  28% [A[A[Amkl-2023.2.0         | 156.2 MB  | #8         |  19% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ####       |  40% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##4        |  24% [A[A
+libtorch-2.4.1       | 49.4 MB   | #8         |  18% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ##9        |  29% [A[A[Amkl-2023.2.0         | 156.2 MB  | #8         |  19% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ####4      |  45% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##5        |  25% [A[A
+libtorch-2.4.1       | 49.4 MB   | #9         |  19% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###        |  30% [A[A[Amkl-2023.2.0         | 156.2 MB  | #9         |  19% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ####9      |  50% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ##5        |  26% [A[A
+libtorch-2.4.1       | 49.4 MB   | #9         |  20% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###1       |  31% [A[A[Amkl-2023.2.0         | 156.2 MB  | #9         |  19% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #####5     |  55% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##         |  20% [A
+
+pillow-10.3.0        | 40.0 MB   | ##6        |  27% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###2       |  32% [A[A[Amkl-2023.2.0         | 156.2 MB  | #9         |  20% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ######     |  60% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##1        |  21% [A
+
+pillow-10.3.0        | 40.0 MB   | ##7        |  28% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###2       |  33% [A[A[Amkl-2023.2.0         | 156.2 MB  | #9         |  20% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ######5    |  66% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##1        |  22% [A
+
+pillow-10.3.0        | 40.0 MB   | ##8        |  28% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###3       |  34% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##         |  20% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #######    |  71% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##2        |  22% [A
+
+pillow-10.3.0        | 40.0 MB   | ##9        |  29% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###4       |  35% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##         |  20% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #######5   |  76% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##3        |  23% [A
+
+pillow-10.3.0        | 40.0 MB   | ##9        |  30% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###5       |  36% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##         |  21% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ########1  |  81% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##3        |  24% [A
+
+pillow-10.3.0        | 40.0 MB   | ###        |  31% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###6       |  37% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##1        |  21% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ########6  |  86% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##4        |  24% [A
+
+pillow-10.3.0        | 40.0 MB   | ###1       |  31% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###7       |  37% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##1        |  21% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #########1 |  92% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##5        |  25% [A
+
+pillow-10.3.0        | 40.0 MB   | ###2       |  32% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###8       |  38% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##1        |  22% 
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | #########7 |  97% [A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##5        |  26% [A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###2       |  33% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ###9       |  39% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##1        |  22% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    |            |   0% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##6        |  27% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####       |  40% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###3       |  34% [A[Amkl-2023.2.0         | 156.2 MB  | ##2        |  22% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | 4          |   5% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##7        |  27% [Amkl-2023.2.0         | 156.2 MB  | ##2        |  22% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ####       |  41% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###4       |  34% [A[A
+
+
+
+
+
+matplotlib-base-3.10 | 7.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | 9          |   9% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##8        |  28% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####1      |  42% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##2        |  23% 
+
+pillow-10.3.0        | 40.0 MB   | ###5       |  35% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | #3         |  13% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##9        |  29% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####2      |  43% [A[A[Amkl-2023.2.0         | 156.2 MB  | ##3        |  23% 
+
+pillow-10.3.0        | 40.0 MB   | ###5       |  36% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | #7         |  18% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ##9        |  30% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####3      |  44% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###6       |  36% [A[Amkl-2023.2.0         | 156.2 MB  | ##3        |  23% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ##2        |  23% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###        |  31% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####4      |  44% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###7       |  37% [A[Amkl-2023.2.0         | 156.2 MB  | ##3        |  24% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ##7        |  28% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###1       |  32% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####5      |  45% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###7       |  38% [A[Amkl-2023.2.0         | 156.2 MB  | ##3        |  24% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ###3       |  33% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###2       |  32% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####6      |  46% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###8       |  39% [A[Amkl-2023.2.0         | 156.2 MB  | ##4        |  24% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ###8       |  39% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###3       |  33% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####7      |  47% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###9       |  39% [A[Amkl-2023.2.0         | 156.2 MB  | ##4        |  25% 
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ####4      |  45% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###3       |  34% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####8      |  48% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ###9       |  40% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | #####      |  51% [A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##4        |  25% 
+libtorch-2.4.1       | 49.4 MB   | ###4       |  35% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####8      |  49% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####       |  41% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | #####6     |  57% [A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##5        |  25% 
+libtorch-2.4.1       | 49.4 MB   | ###5       |  35% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ####9      |  50% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####1      |  41% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ######3    |  63% [A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##5        |  25% 
+libtorch-2.4.1       | 49.4 MB   | ###6       |  36% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####      |  51% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####1      |  42% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ######9    |  69% [A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##5        |  26% 
+libtorch-2.4.1       | 49.4 MB   | ###6       |  37% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####1     |  52% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####2      |  43% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | #######5   |  76% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###7       |  38% [Amkl-2023.2.0         | 156.2 MB  | ##5        |  26% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #####2     |  53% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####3      |  43% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ########2  |  82% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###8       |  38% [Amkl-2023.2.0         | 156.2 MB  | ##5        |  26% 
+
+pillow-10.3.0        | 40.0 MB   | ####3      |  44% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####3     |  53% [A[A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ########8  |  88% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###9       |  39% [Amkl-2023.2.0         | 156.2 MB  | ##6        |  26% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #####4     |  54% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####4      |  45% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | #########4 |  95% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ###9       |  40% [Amkl-2023.2.0         | 156.2 MB  | ##6        |  26% 
+
+pillow-10.3.0        | 40.0 MB   | ####5      |  45% [A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####5     |  55% [A[A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ########## | 100% [A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ####       |  41% [Amkl-2023.2.0         | 156.2 MB  | ##6        |  27% 
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    |            |   0% [A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####6     |  56% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####6      |  46% [A[A
+
+
+
+
+
+
+libarrow-16.1.0      | 7.9 MB    | ########## | 100% [A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##6        |  27% 
+libtorch-2.4.1       | 49.4 MB   | ####1      |  42% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | 5          |   6% [A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####7     |  57% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####7      |  47% [A[Amkl-2023.2.0         | 156.2 MB  | ##7        |  27% 
+libtorch-2.4.1       | 49.4 MB   | ####2      |  42% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #1         |  11% [A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####7     |  58% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####7      |  48% [A[Amkl-2023.2.0         | 156.2 MB  | ##7        |  27% 
+libtorch-2.4.1       | 49.4 MB   | ####3      |  43% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #7         |  17% [A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #####8     |  59% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####8      |  49% [A[A
+libtorch-2.4.1       | 49.4 MB   | ####3      |  44% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ##2        |  23% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##7        |  28% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #####9     |  60% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ####9      |  49% [A[A
+libtorch-2.4.1       | 49.4 MB   | ####4      |  45% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ##8        |  29% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##7        |  28% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ######     |  61% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####      |  50% [A[A
+libtorch-2.4.1       | 49.4 MB   | ####5      |  46% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ###4       |  34% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##8        |  28% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ######1    |  62% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####      |  51% [A[A
+libtorch-2.4.1       | 49.4 MB   | ####6      |  46% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ####       |  41% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##8        |  28% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ######2    |  62% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####1     |  51% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ####6      |  47% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##8        |  29% 
+libtorch-2.4.1       | 49.4 MB   | ####7      |  47% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ######3    |  63% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####2     |  52% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #####2     |  53% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##8        |  29% 
+libtorch-2.4.1       | 49.4 MB   | ####7      |  48% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ######4    |  64% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####2     |  53% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #####8     |  59% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##9        |  29% 
+libtorch-2.4.1       | 49.4 MB   | ####8      |  49% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ######5    |  65% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####3     |  54% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ######5    |  65% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##9        |  29% 
+libtorch-2.4.1       | 49.4 MB   | ####9      |  49% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ######6    |  66% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####4     |  54% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #######1   |  71% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ##9        |  30% 
+libtorch-2.4.1       | 49.4 MB   | #####      |  50% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ######6    |  67% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####5     |  55% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #######7   |  78% [A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####1     |  51% [Amkl-2023.2.0         | 156.2 MB  | ##9        |  30% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ######7    |  68% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####5     |  56% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ########4  |  84% [A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####1     |  52% [Amkl-2023.2.0         | 156.2 MB  | ###        |  30% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ######8    |  69% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####6     |  57% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #########1 |  91% [A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####2     |  53% [Amkl-2023.2.0         | 156.2 MB  | ###        |  30% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ######9    |  70% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####7     |  57% [A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | #########8 |  98% [A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####3     |  53% [A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ########## | 100% [A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###        |  31% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #######    |  71% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####8     |  58% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    |            |   0% [A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####4     |  54% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######1   |  72% [A[A[Amkl-2023.2.0         | 156.2 MB  | ###        |  31% 
+
+pillow-10.3.0        | 40.0 MB   | #####8     |  59% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | #          |  10% [A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####5     |  55% [Amkl-2023.2.0         | 156.2 MB  | ###1       |  31% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #######2   |  73% [A[A[A
+
+
+
+
+
+
+
+libgrpc-1.62.2       | 7.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #####9     |  60% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | #9         |  20% [A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###1       |  31% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #######3   |  74% [A[A[A
+libtorch-2.4.1       | 49.4 MB   | #####5     |  56% [A
+
+pillow-10.3.0        | 40.0 MB   | ######     |  60% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ##9        |  30% [A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###1       |  32% 
+libtorch-2.4.1       | 49.4 MB   | #####6     |  57% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######4   |  75% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######1    |  61% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ####       |  41% [A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###1       |  32% 
+libtorch-2.4.1       | 49.4 MB   | #####7     |  57% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######5   |  76% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######1    |  62% [A[Amkl-2023.2.0         | 156.2 MB  | ###2       |  32% 
+libtorch-2.4.1       | 49.4 MB   | #####8     |  58% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######6   |  77% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######2    |  63% [A[Amkl-2023.2.0         | 156.2 MB  | ###2       |  33% 
+libtorch-2.4.1       | 49.4 MB   | #####9     |  59% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######7   |  78% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######3    |  64% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ####9      |  50% [A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###2       |  33% 
+libtorch-2.4.1       | 49.4 MB   | ######     |  60% [A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ######     |  61% [A[A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######8   |  79% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######4    |  65% [A[Amkl-2023.2.0         | 156.2 MB  | ###3       |  33% 
+libtorch-2.4.1       | 49.4 MB   | ######1    |  61% [A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | #######2   |  72% [A[A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #######9   |  80% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######5    |  65% [A[Amkl-2023.2.0         | 156.2 MB  | ###3       |  33% 
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ########5  |  85% [A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ######1    |  62% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########   |  81% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######6    |  66% [A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | #########9 |  99% [A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###3       |  34% 
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ######2    |  63% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########1  |  82% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######6    |  67% [A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###3       |  34% 
+libtorch-2.4.1       | 49.4 MB   | ######3    |  63% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########2  |  83% [A[A[A
+
+
+
+
+
+
+
+
+pyarrow-core-16.1.0  | 4.2 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######7    |  68% [A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | #1         |  11% [A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###4       |  34% 
+libtorch-2.4.1       | 49.4 MB   | ######4    |  64% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########3  |  84% [A[A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | ##4        |  24% [A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######8    |  68% [A[Amkl-2023.2.0         | 156.2 MB  | ###4       |  34% 
+libtorch-2.4.1       | 49.4 MB   | ######4    |  65% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########4  |  84% [A[A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | ###7       |  37% [A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######9    |  69% [A[Amkl-2023.2.0         | 156.2 MB  | ###4       |  35% 
+libtorch-2.4.1       | 49.4 MB   | ######5    |  66% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########5  |  85% [A[A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | #####1     |  52% [A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ######9    |  70% [A[A
+libtorch-2.4.1       | 49.4 MB   | ######6    |  67% [Amkl-2023.2.0         | 156.2 MB  | ###4       |  35% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ########6  |  86% [A[A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | ######6    |  67% [A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######    |  71% [A[A
+libtorch-2.4.1       | 49.4 MB   | ######7    |  67% [Amkl-2023.2.0         | 156.2 MB  | ###5       |  35% 
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | ########1  |  82% [A[A[A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########6  |  87% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######1   |  71% [A[A
+libtorch-2.4.1       | 49.4 MB   | ######7    |  68% [A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | #########9 |  99% [A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###5       |  35% 
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########7  |  88% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######2   |  72% [A[A
+libtorch-2.4.1       | 49.4 MB   | ######8    |  69% [Amkl-2023.2.0         | 156.2 MB  | ###5       |  36% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ########9  |  89% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######3   |  73% [A[A
+libtorch-2.4.1       | 49.4 MB   | ######9    |  70% [Amkl-2023.2.0         | 156.2 MB  | ###5       |  36% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #########  |  91% [A[A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######4   |  74% [A[A
+libtorch-2.4.1       | 49.4 MB   | #######    |  70% [A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | #6         |  16% [A[A[A[A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########1 |  92% [A[A[Amkl-2023.2.0         | 156.2 MB  | ###6       |  36% 
+
+pillow-10.3.0        | 40.0 MB   | #######5   |  75% [A[A
+
+
+
+
+
+
+
+
+
+aws-sdk-cpp-1.11.329 | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######1   |  71% [A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ###1       |  32% [A[A[A[A[A[A[A[A[A[A[A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########2 |  93% [A[A[Amkl-2023.2.0         | 156.2 MB  | ###6       |  36% 
+
+pillow-10.3.0        | 40.0 MB   | #######6   |  76% [A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ####8      |  49% [A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######1   |  72% [Amkl-2023.2.0         | 156.2 MB  | ###6       |  37% 
+
+
+pytorch-2.4.1        | 33.1 MB   | #########3 |  94% [A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######7   |  77% [A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ######5    |  65% [A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###6       |  37% 
+libtorch-2.4.1       | 49.4 MB   | #######2   |  73% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########4 |  95% [A[A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ########3  |  83% [A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######7   |  78% [A[Amkl-2023.2.0         | 156.2 MB  | ###7       |  37% 
+libtorch-2.4.1       | 49.4 MB   | #######3   |  73% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########5 |  96% [A[A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######8   |  79% [A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ###7       |  37% 
+libtorch-2.4.1       | 49.4 MB   | #######3   |  74% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########6 |  97% [A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | #8         |  18% [A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #######9   |  79% [A[Amkl-2023.2.0         | 156.2 MB  | ###7       |  38% 
+libtorch-2.4.1       | 49.4 MB   | #######4   |  75% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########7 |  98% [A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | ###5       |  36% [A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########   |  80% [A[Amkl-2023.2.0         | 156.2 MB  | ###7       |  38% 
+libtorch-2.4.1       | 49.4 MB   | #######5   |  75% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########8 |  98% [A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | #####3     |  54% [A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########   |  81% [A[Amkl-2023.2.0         | 156.2 MB  | ###8       |  38% 
+libtorch-2.4.1       | 49.4 MB   | #######5   |  76% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | #########9 |  99% [A[A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+transformers-4.43.4  | 3.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | #######2   |  73% [A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########1  |  81% [A[Amkl-2023.2.0         | 156.2 MB  | ###8       |  38% 
+libtorch-2.4.1       | 49.4 MB   | #######6   |  76% [A
+
+
+pytorch-2.4.1        | 33.1 MB   | ########## | 100% [A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | #########3 |  93% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########2  |  82% [A[Amkl-2023.2.0         | 156.2 MB  | ###8       |  39% 
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######7   |  77% [A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | #1         |  11% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########2  |  83% [A[Amkl-2023.2.0         | 156.2 MB  | ###8       |  39% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | #9         |  19% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######7   |  78% [A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ##2        |  22% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########3  |  84% [A[Amkl-2023.2.0         | 156.2 MB  | ###9       |  39% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | ###9       |  39% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######8   |  78% [A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ###2       |  33% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########4  |  84% [A[Amkl-2023.2.0         | 156.2 MB  | ###9       |  39% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | #####8     |  58% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######8   |  79% [A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ####3      |  43% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########5  |  85% [A[Amkl-2023.2.0         | 156.2 MB  | ###9       |  40% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | #######8   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #######9   |  80% [A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | #####3     |  53% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########5  |  86% [A[Amkl-2023.2.0         | 156.2 MB  | ###9       |  40% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | #########8 |  98% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########   |  80% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ######5    |  65% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########6  |  87% [A[Amkl-2023.2.0         | 156.2 MB  | ####       |  40% 
+libtorch-2.4.1       | 49.4 MB   | ########1  |  81% [A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | #######7   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########7  |  87% [A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ####       |  40% 
+libtorch-2.4.1       | 49.4 MB   | ########2  |  82% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    | #7         |  17% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ####       |  41% 
+
+pillow-10.3.0        | 40.0 MB   | ########8  |  88% [A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ########9  |  89% [A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########2  |  83% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    | ###5       |  35% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ####1      |  41% 
+
+pillow-10.3.0        | 40.0 MB   | ########8  |  89% [A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########3  |  84% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    | #####8     |  58% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########4  |  85% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    | #########6 |  96% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | ########9  |  90% [A[A
+libtorch-2.4.1       | 49.4 MB   | ########6  |  87% [Amkl-2023.2.0         | 156.2 MB  | ####1      |  41% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | #9         |  20% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20240116.2 | 1.2 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########8  |  88% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20240116.2 | 1.2 MB    | ####6      |  47% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+libprotobuf-4.25.3   | 2.7 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########  |  90% [A[Amkl-2023.2.0         | 156.2 MB  | ####1      |  42% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | ###8       |  39% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########9  |  89% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20240116.2 | 1.2 MB    | #########1 |  92% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+biopython-1.88       | 3.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | #####4     |  54% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########  |  91% [A[Amkl-2023.2.0         | 156.2 MB  | ####1      |  42% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20240116.2 | 1.2 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+libtorch-2.4.1       | 49.4 MB   | #########  |  90% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgoogle-cloud-2.24 | 1.2 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | #######4   |  75% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########1 |  91% [A[A
+libtorch-2.4.1       | 49.4 MB   | #########1 |  92% [Amkl-2023.2.0         | 156.2 MB  | ####1      |  42% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgoogle-cloud-2.24 | 1.2 MB    | ####1      |  42% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | #########2 |  93% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########1 |  92% [A[Amkl-2023.2.0         | 156.2 MB  | ####2      |  42% 
+libtorch-2.4.1       | 49.4 MB   | #########3 |  93% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgoogle-cloud-2.24 | 1.2 MB    | ########3  |  83% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########2 |  92% [A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ####2      |  42% 
+libtorch-2.4.1       | 49.4 MB   | #########4 |  94% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgoogle-cloud-2.24 | 1.2 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokenizers-0.19.1    | 2.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########3 |  93% [A[Amkl-2023.2.0         | 156.2 MB  | ####2      |  43% 
+libtorch-2.4.1       | 49.4 MB   | #########5 |  96% [A
+
+pillow-10.3.0        | 40.0 MB   | #########3 |  94% [A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ####2      |  43% 
+libtorch-2.4.1       | 49.4 MB   | #########7 |  97% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########4 |  94% [A[Amkl-2023.2.0         | 156.2 MB  | ####3      |  43% 
+libtorch-2.4.1       | 49.4 MB   | #########8 |  99% [A
+
+pillow-10.3.0        | 40.0 MB   | #########5 |  95% [A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ####3      |  43% 
+libtorch-2.4.1       | 49.4 MB   | #########9 | 100% [A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########5 |  96% [A[Amkl-2023.2.0         | 156.2 MB  | ####3      |  44% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+pillow-10.3.0        | 40.0 MB   | #########7 |  97% [A[Amkl-2023.2.0         | 156.2 MB  | ####4      |  44% 
+
+pillow-10.3.0        | 40.0 MB   | #########8 |  98% [A[Amkl-2023.2.0         | 156.2 MB  | ####4      |  45% 
+
+pillow-10.3.0        | 40.0 MB   | #########9 |  99% [A[Amkl-2023.2.0         | 156.2 MB  | ####5      |  45% mkl-2023.2.0         | 156.2 MB  | ####5      |  46% mkl-2023.2.0         | 156.2 MB  | ####6      |  47% mkl-2023.2.0         | 156.2 MB  | ####7      |  48% mkl-2023.2.0         | 156.2 MB  | ####8      |  48% mkl-2023.2.0         | 156.2 MB  | ####9      |  49% mkl-2023.2.0         | 156.2 MB  | ####9      |  50% 
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.63.0     | 2.9 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #####      |  51% mkl-2023.2.0         | 156.2 MB  | #####1     |  51% mkl-2023.2.0         | 156.2 MB  | #####2     |  52% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20240116.2 | 1.2 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #####2     |  53% 
+libtorch-2.4.1       | 49.4 MB   | ########## | 100% [Amkl-2023.2.0         | 156.2 MB  | #####3     |  54% mkl-2023.2.0         | 156.2 MB  | #####4     |  55% 
+
+pillow-10.3.0        | 40.0 MB   | ########## | 100% [A[Amkl-2023.2.0         | 156.2 MB  | #####5     |  55% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgoogle-cloud-2.24 | 1.2 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | #####6     |  56% mkl-2023.2.0         | 156.2 MB  | #####6     |  57% mkl-2023.2.0         | 156.2 MB  | #####7     |  58% mkl-2023.2.0         | 156.2 MB  | #####8     |  58% mkl-2023.2.0         | 156.2 MB  | #####9     |  59% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libhwloc-2.11.2      | 2.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ######     |  60% mkl-2023.2.0         | 156.2 MB  | ######1    |  61% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.2.0         | 156.2 MB  | ######2    |  62% mkl-2023.2.0         | 156.2 MB  | ######3    |  63% mkl-2023.2.0         | 156.2 MB  | ######4    |  64% mkl-2023.2.0         | 156.2 MB  | ######5    |  65% mkl-2023.2.0         | 156.2 MB  | ######6    |  67% mkl-2023.2.0         | 156.2 MB  | ######7    |  68% mkl-2023.2.0         | 156.2 MB  | ######8    |  69% mkl-2023.2.0         | 156.2 MB  | ######9    |  70% mkl-2023.2.0         | 156.2 MB  | #######1   |  71% mkl-2023.2.0         | 156.2 MB  | #######2   |  72% mkl-2023.2.0         | 156.2 MB  | #######3   |  73% mkl-2023.2.0         | 156.2 MB  | #######4   |  74% mkl-2023.2.0         | 156.2 MB  | #######5   |  75% mkl-2023.2.0         | 156.2 MB  | #######6   |  77% mkl-2023.2.0         | 156.2 MB  | #######7   |  78% mkl-2023.2.0         | 156.2 MB  | #######8   |  79% mkl-2023.2.0         | 156.2 MB  | #######9   |  80% mkl-2023.2.0         | 156.2 MB  | ########   |  81% mkl-2023.2.0         | 156.2 MB  | ########2  |  82% mkl-2023.2.0         | 156.2 MB  | ########3  |  83% mkl-2023.2.0         | 156.2 MB  | ########4  |  84% mkl-2023.2.0         | 156.2 MB  | ########5  |  85% mkl-2023.2.0         | 156.2 MB  | ########6  |  87% mkl-2023.2.0         | 156.2 MB  | ########7  |  88% mkl-2023.2.0         | 156.2 MB  | ########8  |  89% mkl-2023.2.0         | 156.2 MB  | ########9  |  90% mkl-2023.2.0         | 156.2 MB  | #########  |  91% mkl-2023.2.0         | 156.2 MB  | #########2 |  92% mkl-2023.2.0         | 156.2 MB  | #########3 |  93% mkl-2023.2.0         | 156.2 MB  | #########4 |  94% mkl-2023.2.0         | 156.2 MB  | #########5 |  95% mkl-2023.2.0         | 156.2 MB  | #########6 |  97% mkl-2023.2.0         | 156.2 MB  | #########7 |  98% mkl-2023.2.0         | 156.2 MB  | #########8 |  99% mkl-2023.2.0         | 156.2 MB  | #########9 | 100% 
+
+pillow-10.3.0        | 40.0 MB   | ########## | 100% [A[Amkl-2023.2.0         | 156.2 MB  | ########## | 100% 
+
+
+pytorch-2.4.1        | 33.1 MB   | ########## | 100% [A[A[A
+libtorch-2.4.1       | 49.4 MB   | ########## | 100% [Amkl-2023.2.0         | 156.2 MB  | ########## | 100% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A                                                     
+                                                     [A
+
+                                                     [A[A
+
+
+                                                     [A[A[A
+
+
+
+                                                     [A[A[A[A
+
+
+
+
+                                                     [A[A[A[A[A
+
+
+
+
+
+                                                     [A[A[A[A[A[A
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A done
+Preparing transaction: - \ | / - \ | done
+Verifying transaction: - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done
+Executing transaction: | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ done
+#
+# To activate this environment, use
+#
+#     $ conda activate vf_phabox
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
++ echo '### doğrulama'
+### doğrulama
++ /home/ali/miniconda3/bin/conda run -n virusforge diamond --version
+diamond version 2.2.5
++ /home/ali/miniconda3/bin/conda run -n vf_phabox phabox2 --help
++ head -3
+
+                                  [1m[96mPhaBOX v2.1.13[0m[0m                  
+               [1m[96mJiayu SHANG, Cheng Peng, and Yanni SUN Sep. 2025[0m[0m 
++ echo '### DONE'
+### DONE

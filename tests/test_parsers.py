@@ -61,11 +61,15 @@ def test_parse_mash_dedup_by_accession(tmp_path):
     assert hits[0]["mash_dist"] == 0.02
 
 
-def test_parse_pharokka(tmp_path):
+def test_parse_pharokka_sums_across_contigs(tmp_path):
+    # gerçek format: Description<TAB>Count<TAB>contig, contig başına satır
     p = tmp_path / "pharokka_cds_functions.tsv"
-    p.write_text("Description\tCount\nCDS\t70\ntRNAs\t2\ntail\t5\n")
+    p.write_text("Description\tCount\tcontig\n"
+                 "CDS\t60\tNODE_1\ntRNAs\t2\tNODE_1\ntail\t5\tNODE_1\n"
+                 "CDS\t2\tNODE_2\n")
     m = parse_pharokka(p)
-    assert m["cds"] == 70 and m["trna"] == 2 and m["functions"]["tail"] == 5
+    assert m["cds"] == 62          # 60 + 2 toplandı (son satır DEĞİL)
+    assert m["trna"] == 2 and m["functions"]["tail"] == 5
 
 
 def test_parse_phabox(tmp_path):

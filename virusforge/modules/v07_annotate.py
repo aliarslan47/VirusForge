@@ -10,7 +10,8 @@ from ..module import Context, Module, ModuleResult, Status, latest_genome, safe_
 
 
 def parse_pharokka(cds_functions_tsv) -> dict:
-    """pharokka_cds_functions.tsv iki sütun (Description<TAB>Count) — kategori sayıları."""
+    """pharokka_cds_functions.tsv: Description<TAB>Count<TAB>contig — CONTIG BAŞINA satır.
+    Kategorileri tüm contig'ler üzerinden TOPLA (son satırı almak yanlış: BacForge dersi)."""
     counts: dict = {}
     for line in Path(cds_functions_tsv).read_text().splitlines():
         parts = line.split("\t")
@@ -19,7 +20,7 @@ def parse_pharokka(cds_functions_tsv) -> dict:
             if key.lower() in ("description", ""):
                 continue
             try:
-                counts[key] = int(val)
+                counts[key] = counts.get(key, 0) + int(val)
             except ValueError:
                 pass
     return {
