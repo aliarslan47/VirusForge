@@ -1,0 +1,66 @@
+# Merkezi tool/DB metadata registry (doğrulanmış repo adresleri — tasarım Bölüm 6).
+# version_cmd: araç kuruluysa sürüm satırı; değilse detect_version None döner (uydurma YOK).
+fastqc:
+  repo: https://github.com/s-andrews/FastQC
+  version_cmd: ["fastqc", "--version"]
+fastp:
+  repo: https://github.com/OpenGene/fastp
+  version_cmd: ["fastp", "--version"]
+nanoplot:
+  repo: https://github.com/wdecoster/NanoPlot
+  version_cmd: ["NanoPlot", "--version"]
+filtlong:
+  repo: https://github.com/rrwick/Filtlong
+  version_cmd: ["filtlong", "--version"]
+multiqc:
+  repo: https://github.com/MultiQC/MultiQC
+  version_cmd: ["multiqc", "--version"]
+minimap2:
+  repo: https://github.com/lh3/minimap2
+  version_cmd: ["minimap2", "--version"]
+samtools:
+  repo: https://github.com/samtools/samtools
+  version_cmd: ["samtools", "--version"]
+spades:
+  repo: https://github.com/ablab/spades
+  version_cmd: ["spades.py", "--version"]
+flye:
+  repo: https://github.com/mikolmogorov/Flye
+  version_cmd: ["flye", "--version"]
+unicycler:
+  repo: https://github.com/rrwick/Unicycler
+  version_cmd: ["unicycler", "--version"]
+racon:
+  repo: https://github.com/lbcb-sci/racon
+  version_cmd: ["racon", "--version"]
+medaka:
+  repo: https://github.com/nanoporetech/medaka
+  version_cmd: ["medaka", "--version"]
+quast:
+  repo: https://github.com/ablab/quast
+  version_cmd: ["quast.py", "--version"]
+checkv:
+  repo: https://bitbucket.org/berkeleylab/checkv
+  version_cmd: ["checkv", "-h"]
+  doi: "10.1038/s41587-020-00774-7"
+genomad:
+  repo: https://github.com/apcamargo/genomad
+  version_cmd: ["genomad", "--version"]
+  doi: "10.1038/s41587-023-01953-y"
+mash:
+  repo: https://github.com/marbl/Mash
+  version_cmd: ["mash", "--version"]
+inphared:
+  repo: https://github.com/RyanCook94/inphared
+  note: "faj referans DB (Mash sketch)"
+pharokka:
+  repo: https://github.com/gbouras13/pharokka
+  version_cmd: ["pharokka.py", "--version"]
+  doi: "10.1093/bioinformatics/btac776"
+phold:
+  repo: https://github.com/gbouras13/phold
+  version_cmd: ["phold", "--version"]
+  doi: "10.1093/nar/gkaf1448"
+phabox:
+  repo: https://github.com/KennthShang/PhaBOX
+  version_cmd: ["phabox2", "--version"]

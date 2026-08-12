@@ -1,0 +1,43 @@
+# VirusForge varsayılan config. Kullanıcı config'i bunu derin-merge ile ezer.
+general:
+  threads: 8
+  memory_gb: 32
+  mode: auto            # auto | short | long | hybrid | assembly  (override)
+  keep_native: true
+
+detect:
+  short_max_len: 500    # ortalama read uzunluğu bu altındaysa short adayı
+  long_min_len: 1000    # bu üstündeyse long adayı
+
+tools:
+  fastp:
+    extra_args: ""
+  filtlong:
+    min_length: 1000
+    keep_percent: 90
+  spades:
+    careful: true
+  flye:
+    # kimya header'dan; override: r9 | r10 | none
+    chemistry: auto
+  medaka:
+    model: auto         # kimyaya göre; override edilebilir
+  unicycler:
+    mode: normal
+  genomad:
+    db: databases/genomad
+  mash:
+    inphared_sketch: databases/inphared/inphared.msh
+  pharokka:
+    db: databases/pharokka
+  checkv:
+    db: databases/checkv
+  phabox:
+    db: databases/phabox
+
+optional:                # default kapalı (tasarım kararı)
+  virsorter2: false
+  vibrant: false
+  sourmash: false
+  phold: false
+  kraken2: false

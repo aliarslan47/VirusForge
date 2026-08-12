@@ -1,16 +1,29 @@
-# R
+# R (legacy)
 .Rhistory
 .RData
-.Rproj.user/
-.Renviron
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
 
 # Pipeline outputs
+runs/
+databases/
 results/
 *.png
 *.csv
 *.rds
 
-# Data (genomlar depoya girmez)
+# Data (genomlar/örnekler depoya girmez)
+samples/*/
+*.fastq
+*.fastq.gz
+*.fq.gz
 *.fasta
 *.fa
 *.fna
@@ -19,6 +32,10 @@ results/
 *.gb
 *.gbk
 *.gbff
+*.bam
+*.bai
+*.vcf
+*.vcf.gz
 
 # OS
 .DS_Store

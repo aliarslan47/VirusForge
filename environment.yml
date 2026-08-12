@@ -1,0 +1,41 @@
+# VirusForge runtime conda env — AYRI env (BacForge'dan izole)
+# Kurulum: conda env create -f environment.yml && conda activate virusforge
+# NOT: PhaBOX pip ile ayrı kurulur (aşağıda not); CheckV/geNomad/Pharokka DB'leri setup/ ile indirilir.
+name: virusforge
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pyyaml
+  - pytest
+  # V01 QC
+  - fastqc
+  - fastp
+  - nanoplot
+  - filtlong
+  - multiqc
+  # V02 host removal (opsiyonel)
+  - minimap2
+  - bowtie2
+  - samtools
+  # V03 assembly
+  - spades
+  - flye
+  - unicycler
+  # V04 polishing + quality
+  - racon
+  - medaka
+  - quast
+  - checkv
+  # V05 identification
+  - genomad
+  # V06 taxonomy
+  - mash
+  # V07 annotation
+  - pharokka
+  - pip:
+      # V08 phage characterization (bioconda'da güncel olmayabilir → pip)
+      - phabox

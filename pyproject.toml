@@ -1,0 +1,22 @@
+[project]
+name = "virusforge"
+version = "0.1.0"
+description = "VirusForge — RNA+DNA viral/phage genome bioinformatics platform"
+requires-python = ">=3.11"
+dependencies = ["pyyaml"]
+
+[project.scripts]
+virusforge = "virusforge.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["virusforge*"]
+
+[tool.setuptools.package-data]
+virusforge = ["data/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
