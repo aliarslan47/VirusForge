@@ -40,3 +40,7 @@ samples/*/
 # OS
 .DS_Store
 Thumbs.db
+
+# setup/run logları ve geçici scriptler
+*.log
+setup/_*.sh
