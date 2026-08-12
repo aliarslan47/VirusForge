@@ -1,0 +1,59 @@
+"""V07 — Genome Annotation (Pharokka; PHANOTATE/Prodigal-gv/tRNAscan-SE içeride)."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from .. import tools
+from ..config import get
+from ..module import Context, Module, ModuleResult, Status, latest_genome, safe_run
+
+
+def parse_pharokka(cds_functions_tsv) -> dict:
+    """pharokka_cds_functions.tsv iki sütun (Description<TAB>Count) — kategori sayıları."""
+    counts: dict = {}
+    for line in Path(cds_functions_tsv).read_text().splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 2:
+            key, val = parts[0].strip(), parts[1].strip()
+            if key.lower() in ("description", ""):
+                continue
+            try:
+                counts[key] = int(val)
+            except ValueError:
+                pass
+    return {
+        "cds": counts.get("CDS"),
+        "trna": counts.get("tRNAs") or counts.get("tRNA"),
+        "functions": counts,
+    }
+
+
+class V07Annotate(Module):
+    name = "Genome Annotation"
+    code = "V07"
+    dirname = "V07_GENOME_ANNOTATION"
+
+    def run(self, ctx: Context) -> ModuleResult:
+        dirs = self.make_dirs(ctx.run_dir)
+        genome = latest_genome(ctx)
+        if not genome:
+            m = {"error": "girdi genom bulunamadı"}
+            return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
+
+        db = get(ctx.cfg, "tools.pharokka.db", "databases/pharokka")
+        out = dirs["03_native_outputs"] / "pharokka"
+        err = safe_run(tools.pharokka_cmd(genome, out, db, get(ctx.cfg, "general.threads", 8)),
+                       dirs["07_logs"] / "pharokka.log")
+        cds_fn = out / "pharokka_cds_functions.tsv"
+        if not err and cds_fn.exists():
+            metrics = parse_pharokka(cds_fn)
+            metrics["identifier_integrity"] = "locus_tag/gene/product/protein_id ayrı; bilinmeyen product=NULL"
+            status = Status.PASS
+        else:
+            metrics = {"error": err or "Pharokka çıktısı bulunamadı"}
+            status = Status.WARNING
+        (dirs["04_standardized"] / "annotation_summary.json").write_text(
+            json.dumps(metrics, indent=2, ensure_ascii=False))
+        ctx.results[self.code] = metrics
+        return ModuleResult(status, self.write_summary(ctx.run_dir, status, metrics), metrics)

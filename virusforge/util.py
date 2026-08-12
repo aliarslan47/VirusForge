@@ -30,7 +30,10 @@ def sha256(path: str | Path) -> str:
 def run_cmd(cmd: list[str], cwd: str | Path | None = None,
             log_path: str | Path | None = None) -> subprocess.CompletedProcess:
     """Komutu çalıştır; stdout/stderr'i log'a yaz; hata olursa YÜKSEK SESLE fırlat."""
-    proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+    try:
+        proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+    except FileNotFoundError:
+        raise RuntimeError(f"araç bulunamadı (kurulu değil?): {cmd[0]}")
     if log_path:
         Path(log_path).write_text(
             f"$ {' '.join(cmd)}\n\n[STDOUT]\n{proc.stdout}\n\n[STDERR]\n{proc.stderr}\n"
@@ -40,6 +43,25 @@ def run_cmd(cmd: list[str], cwd: str | Path | None = None,
             f"Komut başarısız (exit {proc.returncode}): {' '.join(cmd)}\n{proc.stderr[-2000:]}"
         )
     return proc
+
+
+def run_redirect(cmd: list[str], out_path: str | Path,
+                 log_path: str | Path | None = None) -> None:
+    """Komutu çalıştır, stdout'u out_path'e yaz (filtlong/mash dist gibi)."""
+    try:
+        with open(out_path, "wb") as out:
+            proc = subprocess.run(cmd, stdout=out, stderr=subprocess.PIPE)
+    except FileNotFoundError:
+        raise RuntimeError(f"araç bulunamadı (kurulu değil?): {cmd[0]}")
+    if log_path:
+        Path(log_path).write_text(
+            f"$ {' '.join(cmd)} > {out_path}\n\n[STDERR]\n{proc.stderr.decode(errors='replace')}\n"
+        )
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"Komut başarısız (exit {proc.returncode}): {' '.join(cmd)}\n"
+            f"{proc.stderr.decode(errors='replace')[-2000:]}"
+        )
 
 
 def _is_fastq(p: Path) -> bool:

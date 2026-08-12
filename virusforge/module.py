@@ -8,6 +8,26 @@ from pathlib import Path
 
 from . import util
 
+
+def latest_genome(ctx: "Context") -> Path | None:
+    """En güncel genom dosyası (V04 cilalı > V03 draft)."""
+    for code in ("V04", "V03"):
+        art = ctx.artifacts.get(code, {})
+        for key in ("genome", "draft"):
+            g = art.get(key)
+            if g and Path(g).exists():
+                return Path(g)
+    return None
+
+
+def safe_run(cmd: list[str], log_path) -> str | None:
+    """Komutu çalıştır; başarılıysa None, hata olursa hata mesajı döndür (yüksek sesle kaydeder)."""
+    try:
+        util.run_cmd(cmd, log_path=log_path)
+        return None
+    except RuntimeError as exc:
+        return str(exc)
+
 # Standart 8 alt-klasör (tasarım dokümanı Bölüm 3.2)
 STANDARD_DIRS = (
     "01_input", "02_work", "03_native_outputs", "04_standardized",
