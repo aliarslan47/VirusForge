@@ -1,40 +1,23 @@
 # VirusForge
 
-> Forge ailesinin virüs/faj üyesi — [BacForge] (bakteri) ve [RNAForge] (RNA-seq) ile aynı çizgide, hafif ve dış-araç gerektirmeyen bir karşılaştırmalı genomik aracı.
+> Forge ailesinin virüs/faj üyesi — **RNA ve DNA virüslerinin** (izole virüs + bakteriyofaj) tam genom biyoinformatiğini uçtan uca yapan modüler platform. Kardeşler: [BacForge] (bakteri), [Vaxforge].
 
----
+## Ne yapar
 
-**TR:**
-VirusForge, iki faj/virüs genom seti arasındaki gen dizisi karşılaştırmalarını kolaylaştırmak için hazırlanmış hafif bir R pipeline'ıdır.
-Pipeline, gen kümelerini (clusters) ve farklı okuma çerçevelerindeki (reading frames) amino asit dizilerini analiz eder, istatistiksel özetler çıkarır ve benzersiz "anchor" noktalarını tespit eder.
-Amaç, hızlı ve küçük ölçekli faj karşılaştırma çalışmaları için pratik bir çözüm sunmaktır. **BLAST/minimap2 gibi dış araç gerektirmez.**
+Short-read / long-read / hybrid / hazır assembly girdilerini otomatik tanır; V00–V19 modülleriyle: QC → assembly → viral tamlık → identification → taksonomi → annotation → (faj ise) karakterizasyon/host/lifestyle → varyant/quasispecies (RNA) → karşılaştırmalı genomik → filogenomik → rapor. Bakteriyofaj tespit edilirse phage-specific modüller **ek** olarak devreye girer; RNA virüslerinde reference-based/consensus + varyant yolu aktifleşir.
 
-**ENG:**
-VirusForge is a lightweight R pipeline designed to facilitate gene sequence comparisons between two different phage/virus genome sets.
-The pipeline analyzes gene clusters and amino acid sequences in different reading frames, generates statistical summaries, and detects unique "anchor" points.
-It provides a practical solution for quick, small-scale phage comparison studies. **No external tools (BLAST/minimap2) required.**
+- **Dürüstlük:** sahte/sabit sonuç yok, uydurma DOI yok, tool uyuşmazlığı gizlenmez. Durumlar: `PASS/WARNING/FAIL/NOT_APPLICABLE/SKIPPED`.
+- **İzlenebilirlik:** her sonuç tool+DB sürümü ve parametreleriyle yeniden üretilebilir (provenance zinciri).
+- **İzolasyon:** BacForge deseniyle aynı çizgide ama tamamen ayrı paket/env/kurulum.
 
----
+## Durum
 
-## Şu an ne yapıyor (mevcut mini-pipeline)
+Tasarım aşaması. Bkz. **[docs/2026-08-12-virusforge-design.md](docs/2026-08-12-virusforge-design.md)** (mimari + doğrulanmış tool registry + milestone planı) ve **[DURUM.md](DURUM.md)**.
 
-Girdi: iki genom için FASTA + GFF (GenBank opsiyonel). Çıktı: `results/` altında tablolar ve görseller.
+## Milestone'lar
 
-1. **Temel istatistikler** — genom uzunluğu, GC%, CDS/gene/tRNA sayıları
-2. **QC barplot'lar** — uzunluk, GC, CDS/tRNA
-3. **Circular haritalar** — CDS, GC%, kümülatif GC-skew (circlize)
-4. **Alignment-free k-mer (K=6) kosinüs benzerliği**
-5. **Product-bazlı Jaccard** (GFF/GB annotasyonundan)
-6. **6-çerçeve AA 5-mer anchor + genoPlotR synteny** (BLAST'sız)
+- **M1** — DNA/faj çekirdek, 3 okuma tipi (short+long+hybrid): V00–V08 + V19.
+- **M2** — RNA-virüs yolu (rnaviralSPAdes/iVar, VADR, iVar+LoFreq) + zenginleştirme (V09–V13).
+- **M3** — karşılaştırmalı/filo/görsel (V15–V18) + metavirome + plugin lineage.
 
-## Gereken R paketleri
-
-`Biostrings`, `rtracklayer`, `seqinr`, `genoPlotR`, `circlize`, `tidyverse`
-
-## Çalıştırma
-
-`Phage Genome Comparison Tool.R` içindeki `data_dir` yolunu kendi FASTA/GFF klasörüne göre ayarlayıp betiği çalıştır.
-
----
-
-*Lisans: bkz. [LICENSE](LICENSE)*
+*Lisans: [LICENSE](LICENSE)*
