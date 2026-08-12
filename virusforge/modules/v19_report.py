@@ -52,7 +52,7 @@ class V19Report(Module):
         }
         (dirs["04_standardized"] / "report.json").write_text(
             json.dumps(report, indent=2, ensure_ascii=False))
-        (run_dir / "report.html").write_text(render_html(report))
+        (run_dir / "report.html").write_text(render_html(report, run_dir=run_dir))
         (run_dir / "provenance.json").write_text(
             json.dumps(provenance, indent=2, ensure_ascii=False))
 

@@ -1,137 +1,320 @@
-"""VirusForge HTML rapor motoru (BacForge-tarzı: şema + numaralı tablolar + araç/DOI + referanslar).
-Bağımsız (üçüncü-taraf native formata bağımlı değil). Gerçek veri; uydurma yok."""
+"""VirusForge profesyonel HTML rapor motoru (BacForge deseni uygulanmış).
+
+Numaralı Table N. / Figure N. başlıkları, amaca-özel tablolar (jenerik döküm değil),
+kart-CSS, pipeline akış şeması, veriden üretilen inline SVG grafikler, araç+DOI referansları.
+Bağımsız (üçüncü-taraf native formata bağımlı değil). Gerçek veri; uydurma yok.
+"""
 from __future__ import annotations
 
+import base64
 import html
 from datetime import datetime
+from pathlib import Path
 
 from .. import registry
 from .references import PIPELINE_STEPS, TOOL_REFERENCES
 
 _STATUS_COLOR = {
-    "PASS": "#2C7BB6", "WARNING": "#E8A33D", "FAIL": "#D7191C",
-    "NOT_APPLICABLE": "#888", "SKIPPED": "#bbb",
+    "PASS": "#2e9e6b", "WARNING": "#d99a2b", "FAIL": "#c62828",
+    "NOT_APPLICABLE": "#8a949e", "SKIPPED": "#b7c0c8",
 }
 
 _CSS = """
-body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;color:#1a1a1a;background:#fff;line-height:1.5}
-.wrap{max-width:1080px;margin:0 auto;padding:2rem}
-h1{font-size:1.8rem;margin:0 0 .3rem;border-bottom:3px solid #2C7BB6;padding-bottom:.5rem}
-h2{font-size:1.25rem;margin:2rem 0 .6rem;color:#0b3d61}
-.sub{color:#555;margin:.2rem 0 1.2rem}
-.badge{color:#fff;padding:.12rem .5rem;border-radius:4px;font-size:.78rem;font-weight:600;white-space:nowrap}
-table{border-collapse:collapse;width:100%;margin:.5rem 0 1rem;font-size:.9rem}
-th,td{border:1px solid #dde;padding:.4rem .6rem;text-align:left;vertical-align:top}
-th{background:#f2f6fa}
-.flow{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:1rem 0}
-.node{border:2px solid #ccc;border-radius:8px;padding:.4rem .6rem;font-size:.82rem;min-width:80px}
-.arrow{color:#999}
-.cap{font-size:.82rem;color:#666;margin:.2rem 0 1rem;font-style:italic}
-.mono{font-family:ui-monospace,monospace;font-size:.85rem}
-a{color:#2C7BB6}
-.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin:1rem 0}
-.card{border:1px solid #e0e6ee;border-radius:8px;padding:.6rem}
-.card .c{font-weight:600;font-size:.85rem}
+:root{--bg:#f6f7f9;--card:#fff;--bd:#e2e6ea;--pri:#0d6b8f;--pri2:#0d8f86;--tx:#14181d;--mut:#6b7682}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);margin:0;padding:32px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto}
+header{border-bottom:3px solid var(--pri);padding-bottom:16px;margin-bottom:22px}
+h1{color:var(--pri);margin:0 0 6px;font-size:26px;letter-spacing:-.3px}
+.sub{color:var(--mut);font-size:13px;margin:0}
+.sub b{color:var(--tx)}
+section{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:18px 22px;margin-bottom:16px}
+h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd);padding-bottom:8px}
+.mc{font-family:ui-monospace,monospace;font-weight:700;color:var(--pri);background:#eef4f6;padding:2px 7px;border-radius:6px;font-size:13px}
+.badge{margin-left:auto;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;font-family:ui-monospace,monospace;letter-spacing:.3px}
+.cap{font-weight:600;font-size:12.5px;margin:14px 0 5px;color:var(--tx)}
+.cap:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse;margin-bottom:4px}
+th,td{text-align:left;padding:7px 11px;border-bottom:1px solid var(--bd);font-size:12.5px;font-variant-numeric:tabular-nums}
+th{background:#eef4f6;color:var(--pri);font-weight:600}
+tbody tr:hover{background:#fafcfd}
+a{color:var(--pri);text-decoration:none}a:hover{text-decoration:underline}
+.na{color:var(--mut);font-style:italic;font-size:12.5px}
+.note{color:var(--mut);font-size:11.5px;margin-top:8px}
+.mono{font-family:ui-monospace,monospace}
+.kv{font-weight:700}
+figure{margin:12px 0;text-align:center}
+figcaption{font-size:12.5px;color:var(--tx);font-weight:600;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:4px}
+.stat{border:1px solid var(--bd);border-radius:9px;padding:11px 13px;background:#fbfcfd}
+.stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+.stat .v{font-size:19px;font-weight:700;margin-top:3px;color:var(--tx)}
+.stat .u{font-size:12px;color:var(--mut);font-weight:500}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;justify-content:center;margin:8px 0}
+.fnode{border:2px solid var(--bd);border-radius:9px;padding:8px 10px;min-width:96px;text-align:center;background:#fbfcfd}
+.fnode .c{font-family:ui-monospace,monospace;font-weight:700;font-size:12px}
+.fnode .n{font-size:10.5px;color:var(--mut);margin-top:2px;line-height:1.25}
+.farrow{align-self:center;color:#b7c0c8;font-size:15px}
 """
 
 
-def _esc(x) -> str:
-    return html.escape(str(x))
+def _esc(v) -> str:
+    return html.escape(str(v)) if v is not None else "&mdash;"
 
 
-def _metrics_table(metrics: dict) -> str:
-    if not metrics:
-        return "<p class='cap'>Veri yok.</p>"
-    rows = []
-    for k, v in metrics.items():
-        if isinstance(v, dict):
-            inner = "".join(
-                f"<tr><td class='mono'>{_esc(ik)}</td><td>{_esc(iv)}</td></tr>"
-                for ik, iv in v.items())
-            val = f"<table>{inner}</table>" if inner else "—"
-        elif isinstance(v, list):
-            if v and isinstance(v[0], dict):
-                cols = list(v[0].keys())
-                head = "".join(f"<th>{_esc(c)}</th>" for c in cols)
-                body = "".join(
-                    "<tr>" + "".join(f"<td>{_esc(r.get(c,''))}</td>" for c in cols) + "</tr>"
-                    for r in v[:15])
-                val = f"<table><tr>{head}</tr>{body}</table>"
-            else:
-                val = ", ".join(_esc(x) for x in v[:20])
-        else:
-            val = _esc(v)
-        rows.append(f"<tr><td class='mono'>{_esc(k)}</td><td>{val}</td></tr>")
-    return f"<table><tr><th>alan</th><th>değer</th></tr>{''.join(rows)}</table>"
-
-
-def _badge(status: str) -> str:
+def _pill(status: str) -> str:
     c = _STATUS_COLOR.get(status, "#333")
     return f"<span class='badge' style='background:{c}'>{_esc(status)}</span>"
 
 
-def render_html(report: dict) -> str:
-    mods = {m.get("code"): m for m in report.get("modules", [])}
+def _svg_hbar(pairs, unit="", color="#0d8f86", max_rows=12):
+    """Veriden yatay bar grafiği (bağımsız inline SVG)."""
+    pairs = [(l, v) for l, v in pairs if isinstance(v, (int, float)) and v > 0][:max_rows]
+    if not pairs:
+        return "<p class='na'>Grafik için pozitif veri yok.</p>"
+    vmax = max(v for _, v in pairs)
+    row_h, w, lblw = 22, 620, 250
+    barw = w - lblw - 60
+    h = row_h * len(pairs) + 10
+    out = [f"<svg viewBox='0 0 {w} {h}' width='100%' style='max-width:{w}px' font-family='system-ui' font-size='11.5'>"]
+    for i, (lbl, v) in enumerate(pairs):
+        y = i * row_h + 5
+        bw = max(2, int(barw * v / vmax))
+        out.append(f"<text x='{lblw-8}' y='{y+13}' text-anchor='end' fill='#14181d'>{_esc(lbl)[:38]}</text>")
+        out.append(f"<rect x='{lblw}' y='{y+3}' width='{bw}' height='{row_h-9}' rx='3' fill='{color}'/>")
+        out.append(f"<text x='{lblw+bw+6}' y='{y+13}' fill='#6b7682'>{_esc(round(v,4))}{_esc(unit)}</text>")
+    out.append("</svg>")
+    return "".join(out)
+
+
+def _img_b64(path: Path):
     try:
-        date = datetime.now().strftime("%Y-%m-%d %H:%M")
+        if path.exists() and path.stat().st_size > 0:
+            return base64.b64encode(path.read_bytes()).decode("ascii")
+    except Exception:
+        pass
+    return None
+
+
+def render_html(report: dict, run_dir=None) -> str:
+    mods = {m.get("code"): m for m in report.get("modules", [])}
+    M = {c: (mods.get(c, {}) or {}).get("metrics", {}) or {} for c, _n, _t in PIPELINE_STEPS}
+    try:
+        date = datetime.now().strftime("%d %B %Y, %H:%M")
     except Exception:
         date = ""
 
+    counters = {"t": 0, "f": 0}
+
+    def table(caption, headers, rows):
+        counters["t"] += 1
+        n = counters["t"]
+        if not rows:
+            return (f"<div class='cap'>Tablo {n}. {_esc(caption)}</div>"
+                    f"<p class='na'>Veri yok / analiz uygulanmadı.</p>")
+        head = "".join(f"<th>{_esc(h)}</th>" for h in headers)
+        body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
+        return (f"<div class='cap'>Tablo {n}. {_esc(caption)}</div>"
+                f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>")
+
+    def figure(caption, inner):
+        counters["f"] += 1
+        n = counters["f"]
+        return f"<figure>{inner}<figcaption>Şekil {n}. {_esc(caption)}</figcaption></figure>"
+
+    def figs_for(code, caption):
+        """Modülün 06_visualization/ altındaki PNG'leri gömer."""
+        if not run_dir:
+            return ""
+        out = ""
+        for png in sorted(Path(run_dir).glob(f"{code}_*/06_visualization/*.png")):
+            b64 = _img_b64(png)
+            if b64:
+                out += figure(caption, f"<img src='data:image/png;base64,{b64}' "
+                                       "style='max-width:100%;border:1px solid var(--bd);border-radius:8px'/>")
+        return out
+
     p = [f"<style>{_CSS}</style>", "<div class='wrap'>"]
-    p.append("<h1>VirusForge — Viral/Faj Genom Analiz Raporu</h1>")
-    p.append(f"<p class='sub'>Örnek: <b>{_esc(report.get('sample',''))}</b> · "
-             f"Mod: <b>{_esc(report.get('mode',''))}</b> · "
-             f"Run: <span class='mono'>{_esc(report.get('run_id',''))}</span> · {date}</p>")
 
-    # Özet kartlar
-    p.append("<h2>Özet</h2><div class='summary-grid'>")
-    for code, name, _tool in PIPELINE_STEPS:
-        st = mods.get(code, {}).get("status", "SKIPPED")
-        p.append(f"<div class='card'><div class='c'>{code}</div>"
-                 f"<div style='font-size:.78rem;color:#555;margin:.2rem 0'>{_esc(name)}</div>"
-                 f"{_badge(st)}</div>")
-    p.append("</div>")
+    # ---------- Header ----------
+    p.append("<header><h1>VirusForge — Viral / Faj Genom Analiz Raporu</h1>"
+             f"<p class='sub'>Örnek: <b>{_esc(report.get('sample',''))}</b> &nbsp;·&nbsp; "
+             f"Sekans tipi: <b>{_esc(report.get('mode',''))}</b> &nbsp;·&nbsp; "
+             f"Run: <span class='mono'>{_esc(report.get('run_id',''))}</span> &nbsp;·&nbsp; {date}</p></header>")
 
-    # Figure 1: pipeline akış şeması
-    p.append("<h2>Figure 1 — Pipeline Akış Şeması</h2><div class='flow'>")
-    for i, (code, name, _tool) in enumerate(PIPELINE_STEPS):
-        st = mods.get(code, {}).get("status", "SKIPPED")
-        col = _STATUS_COLOR.get(st, "#ccc")
-        p.append(f"<div class='node' style='border-color:{col}'>"
-                 f"<b>{code}</b><br><span style='font-size:.72rem'>{_esc(name)}</span></div>")
-        if i < len(PIPELINE_STEPS) - 1:
-            p.append("<span class='arrow'>→</span>")
-    p.append("</div><p class='cap'>Figure 1. Modül akışı; renk = durum (mavi PASS, turuncu WARNING, kırmızı FAIL, gri N/A).</p>")
+    # ---------- Genel Bakış (executive summary) ----------
+    q, cv = M["V04"].get("quast", {}), M["V04"].get("checkv", {})
+    v6 = (M["V06"].get("closest_10") or [{}])[0]
+    v8l, v8t = M["V08"].get("lifestyle", {}), M["V08"].get("taxonomy", {})
+    lineage = v8t.get("Lineage", "") or M["V05"].get("taxonomy", "")
+    subfam = lineage.split("subfamily:")[-1].split(";")[0] if "subfamily:" in lineage else ""
 
-    # Numaralı modül bölümleri
-    tn = 0
-    for code, name, tool in PIPELINE_STEPS:
-        if code == "V19":
-            continue
-        m = mods.get(code)
-        if not m:
-            continue
-        tn += 1
-        p.append(f"<h2>{code} — {_esc(name)} {_badge(m.get('status',''))}</h2>")
-        p.append(f"<p class='cap'>Araç: {_esc(tool)}</p>")
-        p.append(f"<p class='cap'>Table {tn}. {code} standardize metrikler.</p>")
-        p.append(_metrics_table(m.get("metrics", {})))
+    def stat(label, val, unit=""):
+        return (f"<div class='stat'><div class='l'>{_esc(label)}</div>"
+                f"<div class='v'>{_esc(val)}<span class='u'> {_esc(unit)}</span></div></div>")
 
-    # Araç & sürüm & referans tablosu (gerçek sürümler)
-    p.append("<h2>Araçlar, Sürümler ve Bilimsel Referanslar</h2>")
-    p.append("<table><tr><th>Araç</th><th>Sürüm (tespit edilen)</th><th>Amaç</th><th>Repo</th><th>DOI</th></tr>")
+    cards = [
+        stat("Genom uzunluğu", q.get("total_length", "—"), "bp"),
+        stat("Contig", q.get("contigs", "—")),
+        stat("Tamlık (CheckV)", cv.get("completeness", "—"), "%"),
+        stat("Kontaminasyon", cv.get("contamination", "—"), "%"),
+        stat("Gen (CDS)", M["V07"].get("cds", "—")),
+        stat("Yaşam tarzı", v8l.get("TYPE", "—")),
+    ]
+    overview_rows = [
+        ["Örnek", _esc(report.get("sample", ""))],
+        ["Sekans tipi", _esc(report.get("mode", ""))],
+        ["Viral doğrulama (geNomad)", f"{_esc(M['V05'].get('is_viral'))} · skor {_esc(M['V05'].get('top_score'))}"],
+        ["Taksonomi", f"<span class='mono'>{_esc(M['V05'].get('taxonomy',''))}</span>"],
+        ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
+        ["En yakın referans (Mash)", f"{_esc(v6.get('accession','—'))} · mesafe {_esc(v6.get('mash_dist','—'))}"],
+        ["Yaşam tarzı (PhaTYP)", f"{_esc(v8l.get('TYPE','—'))} · skor {_esc(v8l.get('PhaTYPScore','—'))}"],
+        ["Genom kalitesi (CheckV)", f"{_esc(cv.get('checkv_quality','—'))} · {_esc(cv.get('completeness','—'))}% tam"],
+    ]
+    p.append("<section><h2>Genel Bakış</h2>"
+             f"<div class='grid'>{''.join(cards)}</div>"
+             + table("Analiz özeti — temel bulgular", ["Alan", "Değer"], overview_rows)
+             + "</section>")
+
+    # ---------- Figure 1: pipeline akış şeması ----------
+    flow = []
+    steps = PIPELINE_STEPS
+    for i, (code, name, _tool) in enumerate(steps):
+        stt = mods.get(code, {}).get("status", "SKIPPED")
+        col = _STATUS_COLOR.get(stt, "#b7c0c8")
+        flow.append(f"<div class='fnode' style='border-color:{col}'>"
+                    f"<div class='c'>{code}</div><div class='n'>{_esc(name)}</div></div>")
+        if i < len(steps) - 1:
+            flow.append("<span class='farrow'>→</span>")
+    p.append("<section><h2>Pipeline</h2>"
+             + figure("VirusForge modül akışı ve modül durumları (yeşil=PASS, turuncu=WARNING, kırmızı=FAIL, gri=N/A).",
+                      f"<div class='flow'>{''.join(flow)}</div>") + "</section>")
+
+    # ---------- Modül bölümleri (amaca-özel tablolar) ----------
+    def section(code, name, body):
+        stt = mods.get(code, {}).get("status", "SKIPPED")
+        return (f"<section><h2><span class='mc'>{code}</span> {_esc(name)} {_pill(stt)}</h2>{body}</section>")
+
+    # V00
+    ev = M["V00"].get("evidence", {})
+    p.append(section("V00", "Input & Otomatik Tespit",
+        table("Girdi tespiti", ["Alan", "Değer"], [
+            ["Belirlenen sekans tipi", _esc(M["V00"].get("mode", ""))],
+            ["Ortalama okuma uzunluğu", f"{_esc(ev.get('short_mean_len', ev.get('long_mean_len','—')))} bp"],
+            ["Karar kaynağı", _esc(ev.get("source", "—"))],
+        ])))
+
+    # V01
+    sh = M["V01"].get("short", {})
+    v01rows = []
+    if sh:
+        ret = ""
+        if sh.get("raw_reads") and sh.get("clean_reads"):
+            ret = f"{100*sh['clean_reads']/sh['raw_reads']:.1f}"
+        v01rows = [
+            ["Ham okuma", _esc(sh.get("raw_reads"))],
+            ["Temiz okuma", _esc(sh.get("clean_reads"))],
+            ["Tutulma oranı", f"{ret} %" if ret else "—"],
+            ["Q30 oranı", f"{100*sh['q30_rate']:.1f} %" if sh.get("q30_rate") else "—"],
+            ["GC içeriği", f"{100*sh['gc_content']:.1f} %" if sh.get("gc_content") else "—"],
+        ]
+    lo = M["V01"].get("long", {})
+    if lo:
+        v01rows += [["Uzun-okuma ort. uzunluk", f"{_esc(lo.get('mean_len'))} bp"],
+                    ["Uzun-okuma N50", _esc(lo.get("read_n50"))]]
+    p.append(section("V01", "Okuma Kalitesi & Ön-İşleme (fastp)",
+        table("Okuma kalite metrikleri", ["Metrik", "Değer"], v01rows)))
+
+    # V03
+    p.append(section("V03", "Viral Genom Assembly",
+        table("Assembly", ["Alan", "Değer"], [
+            ["Assembler", _esc(M["V03"].get("assembler", "—"))],
+            ["Taslak genom", f"<span class='mono'>draft_viral_genome.fasta</span>"],
+        ])))
+
+    # V04
+    v04body = table("Assembly kalite metrikleri (QUAST)", ["Metrik", "Değer"], [
+        ["Toplam uzunluk", f"{_esc(q.get('total_length'))} bp"],
+        ["Contig sayısı", _esc(q.get("contigs"))],
+        ["En büyük contig", f"{_esc(q.get('largest_contig'))} bp"],
+        ["N50", f"{_esc(q.get('n50'))} bp"],
+        ["GC", f"{_esc(q.get('gc'))} %"],
+    ] if q else [])
+    v04body += table("Viral genom tamlık & kontaminasyon (CheckV)", ["Metrik", "Değer"], [
+        ["Tamlık", f"{_esc(cv.get('completeness'))} %"],
+        ["Kontaminasyon", f"{_esc(cv.get('contamination'))} %"],
+        ["CheckV kalitesi", f"<span class='kv'>{_esc(cv.get('checkv_quality'))}</span>"],
+        ["Değerlendirilen contig", f"{_esc(cv.get('contig_length'))} bp"],
+    ] if cv else [])
+    p.append(section("V04", "Cilalama & Genom Kalitesi (QUAST + CheckV)", v04body))
+
+    # V05
+    p.append(section("V05", "Viral Dizi Tanıma (geNomad)",
+        table("Viral identification", ["Alan", "Değer"], [
+            ["Viral mi?", _esc(M["V05"].get("is_viral"))],
+            ["Viral dizi sayısı", _esc(M["V05"].get("n_viral"))],
+            ["En yüksek virus skoru", _esc(M["V05"].get("top_score"))],
+            ["Taksonomi", f"<span class='mono'>{_esc(M['V05'].get('taxonomy',''))}</span>"],
+        ])))
+
+    # V06
+    closest = M["V06"].get("closest_10") or []
+    v06rows = [[str(i+1), f"<span class='mono'>{_esc(c.get('accession'))}</span>", _esc(round(c.get('mash_dist',0),5)),
+                f"{100*(1-c.get('mash_dist',0)):.2f} %"]
+               for i, c in enumerate(closest[:10])]
+    v06body = table("En yakın referans genomlar (Mash + INPHARED/ICTV)",
+                    ["#", "Accession", "Mash mesafesi", "~Benzerlik"], v06rows)
+    if closest:
+        v06body += figure("En yakın referanslara Mash mesafesi (küçük = daha yakın).",
+                          _svg_hbar([(c.get("accession"), c.get("mash_dist")) for c in closest[:10]],
+                                    color="#0d6b8f"))
+    p.append(section("V06", "Taksonomi & En Yakın Referanslar", v06body))
+
+    # V07
+    fns = M["V07"].get("functions", {}) or {}
+    func_rows = [[_esc(k), _esc(v)] for k, v in fns.items()
+                 if isinstance(v, int) and v > 0 and k not in ("CDS",)]
+    v07body = table("Annotation özeti (Pharokka)", ["Alan", "Değer"], [
+        ["Toplam CDS", _esc(M["V07"].get("cds"))],
+        ["tRNA", _esc(M["V07"].get("trna"))],
+    ])
+    v07body += table("Fonksiyonel kategori dağılımı (PHROGs)", ["Kategori", "Gen sayısı"], func_rows)
+    # circular genom haritası (öne çıkan görsel)
+    gmap = figs_for("V07", "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), "
+                           "tRNA, GC içeriği ve GC-skew.")
+    if func_rows:
+        v07body += figure("Fonksiyonel kategorilere göre gen dağılımı.",
+                          _svg_hbar([(k, v) for k, v in fns.items() if isinstance(v, int) and v > 0 and k != "CDS"],
+                                    color="#0d8f86"))
+    p.append(section("V07", "Genom Annotation (Pharokka)", gmap + v07body))
+
+    # V08
+    v08body = table("Faj yaşam tarzı & taksonomi (PhaBOX)", ["Alan", "Değer"], [
+        ["Yaşam tarzı (PhaTYP)", f"<span class='kv'>{_esc(v8l.get('TYPE','—'))}</span>"],
+        ["PhaTYP skoru", _esc(v8l.get("PhaTYPScore", "—"))],
+        ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
+        ["Soy hattı", f"<span class='mono'>{_esc(v8t.get('Lineage','—'))}</span>"],
+    ]) if (v8l or v8t) else "<p class='na'>Bakteriyofaj karakterizasyonu uygulanmadı.</p>"
+    p.append(section("V08", "Faj-Özel Karakterizasyon (PhaBOX)", v08body))
+
+    # ---------- Araçlar & referanslar ----------
+    tool_rows = []
     for key, disp, purpose, repo, doi in TOOL_REFERENCES:
         try:
             ver = registry.detect_version(key)
         except Exception:
             ver = None
-        ver_txt = _esc(ver) if ver else "<span style='color:#999'>kurulu değil</span>"
-        doi_txt = (f"<a href='https://doi.org/{_esc(doi)}'>{_esc(doi)}</a>" if doi else "—")
-        p.append(f"<tr><td><b>{_esc(disp)}</b></td><td class='mono'>{ver_txt}</td>"
-                 f"<td>{_esc(purpose)}</td><td><a href='{_esc(repo)}'>{_esc(repo)}</a></td>"
-                 f"<td>{doi_txt}</td></tr>")
-    p.append("</table>")
-    p.append("<p class='cap'>Sürümler runtime'da tespit edildi; DOI'ler yayın kaynağıdır (uydurma yok).</p>")
+        ver_txt = f"<span class='mono'>{_esc(ver)}</span>" if ver else "<span class='na'>—</span>"
+        doi_txt = f"<a href='https://doi.org/{_esc(doi)}'>{_esc(doi)}</a>" if doi else "—"
+        tool_rows.append([f"<b>{_esc(disp)}</b>", ver_txt, _esc(purpose),
+                          f"<a href='{_esc(repo)}'>{_esc(repo)}</a>", doi_txt])
+    p.append("<section><h2>Araçlar, Sürümler & Bilimsel Referanslar</h2>"
+             + table("Kullanılan araçlar (sürümler runtime'da tespit edildi; DOI'ler yayın kaynağıdır — uydurma yok)",
+                     ["Araç", "Sürüm", "Amaç", "Depo", "DOI"], tool_rows)
+             + "<p class='note'>Her sonuç tool + veritabanı sürümü ve parametreleriyle yeniden üretilebilir "
+               "(provenance.json). Durum kodları: PASS / WARNING / FAIL / NOT_APPLICABLE / SKIPPED.</p></section>")
 
+    p.append("<p class='note' style='text-align:center'>VirusForge · RNA+DNA viral/faj genom analiz platformu · "
+             "github.com/aliarslan47/VirusForge</p>")
     p.append("</div>")
     return "\n".join(p)

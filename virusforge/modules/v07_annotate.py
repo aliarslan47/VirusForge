@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 from .. import tools
@@ -51,6 +52,14 @@ class V07Annotate(Module):
             metrics = parse_pharokka(cds_fn)
             metrics["identifier_integrity"] = "locus_tag/gene/product/protein_id ayrı; bilinmeyen product=NULL"
             status = Status.PASS
+            # circular genom haritası (otomatik — kullanıcı istemeden)
+            title = Path(ctx.sample_dir).name
+            safe_run(tools.pharokka_plotter_cmd(genome, out, "genome_map", title),
+                     dirs["07_logs"] / "pharokka_plot.log")
+            png = out / "genome_map.png"
+            if png.exists():
+                shutil.copy(png, dirs["06_visualization"] / "genome_map.png")
+                metrics["genome_map"] = "06_visualization/genome_map.png"
         else:
             metrics = {"error": err or "Pharokka çıktısı bulunamadı"}
             status = Status.WARNING

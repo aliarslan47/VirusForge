@@ -79,6 +79,12 @@ def pharokka_cmd(genome, out_dir, db, threads=8):
             "-t", str(threads), "-f"]
 
 
+def pharokka_plotter_cmd(genome, pharokka_out, name="genome_map", title="phage"):
+    # pharokka çıktısındaki gff/gbk'den circular genom haritası (PNG) üretir
+    return ["pharokka_plotter.py", "-i", str(genome), "-o", str(pharokka_out),
+            "-n", name, "-t", str(title)]
+
+
 def phabox_cmd(genome, out_dir, db, threads=8, conda_env=None, conda_bin="conda"):
     base = ["phabox2", "--task", "end_to_end", "--contigs", str(genome),
             "--outpth", str(out_dir), "--dbdir", str(db), "--threads", str(threads)]
