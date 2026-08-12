@@ -30,15 +30,15 @@ BacForge (bakteri) ve Vaxforge'un kardeşi olan bu platform, aynı mimari deseni
 
 ```mermaid
 flowchart LR
-    IN([FASTQ / FASTA]) --> V00[V00 · Input & Auto-Detect]
-    V00 --> V01[V01 · Read QC]
-    V01 --> V03[V03 · Assembly]
-    V03 --> V04[V04 · Polishing & Quality]
-    V04 --> V05[V05 · Viral ID]
-    V05 --> V06[V06 · Taxonomy]
-    V06 --> V07[V07 · Annotation]
-    V07 --> V08[V08 · Phage Char]
-    V08 --> V19[V19 · Report]
+    IN([FASTQ / FASTA]) --> V00[V00 Input + Auto-Detect]
+    V00 --> V01[V01 Read QC]
+    V01 --> V03[V03 Assembly]
+    V03 --> V04[V04 Polishing + Quality]
+    V04 --> V05[V05 Viral ID]
+    V05 --> V06[V06 Taxonomy]
+    V06 --> V07[V07 Annotation]
+    V07 --> V08[V08 Phage Char]
+    V08 --> V19[V19 Report]
     V19 --> OUT([HTML + JSON + Provenance])
 
     V03 -. short .-> SP[SPAdes]
