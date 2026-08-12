@@ -1,0 +1,31 @@
+2 channel Terms of Service accepted
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / done
+Solving environment: \ | / - \ failed
+
+LibMambaUnsatisfiableError: Encountered problems while solving:
+  - package pandas-1.5.2-py310h769672d_0 requires python >=3.10,<3.11.0a0, but none of the providers can be installed
+
+Could not solve for environment specs
+The following packages are incompatible
+├─ pandas >=1.5,<2 * is installable with the potential options
+│  ├─ pandas [1.5.0|1.5.1|1.5.2|1.5.3] would require
+│  │  └─ python >=3.10,<3.11.0a0 *, which can be installed;
+│  ├─ pandas [1.5.1|1.5.2|1.5.3] would require
+│  │  └─ python >=3.11,<3.12.0a0 *, which can be installed;
+│  ├─ pandas [1.5.0|1.5.1|1.5.2|1.5.3] would require
+│  │  └─ python >=3.8,<3.9.0a0 *, which can be installed;
+│  ├─ pandas [1.5.0|1.5.1|1.5.2|1.5.3] would require
+│  │  └─ python >=3.9,<3.10.0a0 *, which can be installed;
+│  └─ pandas [1.5.1|1.5.2|1.5.3] conflicts with any installable versions previously reported;
+└─ pin on python =3.12 * is not installable because it requires
+   └─ python =3.12 *, which conflicts with any installable versions previously reported.
+
+Pins seem to be involved in the conflict. Currently pinned specs:
+ - python=3.12
+
+

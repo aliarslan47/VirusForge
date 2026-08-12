@@ -30,14 +30,18 @@ def _log(run_dir: Path, msg: str) -> None:
         fh.write(f"[{ts}] {msg}\n")
 
 
-def run(sample_dir, out_root, cfg=None, modules=None, clock=None, resume=True) -> Path:
-    """Örneği çalıştır; run dizinini döndür."""
+def run(sample_dir, out_root, cfg=None, modules=None, clock=None, resume=True,
+        run_dir=None) -> Path:
+    """Örneği çalıştır; run dizinini döndür. run_dir verilirse ona resume edilir."""
     cfg = cfg or config.load_config()
     modules = modules or DEFAULT_MODULES
     det = detect.detect_mode(sample_dir, cfg)
     mode = det["mode"]
-    ts = clock() if clock else datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_dir = Path(out_root) / f"{ts}_{mode.lower()}"
+    if run_dir is not None:
+        run_dir = Path(run_dir)                       # mevcut koşuya devam (resume)
+    else:
+        ts = clock() if clock else datetime.now().strftime("%Y%m%d_%H%M%S")
+        run_dir = Path(out_root) / f"{ts}_{mode.lower()}"
     run_dir.mkdir(parents=True, exist_ok=True)
 
     ctx = Context(sample_dir=Path(sample_dir), run_dir=run_dir, cfg=cfg, mode=mode)

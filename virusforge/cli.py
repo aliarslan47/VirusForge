@@ -14,7 +14,7 @@ def cmd_run(args) -> int:
         cfg.setdefault("general", {})["threads"] = args.threads
     if args.mode:
         cfg.setdefault("general", {})["mode"] = args.mode
-    run_dir = pipeline.run(args.sample, args.out, cfg)
+    run_dir = pipeline.run(args.sample, args.out, cfg, run_dir=args.resume)
     print(f"Bitti. Run dizini: {run_dir}")
     print(f"Rapor: {run_dir / 'report.html'}")
     return 0
@@ -43,6 +43,7 @@ def main(argv=None) -> int:
     pr.add_argument("--config", default=None, help="kullanıcı config YAML")
     pr.add_argument("--threads", type=int, default=None)
     pr.add_argument("--mode", default=None, choices=["auto", "short", "long", "hybrid", "assembly"])
+    pr.add_argument("--resume", default=None, help="mevcut run dizinine devam et (yolu ver)")
     pr.set_defaults(func=cmd_run)
 
     pi = sub.add_parser("info", help="sürüm + kurulu araçlar")
