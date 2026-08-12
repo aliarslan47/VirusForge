@@ -1,0 +1,25 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+.Renviron
+
+# Pipeline outputs
+results/
+*.png
+*.csv
+*.rds
+
+# Data (genomlar depoya girmez)
+*.fasta
+*.fa
+*.fna
+*.gff
+*.gff3
+*.gb
+*.gbk
+*.gbff
+
+# OS
+.DS_Store
+Thumbs.db
