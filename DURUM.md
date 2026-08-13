@@ -101,6 +101,16 @@ online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç
 - **NOT:** online BLAST bu ortamda bloklu; V05 fallback ile ağaç+ICTV yine üretiliyor. Ağ erişimli
   ortamda online BLAST birincil çalışır (kod hazır). Spec/plan: `docs/superpowers/{specs,plans}/2026-08-13-*m3*`.
 
+## 2026-08-13 — RAPOR CHARSET KÖK-ÇÖZÜM + ÇOKLU-ÖRNEK KARŞILAŞTIRMA (Item 2)
+- **Türkçe mojibake KALICI çözüldü:** rapor `<meta charset="utf-8">`siz üretiliyordu → tarayıcı UTF-8'i
+  Latin-1 okuyup harfleri bozuyordu (Örnek→Ã–rnek). `render_html`+`render_comparison` artık düzgün HTML
+  iskeleti (`_document` helper) sarıyor. TDD kilitli (`test_report_has_utf8_charset`). 4 rapor da yenilendi ✅.
+- **Item 2 — Çoklu-örnek karşılaştırma (`virusforge compare`):** ayrı komut, tamamlanmış run'ları alır →
+  ortak MAFFT+IQ-TREE2 ağaç + yerel all-vs-all blastn benzerlik matrisi + ICTV özet tablosu → charset'li
+  `comparison_report.html`. `compare.py` + CLI `compare` alt-komutu. **Doğrulandı:** 4 T7 run %100, EU734174
+  (phage13a) %94.4 (farklı tür/aynı cins). **94 pytest yeşil.** Spec: `docs/superpowers/specs/2026-08-13-*compare*`.
+- **SIRADA:** Item 3 (çift-dilli TR+ENG rapor), Item 4 (opsiyonel araçlar virsorter2/vibrant/kraken2).
+
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.
 - **43 pytest yeşil** (config/util/provenance/module/registry/detect/parsers/tools/pipeline/e2e-dryrun). Sentetik fixture'larla; gerçek veri indirilmedi.
