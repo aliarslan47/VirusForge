@@ -19,6 +19,10 @@ TOOL_REFERENCES = [
     ("pharokka", "Pharokka", "Bakteriyofaj genom annotation", "https://github.com/gbouras13/pharokka", "10.1093/bioinformatics/btac776"),
     ("phabox", "PhaBOX", "Faj karakterizasyon (PhaMer/PhaGCN/PhaTYP)", "https://github.com/KennthShang/PhaBOX", "10.1093/bioadv/vbad101"),
     ("amrfinderplus", "AMRFinderPlus", "AMR / virülans / stres geni taraması", "https://github.com/ncbi/amr", "10.1038/s41598-021-91456-0"),
+    ("blast", "BLAST+", "En yakın referans (online virus DB tanımlama)", "https://blast.ncbi.nlm.nih.gov", "10.1186/1471-2105-10-421"),
+    ("mafft", "MAFFT", "Çoklu dizi hizalama", "https://mafft.cbrc.jp/alignment/software/", "10.1093/molbev/mst010"),
+    ("iqtree2", "IQ-TREE2", "Maksimum-olabilirlik filogeni", "https://github.com/iqtree/iqtree2", "10.1093/molbev/msaa015"),
+    ("taxmyphage", "taxmyPHAGE", "ICTV cins/tür (VIRIDIC + VMR)", "https://github.com/millardlab/taxmyphage", "10.1099/mgen.0.001344"),
 ]
 
 # Rapor bölüm sırası ve modül adları
@@ -32,5 +36,6 @@ PIPELINE_STEPS = [
     ("V06", "Genome Annotation", "Pharokka"),
     ("V07", "Phage Characterization", "PhaBOX"),
     ("V08", "AMR & Virulence", "AMRFinderPlus"),
+    ("V09", "Comparative Identification & Phylogeny", "BLAST + IQ-TREE2 + taxmyPHAGE"),
     ("V10", "Final Report & Export", "VirusForge"),
 ]

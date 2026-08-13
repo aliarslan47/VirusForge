@@ -8,7 +8,7 @@ from ..module import Context, Module, ModuleResult, Status
 from ..report.render import render_html
 
 # Rapor sırası (M1 çekirdek + M2-A faj zenginleştirme: V08 AMR)
-_ORDER = ["V00", "V01", "V02", "V03", "V04", "V05", "V06", "V07", "V08"]
+_ORDER = ["V00", "V01", "V02", "V03", "V04", "V05", "V06", "V07", "V08", "V09"]
 
 
 class V10Report(Module):

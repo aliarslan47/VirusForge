@@ -363,6 +363,34 @@ def render_html(report: dict, run_dir=None) -> str:
         v11body = "<p class='na'>AMR taraması uygulanmadı.</p>"
     p.append(section("V08", "AMR & Virülans (AMRFinderPlus)", v11body))
 
+    # V09 — Karşılaştırmalı tanımlama & filogeni
+    cmp = M["V09"]
+    bh = cmp.get("blast_top_hit", {})
+    ictv = cmp.get("ictv", {})
+    v09body = table("Tanımlama — en yakın kayıt (BLAST, online virus DB)", ["Alan", "Değer"], [
+        ["En yakın kayıt", f"<span class='mono'>{_esc(bh.get('accession','—'))}</span>"],
+        ["Tür", f"<span class='kv'>{_esc(bh.get('species','—'))}</span>"],
+        ["% Kimlik", f"{_esc(bh.get('identity','—'))} %"],
+        ["% Kapsam", f"{_esc(bh.get('coverage','—'))} %"],
+    ]) if bh else "<p class='na'>BLAST tanımlaması yapılmadı (ağ/DB?).</p>"
+    v09body += table("ICTV sınıflandırma", ["Düzey", "Değer"], [
+        ["Familya (geNomad)", _esc((M["V04"].get("taxonomy", "") or "").split(";")[-1] or "—")],
+        ["Alt-familya (PhaBOX)", _esc(subfam) or "—"],
+        ["Cins (taxmyPHAGE)", f"<span class='kv'>{_esc(ictv.get('genus', '—'))}</span>"],
+        ["Tür (taxmyPHAGE)", f"<span class='kv'>{_esc(ictv.get('species', '—'))}</span>"],
+    ])
+    close_rows = [[str(i + 1), f"<span class='mono'>{_esc(h.get('accession'))}</span>",
+                   _esc(h.get('species')), f"{_esc(h.get('identity'))} %"]
+                  for i, h in enumerate(cmp.get("closest_species", []))]
+    v09body += table("En yakın 5 tür (ağaç/ICTV referans seti)", ["#", "Accession", "Tür", "% Kimlik"], close_rows)
+    if (cmp.get("tree") or {}).get("newick"):
+        v09body += figure("Filogenetik ağaç — örnek ve en yakın akrabaları (MAFFT + IQ-TREE2).",
+                          _svg_tree(cmp["tree"]["newick"]))
+    if cmp.get("similarity_matrix") and cmp.get("matrix_labels"):
+        v09body += figure("Genomlar arası benzerlik matrisi (VIRIDIC %; ≥95 tür, ≥70 cins).",
+                          _svg_matrix(cmp["matrix_labels"], cmp["similarity_matrix"]))
+    p.append(section("V09", "Karşılaştırmalı Tanımlama & Filogeni", v09body))
+
     # ---------- Araçlar & referanslar ----------
     tool_rows = []
     for key, disp, purpose, repo, doi in TOOL_REFERENCES:

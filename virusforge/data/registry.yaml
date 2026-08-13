@@ -64,3 +64,22 @@ amrfinderplus:
   repo: https://github.com/ncbi/amr
   version_cmd: ["amrfinder", "--version"]
   doi: "10.1038/s41598-021-91456-0"
+blast:
+  repo: https://blast.ncbi.nlm.nih.gov
+  version_cmd: ["blastn", "-version"]
+  doi: "10.1186/1471-2105-10-421"
+mafft:
+  repo: https://mafft.cbrc.jp/alignment/software/
+  version_cmd: ["mafft", "--version"]
+  doi: "10.1093/molbev/mst010"
+iqtree2:
+  repo: https://github.com/iqtree/iqtree2
+  version_cmd: ["iqtree2", "--version"]
+  doi: "10.1093/molbev/msaa015"
+taxmyphage:
+  repo: https://github.com/millardlab/taxmyphage
+  version_cmd: ["taxmyphage", "--version"]
+  doi: "10.1099/mgen.0.001344"
+efetch:
+  repo: https://www.ncbi.nlm.nih.gov/books/NBK179288/
+  version_cmd: ["efetch", "-version"]
