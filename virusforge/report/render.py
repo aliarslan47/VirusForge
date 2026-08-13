@@ -463,6 +463,11 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         v06body += figure("En yakın referanslara Mash mesafesi (küçük = daha yakın).",
                           _svg_hbar([(c.get("accession"), c.get("mash_dist")) for c in closest[:10]],
                                     color="#0d6b8f"))
+    # Mash-mesafe taksonomik ağacı (örnek + en yakın referanslar; V09 hesaplar, burada gösterilir)
+    mash_nwk = (M["V09"].get("tree") or {}).get("mash_newick")
+    if mash_nwk:
+        v06body += figure("Mash-mesafe ağacı — örnek + en yakın referanslar (komşu-birleştirme, NJ).",
+                          _svg_tree(mash_nwk))
     p.append(section("V05", "Taksonomi & En Yakın Referanslar", v06body))
 
     # V06

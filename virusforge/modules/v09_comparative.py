@@ -14,6 +14,51 @@ from ..config import get
 from ..module import Context, Module, ModuleResult, Status, latest_genome, safe_run
 
 
+def parse_mash_square(text) -> tuple:
+    """mash dist -t kare tablosu (#query<TAB><lbl>...) → (labels, matrix). Etiket = ilk token."""
+    lines = [l for l in text.splitlines() if l.strip()]
+    labels = [h.split()[0] for h in lines[0].split("\t")[1:]]
+    matrix = [[float(x) for x in row.split("\t")[1:]] for row in lines[1:]]
+    return labels, matrix
+
+
+def mash_nj_newick(labels, matrix) -> str:
+    """Mesafe matrisinden komşu-birleştirme (NJ) ağacı → newick (biopython)."""
+    import io
+    from Bio.Phylo import write as _phylo_write
+    from Bio.Phylo.TreeConstruction import DistanceMatrix, DistanceTreeConstructor
+    lower = [[matrix[i][j] for j in range(i + 1)] for i in range(len(labels))]  # biopython alt-üçgen
+    tree = DistanceTreeConstructor().nj(DistanceMatrix(names=list(labels), matrix=lower))
+    tree.ladderize()
+    buf = io.StringIO()
+    _phylo_write(tree, buf, "newick")
+    return buf.getvalue().strip()
+
+
+def build_mash_tree(fasta, work_dir, conda_env=None, conda_bin="conda"):
+    """sample+referans multifasta → mash sketch -i + all-vs-all dist → NJ ağacı newick.
+    Hata / <3 takson → None (sessiz atlama yok: log dosyası yazılır)."""
+    work = Path(work_dir)
+    work.mkdir(parents=True, exist_ok=True)
+    pfx = work / "mash_tree"
+    if safe_run(tools.mash_sketch_indiv_cmd(fasta, pfx), work / "mash_sketch.log"):
+        return None
+    table = work / "mash_square.tsv"
+    try:
+        util.run_redirect(tools.mash_dist_table_cmd(str(pfx) + ".msh"), table, work / "mash_dist.log")
+    except RuntimeError:
+        return None
+    if not table.exists() or table.stat().st_size == 0:
+        return None
+    labels, matrix = parse_mash_square(table.read_text())
+    if len(labels) < 3:                       # NJ en az 3 taksona ihtiyaç duyar
+        return None
+    try:
+        return mash_nj_newick(labels, matrix)
+    except Exception:
+        return None
+
+
 def parse_blast_hits(tsv_path, n=5) -> list[dict]:
     """blastn tabular (sacc staxids sscinames pident qcovs length evalue bitscore):
     tür başına en iyi hit'i tut, bitscore'a göre sırala, top-N döndür."""
@@ -261,6 +306,10 @@ class V09Comparative(Module):
                     tf = Path(str(pfx) + ".treefile")
                     if tf.exists():
                         metrics["tree"] = parse_iqtree(tf)
+            # Mash-mesafe ağacı (hizalama-bağımsız NJ; V05 "En Yakın Referanslar" bölümünde gösterilir)
+            mash_nwk = build_mash_tree(combined, dirs["02_work"] / "mash_tree")
+            if mash_nwk:
+                metrics.setdefault("tree", {})["mash_newick"] = mash_nwk
             # synteny: örnek vs en yakın ref (pharokka annotate + yerel blastp homolog)
             syn = _build_synteny(ctx, dirs, hits, cfg, get(cfg, "general.threads", 8))
             if syn:

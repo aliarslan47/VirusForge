@@ -69,6 +69,8 @@ EN = {
     # şekil altyazıları (statik)
     "En yakın referanslara Mash mesafesi (küçük = daha yakın).":
         "Mash distance to closest references (smaller = closer).",
+    "Mash-mesafe ağacı — örnek + en yakın referanslar (komşu-birleştirme, NJ).":
+        "Mash-distance tree — sample + closest references (neighbor-joining, NJ).",
     "Fonksiyonel kategorilere göre gen dağılımı.": "Gene distribution by functional category.",
     "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), tRNA, GC içeriği ve GC-skew.":
         "Pharokka circular genome map — CDS (color = PHROG functional category), tRNA, GC content and GC-skew.",

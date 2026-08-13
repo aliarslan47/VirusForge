@@ -75,6 +75,16 @@ def genomad_cmd(genome, out_dir, db, threads=8):
     return ["genomad", "end-to-end", "--cleanup", str(genome), str(out_dir), str(db), "-t", str(threads)]
 
 
+def mash_sketch_indiv_cmd(fasta, out_prefix):
+    """mash sketch -i: multifasta'daki HER kaydı ayrı sketch'le (all-vs-all mesafe için)."""
+    return ["mash", "sketch", "-i", "-o", str(out_prefix), str(fasta)]
+
+
+def mash_dist_table_cmd(msh):
+    """mash dist -t: sketch'i kendisiyle karşılaştır → kare mesafe tablosu (all-vs-all)."""
+    return ["mash", "dist", "-t", str(msh), str(msh)]
+
+
 def mash_dist_cmd(ref_sketch, query):
     return ["mash", "dist", str(ref_sketch), str(query)]
 

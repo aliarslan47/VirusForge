@@ -74,6 +74,20 @@ def test_render_html_language_switch_link():
     assert "report.html" in en and "Türkçe" in en
 
 
+def test_render_html_v05_mash_tree_figure():
+    # V05 (Taksonomi & En Yakın Referanslar) bölümüne Mash-mesafe ağacı figürü (tr+en)
+    from virusforge.report.render import render_html
+    nwk = "(sample:0.0002,(V01146:0.001,EU734174:0.04):0.01);"
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": [
+        {"code": "V05", "status": "PASS", "metrics": {"closest_10": [
+            {"accession": "V01146", "mash_dist": 0.001}]}},
+        {"code": "V09", "status": "PASS", "metrics": {"tree": {"mash_newick": nwk}}}]}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    assert "Mash-mesafe ağacı" in tr and "<svg" in tr and "V01146" in tr
+    assert "Mash-distance tree" in en and "Mash-mesafe ağacı" not in en
+
+
 def test_lifestyle_label_lytic_lysogenic():
     from virusforge.report.render import _lifestyle_label
     assert "litik" in _lifestyle_label("virulent", "tr").lower()

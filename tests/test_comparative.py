@@ -53,6 +53,43 @@ def test_parse_blast_hits_dedup_species_topn(tmp_path):
 # --------------------------------------------------------------------------- #
 # parse_iqtree + parse_taxmyphage
 # --------------------------------------------------------------------------- #
+def test_mash_sketch_indiv_and_dist_table_cmd():
+    sk = tools.mash_sketch_indiv_cmd("seqs.fasta", "msk")
+    assert sk[:2] == ["mash", "sketch"] and "-i" in sk and "seqs.fasta" in sk
+    dt = tools.mash_dist_table_cmd("msk.msh")
+    assert dt[:2] == ["mash", "dist"] and "-t" in dt and dt.count("msk.msh") == 2
+
+
+def test_parse_mash_square_table():
+    from virusforge.modules.v09_comparative import parse_mash_square
+    txt = "#query\tsample\tV01146.1\tEU734174.1\n" \
+          "sample\t0\t0.001\t0.04\n" \
+          "V01146.1\t0.001\t0\t0.041\n" \
+          "EU734174.1\t0.04\t0.041\t0\n"
+    labels, matrix = parse_mash_square(txt)
+    assert labels == ["sample", "V01146.1", "EU734174.1"]        # başlıklar ilk token
+    assert matrix[0][1] == 0.001 and matrix[2][1] == 0.041       # simetrik değerler
+
+
+def test_mash_nj_newick_has_taxa():
+    from virusforge.modules.v09_comparative import mash_nj_newick
+    labels = ["sample", "V01146", "EU734174"]
+    matrix = [[0, 0.001, 0.04], [0.001, 0, 0.041], [0.04, 0.041, 0]]
+    nwk = mash_nj_newick(labels, matrix)
+    assert nwk.strip().endswith(";") and "sample" in nwk and "V01146" in nwk
+
+
+def test_build_mash_tree_real(tmp_path):
+    # gerçek mash + biopython NJ: 3 dizilik fasta → newick (etiketler korunur)
+    from virusforge.modules.v09_comparative import build_mash_tree
+    fa = tmp_path / "seqs.fasta"
+    fa.write_text(">sample\n" + "ACGT" * 40 + "\n"
+                  ">V01146.1 T7\n" + "ACGT" * 39 + "ACGA\n"
+                  ">EU734174.1 13a\n" + "TTGGCCAA" * 20 + "\n")
+    nwk = build_mash_tree(fa, tmp_path / "work")
+    assert nwk and "sample" in nwk and "V01146.1" in nwk and nwk.strip().endswith(";")
+
+
 def test_parse_iqtree_newick(tmp_path):
     from virusforge.modules.v09_comparative import parse_iqtree
     t = tmp_path / "x.treefile"
