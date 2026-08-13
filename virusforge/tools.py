@@ -117,3 +117,34 @@ def phabox_cmd(genome, out_dir, db, threads=8, conda_env=None, conda_bin="conda"
     if conda_env:
         return [conda_bin, "run", "-n", conda_env, *base]
     return base
+
+
+# ---- M3 karşılaştırmalı & filogeni araçları ----
+
+def blastn_remote_cmd(query, out_tsv, db="ref_viruses_rep_genomes", max_target_seqs=50):
+    """Online blastn (DB indirmesi YOK): örneği NCBI viral DB'ye karşı çalıştır, tabular çıktı."""
+    return ["blastn", "-query", str(query), "-db", str(db), "-remote",
+            "-max_target_seqs", str(max_target_seqs),
+            "-outfmt", "6 sacc staxids sscinames pident qcovs length evalue bitscore",
+            "-out", str(out_tsv)]
+
+
+def efetch_cmd(accession, out_fasta):
+    """Entrez Direct efetch: accession'ın tam genom FASTA'sı (util.run_redirect ile stdout→dosya)."""
+    return ["efetch", "-db", "nucleotide", "-id", str(accession), "-format", "fasta"]
+
+
+def mafft_cmd(in_fasta, out_aln):
+    """MAFFT tüm-genom hizalama (stdout→out_aln, run_redirect ile)."""
+    return ["mafft", "--auto", str(in_fasta)]
+
+
+def iqtree_cmd(aln, prefix, threads=8):
+    """IQ-TREE2 ML ağaç + UFBoot bootstrap, model-otomatik."""
+    return ["iqtree2", "-s", str(aln), "--prefix", str(prefix),
+            "-B", "1000", "-T", str(threads), "-m", "MFP", "--quiet"]
+
+
+def taxmyphage_cmd(genome, out_dir, threads=8):
+    """taxmyPHAGE: VIRIDIC + ICTV VMR → cins/tür."""
+    return ["taxmyphage", "run", "-i", str(genome), "-o", str(out_dir), "-t", str(threads)]
