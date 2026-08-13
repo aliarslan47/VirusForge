@@ -445,11 +445,11 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         table("Okuma kalite metrikleri", ["Metrik", "Değer"], v01rows)))
 
     # V02
-    p.append(section("V02", "Viral Genom Assembly",
-        table("Assembly", ["Alan", "Değer"], [
-            ["Assembler", _esc(M["V02"].get("assembler", "—"))],
-            ["Taslak genom", f"<span class='mono'>draft_viral_genome.fasta</span>"],
-        ])))
+    v02rows = [["Assembler", _esc(M["V02"].get("assembler", "—"))]]
+    if M["V02"].get("reference"):                        # RNA referans-tabanlı konsensus
+        v02rows.append(["Referans", f"<span class='mono'>{_esc(M['V02'].get('reference'))}</span>"])
+    v02rows.append(["Taslak genom", "<span class='mono'>draft_viral_genome.fasta</span>"])
+    p.append(section("V02", "Viral Genom Assembly", table("Assembly", ["Alan", "Değer"], v02rows)))
 
     # V03
     v04body = table("Assembly kalite metrikleri (QUAST)", ["Metrik", "Değer"], [
@@ -459,12 +459,20 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         ["N50", f"{_esc(q.get('n50'))} bp"],
         ["GC", f"{_esc(q.get('gc'))} %"],
     ] if q else [])
-    v04body += table("Viral genom tamlık & kontaminasyon (CheckV)", ["Metrik", "Değer"], [
-        ["Tamlık", f"{_esc(cv.get('completeness'))} %"],
-        ["Kontaminasyon", f"{_esc(cv.get('contamination'))} %"],
-        ["CheckV kalitesi", f"<span class='kv'>{_esc(cv.get('checkv_quality'))}</span>"],
-        ["Değerlendirilen contig", f"{_esc(cv.get('contig_length'))} bp"],
-    ] if cv else [])
+    cov = M["V03"].get("coverage")
+    if cov:                                              # RNA: referans kapsama (CheckV yerine)
+        v04body += table("Referans kapsama (RNA)", ["Metrik", "Değer"], [
+            ["Kapsama genişliği", f"{_esc(cov.get('breadth_pct'))} %"],
+            ["Ortalama derinlik", f"{_esc(cov.get('mean_depth'))}×"],
+            ["Kapsanan pozisyon", f"{_esc(cov.get('covered_bases'))} / {_esc(cov.get('positions'))}"],
+        ])
+    else:
+        v04body += table("Viral genom tamlık & kontaminasyon (CheckV)", ["Metrik", "Değer"], [
+            ["Tamlık", f"{_esc(cv.get('completeness'))} %"],
+            ["Kontaminasyon", f"{_esc(cv.get('contamination'))} %"],
+            ["CheckV kalitesi", f"<span class='kv'>{_esc(cv.get('checkv_quality'))}</span>"],
+            ["Değerlendirilen contig", f"{_esc(cv.get('contig_length'))} bp"],
+        ] if cv else [])
     p.append(section("V03", "Cilalama & Genom Kalitesi (QUAST + CheckV)", v04body))
 
     # V04
@@ -494,45 +502,62 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
                           _svg_tree(mash_nwk))
     p.append(section("V05", "Taksonomi & En Yakın Referanslar", v06body))
 
-    # V06
-    fns = M["V06"].get("functions", {}) or {}
-    func_rows = [[_esc(k), _esc(v)] for k, v in fns.items()
-                 if isinstance(v, int) and v > 0 and k not in ("CDS",)]
-    v07body = table("Annotation özeti (Pharokka)", ["Alan", "Değer"], [
-        ["Toplam CDS", _esc(M["V06"].get("cds"))],
-        ["tRNA", _esc(M["V06"].get("trna"))],
-    ])
-    v07body += table("Fonksiyonel kategori dağılımı (PHROGs)", ["Kategori", "Gen sayısı"], func_rows)
-    # yapısal (virion) vs yapısal olmayan protein özeti (PHROG kategorilerinden türetilir)
-    svc = _structural_summary(fns)
-    stot = svc["structural"] + svc["non_structural"] + svc["unknown"]
-    if stot > 0:
-        def _pct(n):
-            return f"{n} · {100*n/stot:.1f} %"
-        v07body += table("Yapısal vs yapısal olmayan proteinler (PHROG)", ["Sınıf", "Gen sayısı"], [
-            ["Yapısal (virion: kapsid/kuyruk/portal)", _pct(svc["structural"])],
-            ["Yapısal olmayan (metabolizma/lizis/regülasyon)", _pct(svc["non_structural"])],
-            ["Bilinmeyen işlev", _pct(svc["unknown"])],
+    # V06 — RNA ise VADR, değilse Pharokka
+    if M["V06"].get("annotation") == "VADR":
+        vadr = M["V06"]
+        v07body = table("VADR doğrulama (RNA anotasyon)", ["Alan", "Değer"], [
+            ["Model", _esc(vadr.get("model", "—"))],
+            ["Sonuç", f"<span class='kv'>{'PASS' if vadr.get('pass') else 'FAIL'}</span>"],
+            ["Geçen dizi", _esc(vadr.get("n_pass"))],
+            ["Kalan (fail)", _esc(vadr.get("n_fail"))],
+            ["Alert sayısı", _esc(vadr.get("n_alerts"))],
         ])
-    # her CDS için gen anotasyon listesi (locus, koordinat, yön, ürün, PHROG, kategori)
-    genes = M["V06"].get("genes") or []
-    if genes:
-        gene_rows = [[str(i + 1), f"<span class='mono'>{_esc(g.get('gene'))}</span>",
-                      _esc(g.get("start")), _esc(g.get("stop")), _esc(g.get("strand")),
-                      _esc(g.get("product") or "—"),
-                      f"<span class='mono'>{_esc(g.get('phrog') or '—')}</span>",
-                      _esc(g.get("category") or "—")]
-                     for i, g in enumerate(genes)]
-        v07body += table("Gen anotasyon listesi (her CDS)",
-                         ["#", "Gen", "Başlangıç", "Bitiş", "Yön", "Ürün", "PHROG", "Kategori"], gene_rows)
-    # circular genom haritası (öne çıkan görsel)
-    gmap = figs_for("V06", "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), "
-                           "tRNA, GC içeriği ve GC-skew.")
-    if func_rows:
-        v07body += figure("Fonksiyonel kategorilere göre gen dağılımı.",
-                          _svg_hbar([(k, v) for k, v in fns.items() if isinstance(v, int) and v > 0 and k != "CDS"],
-                                    color="#0d8f86"))
-    p.append(section("V06", "Genom Annotation (Pharokka)", gmap + v07body))
+        alerts = vadr.get("alerts") or []
+        if alerts:
+            v07body += table("Saptanan alert'ler (VADR)", ["#", "Alert"],
+                             [[str(i + 1), f"<span class='mono'>{_esc(a)}</span>"]
+                              for i, a in enumerate(alerts[:50])])
+        p.append(section("V06", "Genom Annotation (VADR)", v07body))
+        # V06 sonrası akış (V07 vd.) aynı — RNA'da faj modülleri N/A döner
+    else:
+        fns = M["V06"].get("functions", {}) or {}
+        func_rows = [[_esc(k), _esc(v)] for k, v in fns.items()
+                     if isinstance(v, int) and v > 0 and k not in ("CDS",)]
+        v07body = table("Annotation özeti (Pharokka)", ["Alan", "Değer"], [
+            ["Toplam CDS", _esc(M["V06"].get("cds"))],
+            ["tRNA", _esc(M["V06"].get("trna"))],
+        ])
+        v07body += table("Fonksiyonel kategori dağılımı (PHROGs)", ["Kategori", "Gen sayısı"], func_rows)
+        # yapısal (virion) vs yapısal olmayan protein özeti (PHROG kategorilerinden türetilir)
+        svc = _structural_summary(fns)
+        stot = svc["structural"] + svc["non_structural"] + svc["unknown"]
+        if stot > 0:
+            def _pct(n):
+                return f"{n} · {100*n/stot:.1f} %"
+            v07body += table("Yapısal vs yapısal olmayan proteinler (PHROG)", ["Sınıf", "Gen sayısı"], [
+                ["Yapısal (virion: kapsid/kuyruk/portal)", _pct(svc["structural"])],
+                ["Yapısal olmayan (metabolizma/lizis/regülasyon)", _pct(svc["non_structural"])],
+                ["Bilinmeyen işlev", _pct(svc["unknown"])],
+            ])
+        # her CDS için gen anotasyon listesi (locus, koordinat, yön, ürün, PHROG, kategori)
+        genes = M["V06"].get("genes") or []
+        if genes:
+            gene_rows = [[str(i + 1), f"<span class='mono'>{_esc(g.get('gene'))}</span>",
+                          _esc(g.get("start")), _esc(g.get("stop")), _esc(g.get("strand")),
+                          _esc(g.get("product") or "—"),
+                          f"<span class='mono'>{_esc(g.get('phrog') or '—')}</span>",
+                          _esc(g.get("category") or "—")]
+                         for i, g in enumerate(genes)]
+            v07body += table("Gen anotasyon listesi (her CDS)",
+                             ["#", "Gen", "Başlangıç", "Bitiş", "Yön", "Ürün", "PHROG", "Kategori"], gene_rows)
+        # circular genom haritası (öne çıkan görsel)
+        gmap = figs_for("V06", "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), "
+                               "tRNA, GC içeriği ve GC-skew.")
+        if func_rows:
+            v07body += figure("Fonksiyonel kategorilere göre gen dağılımı.",
+                              _svg_hbar([(k, v) for k, v in fns.items() if isinstance(v, int) and v > 0 and k != "CDS"],
+                                        color="#0d8f86"))
+        p.append(section("V06", "Genom Annotation (Pharokka)", gmap + v07body))
 
     # V07
     if v8l or v8t:

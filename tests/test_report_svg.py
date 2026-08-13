@@ -100,6 +100,26 @@ def test_render_html_structural_vs_nonstructural_table():
     assert "Structural" in en and "Non-structural" in en and "Yapısal olmayan" not in en
 
 
+def test_render_html_rna_sections():
+    # RNA yolu raporu: V02 referans-konsensus, V03 kapsama, V06 VADR (tr+en)
+    from virusforge.report.render import render_html
+    rep = {"sample": "CoV2", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V02", "status": "PASS", "metrics": {
+            "assembler": "referans-tabanlı (iVar consensus)", "reference": "NC_045512.2.fa"}},
+        {"code": "V03", "status": "PASS", "metrics": {
+            "quast": {"total_length": 29903}, "coverage": {"breadth_pct": 99.1, "mean_depth": 850.0,
+                                                           "covered_bases": 29600, "positions": 29903}}},
+        {"code": "V06", "status": "PASS", "metrics": {
+            "annotation": "VADR", "model": "sarscov2", "pass": True, "n_pass": 1, "n_fail": 0,
+            "n_alerts": 0, "alerts": []}}]}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    assert "NC_045512.2.fa" in tr and "iVar consensus" in tr           # V02 referans
+    assert "Kapsama genişliği" in tr and "99.1" in tr                  # V03 kapsama
+    assert "VADR" in tr and ("Model" in tr)                            # V06 VADR
+    assert "Coverage breadth" in en and "Kapsama genişliği" not in en  # EN çeviri
+
+
 def test_render_html_v05_mash_tree_figure():
     # V05 (Taksonomi & En Yakın Referanslar) bölümüne Mash-mesafe ağacı figürü (tr+en)
     from virusforge.report.render import render_html
