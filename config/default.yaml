@@ -48,6 +48,14 @@ tools:
     use_abricate: false           # opsiyonel VFDB/CARD hook (varsayılan kapalı)
     conda_env: vf_amr
     conda_bin: /home/ali/miniconda3/bin/conda
+  # --- M3 karşılaştırmalı & filogeni (online BLAST + MAFFT/IQ-TREE2 + taxmyPHAGE) ---
+  comparative:
+    blast_db: ref_viruses_rep_genomes   # online NCBI viral DB (indirme yok)
+    n_closest: 5
+    min_hits: 3
+    ref_cache: databases/ref_cache
+    conda_env: ""                       # gerekirse vf_phylo
+    conda_bin: /home/ali/miniconda3/bin/conda
 
 optional:                # default kapalı (tasarım kararı)
   virsorter2: false

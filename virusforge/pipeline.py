@@ -16,14 +16,14 @@ from .modules.v05_taxonomy import V05Taxonomy
 from .modules.v06_annotate import V06Annotate
 from .modules.v07_phage_char import V07PhageChar
 from .modules.v08_amr import V08Amr
+from .modules.v09_comparative import V09Comparative
 from .modules.v10_report import V10Report
 
-# M1 çekirdek + M2-A faj zenginleştirme (modüller okuma-tipine/faja göre kendi içinde dallanır)
-# V09 comparative Task 6'da eklenecek (V08 ile V10 arasına)
+# M1 çekirdek + M2-A faj zenginleştirme + M3 karşılaştırma (mode/faj/viral'e göre kendi içinde dallanır)
 DEFAULT_MODULES = [
     V00Input, V01ReadQC, V02Assembly, V03PolishQC,
     V04Identify, V05Taxonomy, V06Annotate, V07PhageChar,
-    V08Amr, V10Report,
+    V08Amr, V09Comparative, V10Report,
 ]
 
 

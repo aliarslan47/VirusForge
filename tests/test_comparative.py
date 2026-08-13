@@ -60,3 +60,38 @@ def test_parse_taxmyphage(tmp_path):
         "Genome\tGenus\tSpecies\nsample\tTeseptimavirus\tEscherichia virus T7\n")
     m = parse_taxmyphage(tmp_path)
     assert m["genus"] == "Teseptimavirus" and m["species"] == "Escherichia virus T7"
+
+
+# --------------------------------------------------------------------------- #
+# V09Comparative modül koşumu (araçsız/ağsız → dürüst WARNING / N/A)
+# --------------------------------------------------------------------------- #
+def test_v09_not_applicable_when_not_viral(tmp_path):
+    from virusforge.module import Context, Status
+    from virusforge.modules.v09_comparative import V09Comparative
+    from tests.conftest import write_fasta
+    c = Context(sample_dir=tmp_path, run_dir=tmp_path / "run", cfg={}, mode="SHORT_READ")
+    (tmp_path / "run").mkdir()
+    c.results["V04"] = {"is_viral": False}
+    c.artifacts["V03"] = {"genome": str(write_fasta(tmp_path / "g.fasta"))}
+    res = V09Comparative().run(c)
+    assert res.status == Status.NOT_APPLICABLE
+
+
+def test_v09_warning_when_offline_or_no_tool(tmp_path, monkeypatch):
+    # harici blast/efetch çağrılarını no-op yap (birim testi ağ VURMAZ)
+    import subprocess
+    from virusforge import util
+    from virusforge.module import Context, Status
+    from virusforge.modules.v09_comparative import V09Comparative
+    from tests.conftest import write_fasta
+    monkeypatch.setattr(util, "run_cmd", lambda *a, **k: subprocess.CompletedProcess([], 0, "", ""))
+    monkeypatch.setattr(util, "run_redirect", lambda *a, **k: None)
+    c = Context(sample_dir=tmp_path, run_dir=tmp_path / "run", cfg={}, mode="SHORT_READ")
+    (tmp_path / "run").mkdir()
+    c.results["V04"] = {"is_viral": True}
+    c.artifacts["V03"] = {"genome": str(write_fasta(tmp_path / "g.fasta"))}
+    res = V09Comparative().run(c)
+    assert res.status == Status.WARNING     # blast çıktısı yok → yeterli hit yok → dürüst WARNING
+    d = c.run_dir / "V09_COMPARATIVE_PHYLO"
+    assert (d / "V09_summary.json").exists() and (d / "01_input").is_dir()
+    assert (d / "04_standardized" / "comparative.json").exists()

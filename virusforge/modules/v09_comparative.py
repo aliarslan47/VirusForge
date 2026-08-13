@@ -64,3 +64,104 @@ def parse_taxmyphage(out_dir) -> dict:
         return row[idx[name]].strip() if name in idx and idx[name] < len(row) else None
 
     return {"genus": g("genus"), "species": g("species"), "method": "taxmyPHAGE"}
+
+
+def _read_seq(fasta) -> str:
+    return "".join(l.strip() for l in Path(fasta).read_text().splitlines() if not l.startswith(">"))
+
+
+def _wrap(cmd, cenv, cbin):
+    return [cbin, "run", "-n", cenv, *cmd] if cenv else cmd
+
+
+def _fetch_genomes(hits, cache_dir, cenv, cbin, logs):
+    """Her hit accession'ını efetch ile çek (cache). Çekilebilen fasta yollarını döndür."""
+    cache = Path(cache_dir)
+    cache.mkdir(parents=True, exist_ok=True)
+    fetched = []
+    for h in hits:
+        acc = h["accession"]
+        fa = cache / f"{acc}.fasta"
+        if not fa.exists() or fa.stat().st_size == 0:
+            try:
+                util.run_redirect(_wrap(tools.efetch_cmd(acc, fa), cenv, cbin), fa, logs / f"efetch_{acc}.log")
+            except RuntimeError:
+                continue
+        if fa.exists() and fa.stat().st_size > 0:
+            fetched.append(fa)
+    return fetched
+
+
+class V09Comparative(Module):
+    name = "Comparative Identification & Phylogeny"
+    code = "V09"
+    dirname = "V09_COMPARATIVE_PHYLO"
+
+    def run(self, ctx: Context) -> ModuleResult:
+        dirs = self.make_dirs(ctx.run_dir)
+        if not (ctx.results.get("V04", {}) or {}).get("is_viral"):
+            m = {"note": "viral değil — karşılaştırma uygulanmadı"}
+            return ModuleResult(Status.NOT_APPLICABLE,
+                                self.write_summary(ctx.run_dir, Status.NOT_APPLICABLE, m), m)
+        genome = latest_genome(ctx)
+        if not genome:
+            m = {"error": "girdi genom yok"}
+            return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
+
+        cfg = ctx.cfg
+        cenv = get(cfg, "tools.comparative.conda_env", None) or None
+        cbin = get(cfg, "tools.comparative.conda_bin", "conda")
+        n = get(cfg, "tools.comparative.n_closest", 5)
+        metrics: dict = {}
+
+        # (1) online BLAST → en yakın türler
+        blast_tsv = dirs["03_native_outputs"] / "blast.tsv"
+        bcmd = _wrap(tools.blastn_remote_cmd(genome, blast_tsv,
+                     get(cfg, "tools.comparative.blast_db", "ref_viruses_rep_genomes")), cenv, cbin)
+        err = safe_run(bcmd, dirs["07_logs"] / "blast.log")
+        hits = parse_blast_hits(blast_tsv, n) if (not err and blast_tsv.exists()) else []
+        if hits:
+            metrics["blast_top_hit"] = hits[0]
+            metrics["closest_species"] = hits
+        if len(hits) < get(cfg, "tools.comparative.min_hits", 3):
+            metrics["error"] = err or "yeterli BLAST hit yok (ağ? DB?)"
+            (dirs["04_standardized"] / "comparative.json").write_text(
+                json.dumps(metrics, indent=2, ensure_ascii=False))
+            ctx.results[self.code] = metrics
+            return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, metrics), metrics)
+
+        # (2) efetch → akraba genomları + örnek birleşik fasta
+        combined = dirs["02_work"] / "sample_plus_refs.fasta"
+        with open(combined, "w") as out:
+            out.write(f">sample\n{_read_seq(genome)}\n")
+        refs = _fetch_genomes(hits, get(cfg, "tools.comparative.ref_cache", "databases/ref_cache"),
+                              cenv, cbin, dirs["07_logs"])
+        for fa in refs:
+            with open(combined, "a") as out:
+                out.write(Path(fa).read_text())
+
+        # (3) MAFFT + IQ-TREE2
+        aln = dirs["02_work"] / "aln.fasta"
+        try:
+            util.run_redirect(_wrap(tools.mafft_cmd(combined, aln), cenv, cbin), aln, dirs["07_logs"] / "mafft.log")
+        except RuntimeError:
+            pass
+        if aln.exists() and aln.stat().st_size > 0:
+            pfx = dirs["03_native_outputs"] / "iqtree"
+            if not safe_run(_wrap(tools.iqtree_cmd(aln, pfx, get(cfg, "general.threads", 8)), cenv, cbin),
+                            dirs["07_logs"] / "iqtree.log"):
+                tf = Path(str(pfx) + ".treefile")
+                if tf.exists():
+                    metrics["tree"] = parse_iqtree(tf)
+
+        # (4) taxmyPHAGE → ICTV cins/tür
+        tout = dirs["03_native_outputs"] / "taxmyphage"
+        if not safe_run(_wrap(tools.taxmyphage_cmd(genome, tout, get(cfg, "general.threads", 8)), cenv, cbin),
+                        dirs["07_logs"] / "taxmyphage.log") and tout.exists():
+            metrics["ictv"] = parse_taxmyphage(tout)
+
+        (dirs["04_standardized"] / "comparative.json").write_text(
+            json.dumps(metrics, indent=2, ensure_ascii=False))
+        ctx.results[self.code] = metrics
+        status = Status.PASS if (metrics.get("tree") or metrics.get("ictv")) else Status.WARNING
+        return ModuleResult(status, self.write_summary(ctx.run_dir, status, metrics), metrics)
