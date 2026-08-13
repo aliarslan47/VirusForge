@@ -76,6 +76,24 @@ en yakın V01146 (0.0010), **virulent**, **0 AMR**. **2 gerçek hibrit-bug bulun
   Rapor bug'ları düzeltildi: assembler adı (conda-yolu değil), sürüm tespiti `_parse_version` (uyarı/yardım
   çöpü atılır). **İLERİDE: rapor sistemi TR+ENG çift-dilli olacak** (henüz değil).
 
+## 2026-08-13 — M3 FAZ 1: V09 KARŞILAŞTIRMALI TANIMLAMA & FİLOGENİ TAMAM + T7 DOĞRULANDI
+Brainstorm→spec→plan(8 task)→TDD. Yeni **V09 Comparative** modülü (rapor V09→**V10**'a kaydı). Akış:
+online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç + taxmyPHAGE ICTV cins/tür.
+**BLAST=tanımlama, ICTV=verdikt** (best-hit'ten türetilmez). **79→84 pytest yeşil.**
+- **T7 hibrit gerçek doğrulama (V09 PASS, 11/11 modül):**
+  - **ICTV (taxmyPHAGE):** cins **Teseptimavirus**, tür **Teseptimavirus T7** (=Escherichia virus T7);
+    örnek vs V01146 %98.25 intergenomic → ICTV %95 tür eşiği üstü; "cins düzeyinde tutarlı".
+  - **Ağaç:** örnek V01146 (T7 ref) ile yan yana (dal 0.0002); Autographiviridae T7-benzeri klad.
+- **Task 8'de 4 gerçek-veri bug bulundu+düzeltildi:**
+  1. **iqtree binary** `iqtree` (v3.1.3), `iqtree2` değil → config `iqtree_bin`.
+  2. **blastn -remote bu ortamdan NCBI Blast4'e ERİŞEMİYOR** (bloklu, SF/GitLab gibi) → **timeout(120s) +
+     V05 (yerel Mash+INPHARED) fallback**: online BLAST birincil kalır, erişilemezse V05 akrabaları ağaç referansı.
+  3. **mafft `--adjustdirection`**: ters-tümleyen genom → sahte uzun dal (2.1→0.0002) düzeltildi.
+  4. **taxmyPHAGE DB** kurulumu (`taxmyphage install` → VMR + BLAST DB). ICTV yerel VIRIDIC, online gerektirmez.
+- **Kurulu:** blast, iqtree(v3), taxmyphage(+DB), mafft✅, efetch✅ (hepsi `virusforge` env).
+- **NOT:** online BLAST bu ortamda bloklu; V05 fallback ile ağaç+ICTV yine üretiliyor. Ağ erişimli
+  ortamda online BLAST birincil çalışır (kod hazır). Spec/plan: `docs/superpowers/{specs,plans}/2026-08-13-*m3*`.
+
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.
 - **43 pytest yeşil** (config/util/provenance/module/registry/detect/parsers/tools/pipeline/e2e-dryrun). Sentetik fixture'larla; gerçek veri indirilmedi.
