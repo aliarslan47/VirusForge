@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import html
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -83,6 +84,51 @@ def _svg_hbar(pairs, unit="", color="#0d8f86", max_rows=12):
         out.append(f"<text x='{lblw-8}' y='{y+13}' text-anchor='end' fill='#14181d'>{_esc(lbl)[:38]}</text>")
         out.append(f"<rect x='{lblw}' y='{y+3}' width='{bw}' height='{row_h-9}' rx='3' fill='{color}'/>")
         out.append(f"<text x='{lblw+bw+6}' y='{y+13}' fill='#6b7682'>{_esc(round(v,4))}{_esc(unit)}</text>")
+    out.append("</svg>")
+    return "".join(out)
+
+
+def _svg_tree(newick: str) -> str:
+    """Newick'ten basit yatay dendrogram (bağımsız inline SVG). Yaprak etiketleri sırayla dizilir."""
+    labels = re.findall(r"[(,]([A-Za-z0-9_.\-]+):", newick or "")
+    if not labels:
+        return "<p class='na'>Ağaç verisi yok.</p>"
+    row_h, w = 24, 620
+    h = row_h * len(labels) + 10
+    out = [f"<svg viewBox='0 0 {w} {h}' width='100%' style='max-width:{w}px' font-family='system-ui' font-size='12'>"]
+    x0 = 20
+    for i, lbl in enumerate(labels):
+        y = i * row_h + row_h // 2
+        out.append(f"<line x1='{x0}' y1='{y}' x2='{x0+60}' y2='{y}' stroke='#0d6b8f' stroke-width='2'/>")
+        out.append(f"<text x='{x0+68}' y='{y+4}' fill='#14181d'>{_esc(lbl)}</text>")
+    out.append(f"<line x1='{x0}' y1='{row_h//2}' x2='{x0}' y2='{h-row_h//2}' stroke='#0d6b8f' stroke-width='2'/>")
+    out.append("</svg>")
+    return "".join(out)
+
+
+def _svg_matrix(labels, matrix) -> str:
+    """Benzerlik matrisi ısı-haritası (yüksek=koyu). labels: eksen etiketleri; matrix: NxN %."""
+    n = len(labels)
+    if not n or any(len(r) != n for r in matrix):
+        return "<p class='na'>Matris verisi yok.</p>"
+    cell, pad = 46, 130
+    w = pad + cell * n + 10
+    h = pad + cell * n + 10
+    out = [f"<svg viewBox='0 0 {w} {h}' width='100%' style='max-width:{w}px' font-family='system-ui' font-size='11'>"]
+    for j, lbl in enumerate(labels):
+        out.append(f"<text x='{pad+j*cell+cell//2}' y='{pad-6}' text-anchor='middle' fill='#14181d'>{_esc(str(lbl)[:8])}</text>")
+        out.append(f"<text x='{pad-6}' y='{pad+j*cell+cell//2+4}' text-anchor='end' fill='#14181d'>{_esc(str(lbl)[:12])}</text>")
+    for i in range(n):
+        for j in range(n):
+            try:
+                fv = float(matrix[i][j])
+            except (TypeError, ValueError):
+                fv = 0.0
+            shade = max(0, min(255, int(255 - fv * 2.2)))
+            fill = f"rgb({shade},{min(255, shade+20)},255)"
+            x, y = pad + j * cell, pad + i * cell
+            out.append(f"<rect x='{x}' y='{y}' width='{cell-2}' height='{cell-2}' rx='3' fill='{fill}'/>")
+            out.append(f"<text x='{x+cell//2}' y='{y+cell//2+4}' text-anchor='middle' fill='#14181d'>{_esc(round(fv,1))}</text>")
     out.append("</svg>")
     return "".join(out)
 
