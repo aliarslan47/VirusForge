@@ -57,6 +57,17 @@ okumayla tutarlı:** Autographiviridae, en yakın T7 V01146 (0.0009), **virulent
    `filter_contigs_by_coverage` (max*0.1 altı elenir) → temiz tek-genom.
 Medaka kimyaya-duyarlı model (R9→r941_min_sup_g507). **62 pytest yeşil.**
 
+## 2026-08-13 — HYBRID YOLU DOĞRULANDI → M1 PLATFORM KAPSAMI TAMAM (short+long+hybrid)
+Hibrit örnek `samples/T7_hybrid` (short R1/R2 + long ONT symlink). Unicycler `vf_long`'a kuruldu.
+**10/10 PASS, üç okuma tipinin EN İYİ sonucu:** tek contig, CheckV **%100 Complete High-quality**,
+**40.532 bp** (tam T7, DTR uçları dahil), **60 CDS (=T7 ref NC_001604)**, Autographiviridae,
+en yakın V01146 (0.0010), **virulent**, **0 AMR**. **2 gerçek hibrit-bug bulundu+düzeltildi:**
+1. **Unicycler sayısal header** `>1` → PhaBOX pandas 'int64/object merge Accession' çöküşü →
+   `sanitize_contig_names` (salt-sayısal → contig_<n>).
+2. **Medaka hibrit'i bozuyordu:** Unicycler zaten short-düzeltmeli; R9/Q10 ONT medaka'sı hata geri
+   sokuyordu (CDS 76→55) → Medaka **yalnız saf LONG_READ**. **64 pytest yeşil.**
+**MILESTONE 1 PLATFORM KAPSAMI TAMAM: short✅ + long✅ + hybrid✅** (hepsi T7 gerçek-veri, tutarlı biyoloji).
+
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.
 - **43 pytest yeşil** (config/util/provenance/module/registry/detect/parsers/tools/pipeline/e2e-dryrun). Sentetik fixture'larla; gerçek veri indirilmedi.
@@ -64,11 +75,11 @@ Medaka kimyaya-duyarlı model (R9→r941_min_sup_g507). **62 pytest yeşil.**
 - Commit'ler yerelde (push için gh auth bekliyor): d647cc5 (çekirdek), 19144d4 (tam hat).
 - **2026-08-12 (akşam): RAPOR PROFESYONELLEŞTİRİLDİ.** BacForge-tarzı: numaralı/isimli 12 Tablo + 4 Şekil (pipeline akışı, Mash-mesafe grafiği, **circular genom haritası**, fonksiyonel kategori grafiği), Genel Bakış kartları, araç+sürüm+DOI tablosu. Genom haritası V07'de **otomatik** üretiliyor (pharokka_plotter gömüldü → `06_visualization/genome_map.png`). Rapor artifact olarak yayımlandı: https://claude.ai/code/artifact/0541885b-ce14-4011-87db-6eecc212b819. Kullanıcı geri bildirimi bellekte: **otonom çalış, görseller dahil her şeyi kendin üret+denetle** ([[feedback_otonom_denetim]]).
 - **M2-A (V08 AMR) + tam renumber TAMAM (2026-08-13, üstteki bölüm). Host/termini/domain kaldırıldı.**
-- **M2-A (V08 AMR) + short-read + LONG-READ hepsi T7'de gerçek-veri doğrulandı (2026-08-13).**
-- **SIRADA seçenekleri:**
-  1. **hybrid** yolu (Unicycler) — short+long birlikte; unicycler `vf_long`'a kurulmalı (`conda install -n vf_long -c bioconda unicycler`), sonra gerçek veride koş.
-  2. **M2-B RNA-virüs yolu** ayrı spec (rnaviralSPAdes/iVar + VADR + iVar/LoFreq + RNA yönlendirme).
+- **M1 PLATFORM KAPSAMI TAMAM (short+long+hybrid, T7 doğrulandı) + M2-A V08 AMR (2026-08-13).**
+- **SIRADA:** **M2-B RNA-virüs yolu** (ayrı spec): rnaviralSPAdes/iVar + VADR + iVar/LoFreq + V04'te RNA
+  yönlendirme → yeni modüller V10+. (RNA doğrulama verisi gerekir; ör. SARS-CoV-2/HIV.)
 - **Env'ler:** `virusforge` (ana) · `vf_phabox` (pandas 2.3) · `vf_amr` (AMRFinderPlus) · `vf_long` (Flye/Medaka/NanoPlot/filtlong/unicycler). DB'ler `databases/`.
+- **Run dizinleri:** `runs/*_short_read` · `*_long_read` · `*_hybrid` (üçü de doğrulanmış).
 
 ## Milestone planı (güncel numaralandırma — boşluksuz)
 - **M1** — DNA/faj çekirdek (short+long+hybrid): V00→V01→V02→V03→V04→V05→V06→V07(+**M2-A V08 AMR**)→V09 rapor. Set: geNomad, Pharokka, PhaBOX, CheckV, Mash+INPHARED, SPAdes/Flye/Unicycler, AMRFinderPlus.

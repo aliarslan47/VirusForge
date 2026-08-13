@@ -121,9 +121,8 @@ Gerçek ENA verisi (`ERR3804828`, Illumina MiSeq) ile **9/9 modül PASS**:
 
 ## 🗺️ Yol haritası
 
-- [x] **M1** — DNA/faj çekirdek · **short-read + long-read T7 gerçek-veri doğrulandı** (10/10 PASS)
+- [x] **M1** — DNA/faj çekirdek · **short + long + hybrid T7 gerçek-veri doğrulandı** (platform kapsamı tam)
 - [x] **M2-A** — faj zenginleştirme: **V08 AMR & virülans (AMRFinderPlus)** · T7 doğrulandı
-- [ ] **M1+** — hybrid (Unicycler) gerçek-veri doğrulaması
 - [ ] **M2-B** — RNA-virüs yolu (rnaviralSPAdes · VADR · iVar/LoFreq)
 - [ ] **M3** — comparative/filogeni/görselleştirme + metavirome + virüse-özel plugin (Pangolin/Nextclade/IRMA)
 
