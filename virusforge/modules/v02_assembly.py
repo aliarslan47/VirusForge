@@ -105,6 +105,15 @@ def select_assembler(mode: str, reads: dict, out_dir, cfg: dict, mean_qual=None)
     raise ValueError(f"assembly bu modda çalışmaz: {mode}")
 
 
+def clean_consensus_gaps(src, dst) -> None:
+    """iVar konsensus'unda düşük-derinlik/no-call pozisyonları '-' olabilir; VADR (esl-reformat)
+    yalnız ACGTN/IUPAC kabul eder → dizi satırlarındaki '-' karakterlerini 'N'e çevir."""
+    out = []
+    for line in Path(src).read_text().splitlines():
+        out.append(line if line.startswith(">") else line.replace("-", "N"))
+    Path(dst).write_text("\n".join(out) + "\n")
+
+
 class V02Assembly(Module):
     name = "Viral Genome Assembly"
     code = "V02"
@@ -175,7 +184,7 @@ class V02Assembly(Module):
             return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
 
         draft = dirs["04_standardized"] / "draft_viral_genome.fasta"
-        sanitize_contig_names(cons_fa, draft)
+        clean_consensus_gaps(cons_fa, draft)          # iVar '-' (no-call) → N (VADR uyumu)
         m = {"assembler": "referans-tabanlı (iVar consensus)", "reference": str(ref),
              "bam": str(sorted_bam), "consensus": str(draft), "draft": str(draft)}
         ctx.artifacts[self.code] = {"draft": str(draft), "bam": str(sorted_bam), "reference": str(ref)}

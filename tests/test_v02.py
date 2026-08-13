@@ -27,6 +27,17 @@ def test_missing_long_raises(tmp_path):
         select_assembler("LONG_READ", {"r1": "a"}, tmp_path, _CFG)
 
 
+def test_clean_consensus_gaps_replaces_dash_with_n(tmp_path):
+    # iVar konsensus düşük-derinlikte '-' üretir → VADR esl-reformat reddeder ("illegal character -")
+    from virusforge.modules.v02_assembly import clean_consensus_gaps
+    src = tmp_path / "cons.fa"
+    src.write_text(">Consensus\nACGT---NACGT\nAC--GT\n")
+    dst = tmp_path / "draft.fa"
+    clean_consensus_gaps(src, dst)
+    body = "".join(l for l in dst.read_text().splitlines() if not l.startswith(">"))
+    assert "-" not in body and body == "ACGTNNNNACGTACNNGT"
+
+
 def test_rna_short_no_ref_selects_rnaviralspades(tmp_path):
     cfg = {"general": {"threads": 4, "molecule": "rna"}, "tools": {"rna": {"reference": ""}}}
     cmd, contig = select_assembler("SHORT_READ", {"r1": "a", "r2": "b"}, tmp_path, cfg)
