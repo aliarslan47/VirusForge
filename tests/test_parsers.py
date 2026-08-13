@@ -120,6 +120,42 @@ def test_parse_vadr_fail_when_fail_list_nonempty(tmp_path):
     assert m["n_fail"] == 1 and m["pass"] is False
 
 
+def test_parse_ivar_variants(tmp_path):
+    from virusforge.modules.v11_variants import parse_ivar_variants
+    p = tmp_path / "var.tsv"
+    p.write_text(
+        "REGION\tPOS\tREF\tALT\tREF_DP\tALT_DP\tALT_FREQ\tTOTAL_DP\tPASS\tREF_AA\tALT_AA\n"
+        "NC\t241\tC\tT\t2\t998\t0.998\t1000\tTRUE\t\t\n"
+        "NC\t23403\tA\tG\t400\t600\t0.60\t1000\tTRUE\tD\tG\n"
+        "NC\t3037\tC\tT\t900\t100\t0.10\t1000\tTRUE\t\t\n")
+    v = parse_ivar_variants(p)
+    assert len(v) == 3
+    assert v[0] == {"pos": 241, "ref": "C", "alt": "T", "freq": 0.998, "depth": 1000, "aa": ""}
+    assert v[1]["aa"] == "D→G" and v[1]["freq"] == 0.60
+
+
+def test_parse_lofreq_vcf(tmp_path):
+    from virusforge.modules.v11_variants import parse_lofreq_vcf
+    p = tmp_path / "lf.vcf"
+    p.write_text(
+        "##fileformat=VCFv4.0\n"
+        "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n"
+        "NC\t241\t.\tC\tT\t5000\tPASS\tDP=1000;AF=0.997;SB=0\n"
+        "NC\t3037\t.\tC\tT\t200\tPASS\tDP=1000;AF=0.09;SB=1\n")
+    v = parse_lofreq_vcf(p)
+    assert len(v) == 2
+    assert v[0] == {"pos": 241, "ref": "C", "alt": "T", "af": 0.997, "dp": 1000}
+    assert v[1]["af"] == 0.09
+
+
+def test_variant_summary_counts():
+    from virusforge.modules.v11_variants import variant_summary
+    variants = [{"freq": 0.998}, {"freq": 0.60}, {"freq": 0.10}]
+    s = variant_summary(variants)
+    assert s["n_total"] == 3 and s["n_consensus"] == 2 and s["n_minor"] == 1
+    assert s["quasispecies"] is True
+
+
 def test_parse_phabox(tmp_path):
     (tmp_path / "phatyp_prediction.tsv").write_text("Accession\tTYPE\tScore\nc1\ttemperate\t0.9\n")
     m = parse_phabox(tmp_path)

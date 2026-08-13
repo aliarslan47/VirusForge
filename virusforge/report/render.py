@@ -632,6 +632,30 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
                                        "örnek", syn.get("ref", "referans")))
     p.append(section("V09", "Karşılaştırmalı Tanımlama & Filogeni", v09body))
 
+    # V11 — Varyant & Quasispecies (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)
+    var = M.get("V11", {}) or {}
+    if var.get("ivar_variants") is not None or var.get("lofreq_variants") is not None:
+        v11body = table("Varyant & quasispecies özeti", ["Metrik", "Değer"], [
+            ["Toplam varyant", _esc(var.get("n_total", "—"))],
+            ["Konsensus varyant (≥%50)", _esc(var.get("n_consensus", "—"))],
+            ["Minör (intra-host) varyant (<%50)", _esc(var.get("n_minor", "—"))],
+            ["Quasispecies", "evet" if var.get("quasispecies") else "hayır"],
+        ])
+        iv = var.get("ivar_variants") or []
+        if iv:
+            rows = [[_esc(v.get("pos")), f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
+                     f"{100*v.get('freq',0):.1f} %", _esc(v.get("depth")), _esc(v.get("aa") or "—")]
+                    for v in iv[:200]]
+            v11body += table("iVar varyantları (frekanslı)",
+                             ["Pozisyon", "Değişim", "Frekans", "Derinlik", "AA"], rows)
+        lf = var.get("lofreq_variants") or []
+        if lf:
+            rows = [[_esc(v.get("pos")), f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
+                     f"{100*v.get('af',0):.1f} %", _esc(v.get("dp"))] for v in lf[:200]]
+            v11body += table("LoFreq varyantları (düşük-frekans/quasispecies)",
+                             ["Pozisyon", "Değişim", "Frekans", "Derinlik"], rows)
+        p.append(section("V11", "Varyant & Quasispecies Çağırma", v11body))
+
     # ---------- Araçlar & referanslar ----------
     tool_rows = []
     for key, disp, purpose, repo, doi in TOOL_REFERENCES:

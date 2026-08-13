@@ -66,8 +66,15 @@ tools:
     primer_bed: ""                # ARTIC amplikon primer BED (ivar trim); boşsa kırpma atlanır
     conda_env: vf_rna             # minimap2 / samtools / ivar
     conda_bin: /home/ali/miniconda3/bin/conda
-    ivar_min_depth: 10
-    ivar_min_freq: 0.5
+    ivar_min_depth: 10            # konsensus min derinlik
+    ivar_min_freq: 0.5            # konsensus min frekans
+    gff: ""                       # opsiyonel: iVar variants AA/codon etkisi için GFF
+    ivar_var_min_q: 20            # varyant min kalite (Faz 2)
+    ivar_var_min_freq: 0.03       # varyant min frekans (minör/quasispecies dahil)
+  lofreq:                         # düşük-frekanslı (quasispecies) varyant çağırma (izole env)
+    conda_env: vf_lofreq
+    conda_bin: /home/ali/miniconda3/bin/conda
+    min_cov: 10
   vadr:
     db: databases/vadr
     model: sarscov2               # v-annotate.pl --mkey

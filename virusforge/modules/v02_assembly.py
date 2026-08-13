@@ -127,6 +127,7 @@ class V02Assembly(Module):
             bam = base / "aligned_sorted.bam"          # RNA referans-tabanlı → Faz 2 varyant için
             if bam.exists():
                 art["bam"] = str(bam)
+                art["reference"] = get(ctx.cfg, "tools.rna.reference", "")  # V11 varyant için
             ctx.artifacts[self.code] = art
 
     def _run_reference_consensus(self, ctx: Context, dirs, reads, ref) -> ModuleResult:

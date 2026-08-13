@@ -58,6 +58,24 @@ def test_vadr_cmd():
     assert "v-annotate.pl" in v and "--mdir" in v and "--mkey" in v and "sarscov2" in v
 
 
+# ---- M2-B Faz 2 varyant çağırma ----
+
+def test_ivar_variants_cmd_stream_and_gff():
+    # mpileup | ivar variants (pipe); GFF verilince -g/-r ile AA etkisi
+    c = tools.ivar_variants_cmd("prefix", min_q=20, min_freq=0.03, conda_env="vf_rna")
+    assert "ivar" in c and "variants" in c and "prefix" in c
+    assert "-t" in c and "0.03" in c and "-q" in c and "--no-capture-output" in c
+    cg = tools.ivar_variants_cmd("p", gff="ann.gff", ref="ref.fa", conda_env="vf_rna")
+    assert "-g" in cg and "ann.gff" in cg and "-r" in cg and "ref.fa" in cg
+
+
+def test_lofreq_call_cmd():
+    c = tools.lofreq_call_cmd("ref.fa", "s.bam", "out.vcf", min_cov=10, conda_env="vf_lofreq")
+    assert c[:4] == ["conda", "run", "-n", "vf_lofreq"]
+    assert "lofreq" in c and "call" in c and "-f" in c and "ref.fa" in c
+    assert "-o" in c and "out.vcf" in c and "s.bam" in c and "--min-cov" in c
+
+
 def test_flye_hq_for_r10():
     assert "--nano-hq" in tools.flye_cmd("l", "o", "r10")
 

@@ -38,7 +38,7 @@ def cmd_info(args) -> int:
     print("Kurulu araç sürümleri (uydurma yok — yoksa 'kurulu değil'):")
     for name in ("fastp", "spades", "flye", "unicycler", "checkv",
                  "genomad", "mash", "pharokka", "phabox",
-                 "minimap2", "samtools", "ivar", "vadr"):
+                 "minimap2", "samtools", "ivar", "vadr", "lofreq"):
         try:
             ver = registry.detect_version(name)
         except KeyError:

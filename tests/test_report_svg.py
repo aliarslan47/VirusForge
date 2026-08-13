@@ -100,6 +100,21 @@ def test_render_html_structural_vs_nonstructural_table():
     assert "Structural" in en and "Non-structural" in en and "Yapısal olmayan" not in en
 
 
+def test_render_html_v11_variants():
+    from virusforge.report.render import render_html
+    rep = {"sample": "CoV2", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V11", "status": "PASS", "metrics": {
+            "n_total": 12, "n_consensus": 9, "n_minor": 3, "quasispecies": True,
+            "ivar_variants": [{"pos": 23403, "ref": "A", "alt": "G", "freq": 0.99, "depth": 1000, "aa": "D→G"},
+                              {"pos": 3037, "ref": "C", "alt": "T", "freq": 0.12, "depth": 900, "aa": ""}],
+            "lofreq_variants": [{"pos": 241, "ref": "C", "alt": "T", "af": 0.99, "dp": 1000}]}}]}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    assert "23403" in tr and "D→G" in tr and "Quasispecies" in tr
+    assert "Minör" in tr and "Frekans" in tr
+    assert "Minor" in en and "Frequency" in en and "Minör" not in en
+
+
 def test_render_html_rna_sections():
     # RNA yolu raporu: V02 referans-konsensus, V03 kapsama, V06 VADR (tr+en)
     from virusforge.report.render import render_html

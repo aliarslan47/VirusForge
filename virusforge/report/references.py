@@ -37,5 +37,6 @@ PIPELINE_STEPS = [
     ("V07", "Phage Characterization", "PhaBOX"),
     ("V08", "AMR & Virulence", "AMRFinderPlus"),
     ("V09", "Comparative Identification & Phylogeny", "BLAST + IQ-TREE2 + taxmyPHAGE"),
+    ("V11", "Variant & Quasispecies Calling", "iVar variants + LoFreq"),
     ("V10", "Final Report & Export", "VirusForge"),
 ]

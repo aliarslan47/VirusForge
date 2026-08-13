@@ -144,6 +144,22 @@ def ivar_consensus_cmd(out_prefix, min_depth=10, min_freq=0.5, conda_env=None, c
     return _conda_wrap(cmd, conda_env, conda_bin, stream=True)
 
 
+def ivar_variants_cmd(out_prefix, min_q=20, min_freq=0.03, gff=None, ref=None,
+                      conda_env=None, conda_bin="conda"):
+    """ivar variants: mpileup'ı STDIN'den okur (pipe 2. komutu) → frekanslı varyant TSV.
+    GFF+ref verilirse AA/codon etkisi (-g/-r); yoksa nükleotid-seviye. -q min kalite, -t min frekans."""
+    cmd = ["ivar", "variants", "-p", str(out_prefix), "-q", str(min_q), "-t", str(min_freq)]
+    if gff and ref:
+        cmd += ["-g", str(gff), "-r", str(ref)]
+    return _conda_wrap(cmd, conda_env, conda_bin, stream=True)
+
+
+def lofreq_call_cmd(ref, bam, out_vcf, min_cov=10, conda_env=None, conda_bin="conda"):
+    """LoFreq: duyarlı düşük-frekanslı (quasispecies) varyant çağırma → VCF. BAM + .bai gerektirir."""
+    cmd = ["lofreq", "call", "--min-cov", str(min_cov), "-f", str(ref), "-o", str(out_vcf), str(bam)]
+    return _conda_wrap(cmd, conda_env, conda_bin)
+
+
 def ivar_trim_cmd(bam, primer_bed, out_prefix, conda_env=None, conda_bin="conda"):
     """ivar trim: ARTIC amplikon primer kırpma (BAM in → BAM out_prefix)."""
     cmd = ["ivar", "trim", "-i", str(bam), "-b", str(primer_bed), "-p", str(out_prefix)]

@@ -99,3 +99,7 @@ vadr:
   repo: https://github.com/ncbi/vadr
   version_cmd: ["v-annotate.pl", "-h"]
   doi: "10.1186/s12859-020-3537-3"
+lofreq:
+  repo: https://github.com/CSB5/lofreq
+  version_cmd: ["lofreq", "version"]
+  doi: "10.1093/nar/gks918"
