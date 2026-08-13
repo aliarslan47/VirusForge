@@ -62,3 +62,18 @@ def test_build_combined_fasta(tmp_path):
     out = tmp_path / "all.fasta"
     build_combined_fasta(samples, out)
     assert ">runA" in out.read_text()
+
+
+def test_render_comparison_smoke():
+    from virusforge.report.render import render_comparison
+    data = {
+        "samples": [{"name": "T7_hybrid", "length": 40532,
+                     "ictv": {"genus": "Teseptimavirus", "species": "Teseptimavirus T7"},
+                     "taxonomy": "Viruses;Caudoviricetes;Autographiviridae"}],
+        "tree_newick": "(T7_hybrid:0.001,T7_short:0.001);",
+        "matrix_labels": ["T7_hybrid", "T7_short"],
+        "matrix": [[100.0, 99.5], [99.5, 100.0]],
+    }
+    h = render_comparison(data)
+    assert "<!DOCTYPE html>" in h and 'charset="utf-8"' in h.lower()
+    assert "T7_hybrid" in h and "Teseptimavirus" in h and "99.5" in h

@@ -88,6 +88,49 @@ def _svg_hbar(pairs, unit="", color="#0d8f86", max_rows=12):
     return "".join(out)
 
 
+def _document(title, css, body) -> str:
+    """charset'li düzgün HTML iskeleti (Türkçe mojibake önlenir) — tek kaynak."""
+    return "\n".join([
+        "<!DOCTYPE html>",
+        "<html lang='tr'><head>",
+        "<meta charset=\"utf-8\">",
+        "<meta name='viewport' content='width=device-width, initial-scale=1'>",
+        f"<title>{_esc(title)}</title>",
+        f"<style>{css}</style>",
+        "</head><body>",
+        body,
+        "</body></html>",
+    ])
+
+
+def render_comparison(data) -> str:
+    """Çoklu-örnek karşılaştırma raporu: örnek tablosu + ortak ağaç + benzerlik matrisi."""
+    samples = data.get("samples", [])
+    rows = "".join(
+        f"<tr><td>{_esc(s.get('name'))}</td><td>{_esc(s.get('length'))} bp</td>"
+        f"<td>{_esc((s.get('ictv') or {}).get('genus', '—'))}</td>"
+        f"<td>{_esc((s.get('ictv') or {}).get('species', '—'))}</td>"
+        f"<td class='mono'>{_esc((s.get('taxonomy') or '').split(';')[-1] or '—')}</td></tr>"
+        for s in samples)
+    body = ["<div class='wrap'>",
+            "<header><h1>VirusForge — Çoklu-Örnek Karşılaştırma</h1>"
+            f"<p class='sub'><b>{len(samples)}</b> örnek karşılaştırıldı</p></header>",
+            "<section><h2>Örnekler</h2><table><thead><tr><th>Örnek</th><th>Genom</th>"
+            "<th>Cins (ICTV)</th><th>Tür (ICTV)</th><th>Familya</th></tr></thead>"
+            f"<tbody>{rows}</tbody></table></section>"]
+    if data.get("tree_newick"):
+        body.append("<section><h2>Ortak Filogenetik Ağaç</h2><figure>"
+                    + _svg_tree(data["tree_newick"])
+                    + "<figcaption>Örneklerin (ve varsa akrabaların) ortak ML ağacı — kim kiminle kümeleniyor.</figcaption></figure></section>")
+    if data.get("matrix") and data.get("matrix_labels"):
+        body.append("<section><h2>Örnekler-Arası Benzerlik</h2><figure>"
+                    + _svg_matrix(data["matrix_labels"], data["matrix"])
+                    + "<figcaption>İkili genom % kimliği (yerel blastn; yüksek = koyu).</figcaption></figure></section>")
+    body.append("<p class='note' style='text-align:center'>VirusForge · çoklu-örnek karşılaştırma · "
+                "github.com/aliarslan47/VirusForge</p></div>")
+    return _document("VirusForge — Çoklu-Örnek Karşılaştırma", _CSS, "\n".join(body))
+
+
 def _svg_tree(newick: str) -> str:
     """Newick'ten basit yatay dendrogram (bağımsız inline SVG). Yaprak etiketleri sırayla dizilir."""
     labels = re.findall(r"[(,]([A-Za-z0-9_.\-]+):", newick or "")
