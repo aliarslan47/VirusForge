@@ -89,6 +89,11 @@ EN = {
         "Combined ML tree of samples (and relatives if any) — who clusters with whom.",
     "İkili genom % kimliği (yerel blastn; yüksek = koyu).":
         "Pairwise genome % identity (local blastn; high = dark).",
+    # clinker interaktif synteny (M3 Faz 2)
+    "İnteraktif Gen-Kümesi Synteny (clinker)": "Interactive Gene-Cluster Synteny (clinker)",
+    "genom hizalandı": "genomes aligned",
+    "interaktif clinker görselini aç": "open interactive clinker figure",
+    "Anotasyonsuz (atlanan) örnekler": "Samples without annotation (skipped)",
 }
 
 

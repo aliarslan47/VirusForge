@@ -11,6 +11,17 @@ def test_blastn_local_and_makeblastdb_nucl_cmd():
     assert bn[0] == "blastn" and "-remote" not in bn and "-outfmt" in bn
 
 
+def test_clinker_cmd_builds_plot_and_conda_wrap():
+    # clinker <gbk...> -p out.html ; conda env verilince `conda run -n <env>` ile sarılır
+    cmd = tools.clinker_cmd(["a.gbk", "b.gbk"], "clinker.html", conda_env="ali-clinker")
+    assert cmd[:4] == ["conda", "run", "-n", "ali-clinker"]
+    assert "clinker" in cmd and "a.gbk" in cmd and "b.gbk" in cmd
+    assert cmd[-2:] == ["-p", "clinker.html"]
+    # env yoksa ham komut (conda run yok)
+    bare = tools.clinker_cmd(["a.gbk", "b.gbk"], "clinker.html")
+    assert bare[0] == "clinker" and "run" not in bare
+
+
 def test_parse_blastn_identity_length_weighted(tmp_path):
     from virusforge.compare import parse_blastn_identity
     p = tmp_path / "bn.tsv"
@@ -108,3 +119,40 @@ def test_run_compare_writes_dual_language(tmp_path):
     assert (out / "comparison_report.html").exists()
     en = out / "comparison_report_en.html"
     assert en.exists() and "Multi-Sample Comparison" in en.read_text()
+
+
+# ---- clinker interaktif synteny (M3 Faz 2) ----
+
+def _add_gbk(run_dir, text="LOCUS x\n//\n"):
+    p = run_dir / "V06_GENOME_ANNOTATION" / "03_native_outputs" / "pharokka"
+    p.mkdir(parents=True, exist_ok=True)
+    (p / "pharokka.gbk").write_text(text)
+
+
+def test_stage_genbanks_names_by_sample_and_skips_missing(tmp_path):
+    from virusforge.compare import stage_genbanks
+    a = _mkrun(tmp_path, "runA"); _add_gbk(a)
+    b = _mkrun(tmp_path, "runB")  # gbk YOK → skipped
+    work = tmp_path / "work"
+    staged, skipped = stage_genbanks([a, b], work)
+    assert [p.name for p in staged] == ["runA.gbk"]  # örnek-adıyla evrilir
+    assert "runB" in skipped                          # eksik dürüstçe bildirilir
+
+
+def test_build_clinker_none_under_two_genomes(tmp_path):
+    # <2 anotasyonlu genom → clinker atlanır (None), sessiz hata yok
+    from virusforge.compare import build_clinker
+    a = _mkrun(tmp_path, "runA"); _add_gbk(a)
+    b = _mkrun(tmp_path, "runB")  # gbk yok
+    assert build_clinker([a, b], tmp_path / "cmp", cfg={"general": {"threads": 1}}) is None
+
+
+def test_render_comparison_links_clinker():
+    from virusforge.report.render import render_comparison
+    data = {"samples": [{"name": "T7_a", "length": 40000},
+                        {"name": "T7_b", "length": 40000}],
+            "clinker": {"html": "clinker.html", "n_genomes": 2, "skipped": []}}
+    tr = render_comparison(data, lang="tr")
+    en = render_comparison(data, lang="en")
+    assert "clinker.html" in tr and "clinker" in tr.lower()
+    assert "clinker.html" in en and "clinker" in en.lower()

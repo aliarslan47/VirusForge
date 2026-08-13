@@ -107,6 +107,44 @@ def pairwise_identity_matrix(combined_fasta, work_dir, labels, threads=8):
     return identity_matrix(labels, parse_blastn_identity(bn))
 
 
+def stage_genbanks(run_dirs, work_dir):
+    """Her run'ın Pharokka GenBank'ını (`V06_.../pharokka/pharokka.gbk`) `work/<run_adı>.gbk` olarak
+    evele → clinker kümesini örnek adıyla etiketler. Dönüş: (evrilen yol listesi, atlanan run adları).
+    GenBank'ı olmayan run dürüstçe `skipped`'e eklenir (sessiz atlama yok)."""
+    import shutil
+    work = Path(work_dir)
+    work.mkdir(parents=True, exist_ok=True)
+    staged, skipped = [], []
+    for rd in run_dirs:
+        rd = Path(rd)
+        gbk = rd / "V06_GENOME_ANNOTATION" / "03_native_outputs" / "pharokka" / "pharokka.gbk"
+        if not gbk.exists() or gbk.stat().st_size == 0:
+            skipped.append(rd.name)
+            continue
+        dest = work / f"{rd.name}.gbk"
+        shutil.copyfile(gbk, dest)
+        staged.append(dest)
+    return staged, skipped
+
+
+def build_clinker(run_dirs, out_dir, cfg):
+    """Karşılaştırılan run'ların Pharokka GenBank'larıyla clinker interaktif synteny HTML'i üret.
+    Dönüş: {"html": "clinker.html", "n_genomes": k, "skipped": [...]} veya None (yetersiz/başarısız).
+    <2 anotasyonlu genom veya clinker hatası → None (dürüst atlama; sessiz hata yok)."""
+    out = Path(out_dir)
+    work = out / "clinker_work"
+    staged, skipped = stage_genbanks(run_dirs, work)
+    if len(staged) < 2:
+        return None
+    env = get(cfg, "tools.clinker.conda_env", "ali-clinker")
+    conda_bin = get(cfg, "general.conda_bin", "conda")
+    html = out / "clinker.html"
+    cmd = tools.clinker_cmd(staged, html, conda_env=env, conda_bin=conda_bin)
+    if safe_run(cmd, out / "clinker.log") or not (html.exists() and html.stat().st_size > 0):
+        return None
+    return {"html": "clinker.html", "n_genomes": len(staged), "skipped": skipped}
+
+
 def _write_outputs(out, data):
     (out / "comparison.json").write_text(json.dumps(data, indent=2, ensure_ascii=False))
     (out / "comparison_report.html").write_text(render_comparison(data, lang="tr"))
@@ -147,6 +185,10 @@ def run_compare(run_dirs, out_dir, cfg=None):
             tf = Path(str(pfx) + ".treefile")
             if tf.exists():
                 data["tree_newick"] = tf.read_text().strip()
+
+    clinker = build_clinker(run_dirs, out, cfg)
+    if clinker:
+        data["clinker"] = clinker
 
     _write_outputs(out, data)
     return out

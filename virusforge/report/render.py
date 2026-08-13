@@ -136,6 +136,15 @@ def render_comparison(data, lang="tr") -> str:
         body.append(f"<section><h2>{L('Örnekler-Arası Benzerlik')}</h2><figure>"
                     + _svg_matrix(data["matrix_labels"], data["matrix"])
                     + f"<figcaption>{L('İkili genom % kimliği (yerel blastn; yüksek = koyu).')}</figcaption></figure></section>")
+    ck = data.get("clinker")
+    if ck:
+        skipped = ck.get("skipped") or []
+        note = (f"<p class='na'>{L('Anotasyonsuz (atlanan) örnekler')}: {_esc(', '.join(skipped))}</p>"
+                if skipped else "")
+        body.append(f"<section><h2>{L('İnteraktif Gen-Kümesi Synteny (clinker)')}</h2>"
+                    f"<p>{_esc(ck.get('n_genomes', 0))} {L('genom hizalandı')} — "
+                    f"<a href='{_esc(ck.get('html', 'clinker.html'))}'>{L('interaktif clinker görselini aç')}</a>.</p>"
+                    + note + "</section>")
     body.append("<p class='note' style='text-align:center'>VirusForge · çoklu-örnek karşılaştırma · "
                 "github.com/aliarslan47/VirusForge</p></div>")
     return _document(L("VirusForge — Çoklu-Örnek Karşılaştırma"), _CSS, "\n".join(body), lang=lang)

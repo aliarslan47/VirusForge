@@ -157,6 +157,16 @@ def makeblastdb_prot_cmd(faa, db_prefix):
     return ["makeblastdb", "-in", str(faa), "-dbtype", "prot", "-out", str(db_prefix)]
 
 
+def clinker_cmd(gbks, out_html, conda_env=None, conda_bin="conda", extra=None):
+    """clinker: çok-genomlu interaktif gen-kümesi hizalaması → taşınabilir HTML (-p).
+    Girdi = anotasyonlu GenBank listesi; izole `ali-clinker` env'inde koşar (conda_env)."""
+    cmd = ["clinker", *[str(g) for g in gbks]]
+    if extra:
+        cmd += list(extra)
+    cmd += ["-p", str(out_html)]
+    return _conda_wrap(cmd, conda_env, conda_bin)
+
+
 def makeblastdb_nucl_cmd(fasta, db_prefix):
     """Yerel nükleotid BLAST DB (çoklu-örnek all-vs-all için)."""
     return ["makeblastdb", "-in", str(fasta), "-dbtype", "nucl", "-out", str(db_prefix)]
