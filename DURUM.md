@@ -66,7 +66,15 @@ en yakın V01146 (0.0010), **virulent**, **0 AMR**. **2 gerçek hibrit-bug bulun
    `sanitize_contig_names` (salt-sayısal → contig_<n>).
 2. **Medaka hibrit'i bozuyordu:** Unicycler zaten short-düzeltmeli; R9/Q10 ONT medaka'sı hata geri
    sokuyordu (CDS 76→55) → Medaka **yalnız saf LONG_READ**. **64 pytest yeşil.**
-**MILESTONE 1 PLATFORM KAPSAMI TAMAM: short✅ + long✅ + hybrid✅** (hepsi T7 gerçek-veri, tutarlı biyoloji).
+**MILESTONE 1 PLATFORM KAPSAMI TAMAM: short✅ + long✅ + hybrid✅ + assembly_input✅** (hepsi T7 gerçek-veri, tutarlı biyoloji).
+
+## 2026-08-13 — ASSEMBLY_INPUT doğrulandı + rapor dil kararı
+- **ASSEMBLY_INPUT** (hazır genom girdisi): `samples/T7_assembly` (hibrit T7 assembly'si). V01 N/A (okuma QC yok),
+  V02 fasta→draft (+sayısal-header temizleme, PhaBOX güvenliği), V03 QUAST/CheckV (medaka yok). Sonuç: temiz T7
+  (CheckV %100 HQ, Autographiviridae, 60 CDS, virulent, 0 AMR). **4. girdi modu da doğrulandı.**
+- **Rapor dil kararı (kullanıcı):** pipeline şeması **İngilizce** kalır (modül adları); bölüm içerikleri Türkçe.
+  Rapor bug'ları düzeltildi: assembler adı (conda-yolu değil), sürüm tespiti `_parse_version` (uyarı/yardım
+  çöpü atılır). **İLERİDE: rapor sistemi TR+ENG çift-dilli olacak** (henüz değil).
 
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.

@@ -117,9 +117,9 @@ class V02Assembly(Module):
                        if p.name.lower().endswith((".fasta", ".fa", ".fna"))), None)
             if fa:
                 draft = dirs["04_standardized"] / "draft_viral_genome.fasta"
-                shutil.copy(fa, draft)
+                sanitize_contig_names(fa, draft)   # sayısal header temizle (PhaBOX güvenliği)
                 ctx.artifacts[self.code] = {"draft": str(draft)}
-                m = {"source": "assembly_input", "draft": str(draft)}
+                m = {"source": "assembly_input", "assembler": "(hazır assembly)", "draft": str(draft)}
                 return ModuleResult(Status.PASS, self.write_summary(ctx.run_dir, Status.PASS, m), m)
 
         v01 = ctx.artifacts.get("V01", {})

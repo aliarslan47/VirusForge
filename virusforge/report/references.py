@@ -23,14 +23,14 @@ TOOL_REFERENCES = [
 
 # Rapor bölüm sırası ve modül adları
 PIPELINE_STEPS = [
-    ("V00", "Girdi & Otomatik Tespit", "auto-detect"),
-    ("V01", "Okuma Kalitesi & Ön-İşleme", "FastQC / fastp / NanoPlot"),
-    ("V02", "Viral Genom Assembly", "SPAdes / Flye / Unicycler"),
-    ("V03", "Cilalama & Genom Kalitesi", "Medaka / QUAST / CheckV"),
-    ("V04", "Viral Dizi Tanıma", "geNomad"),
-    ("V05", "Taksonomi & En Yakın Referanslar", "Mash + INPHARED"),
-    ("V06", "Genom Annotation", "Pharokka"),
-    ("V07", "Faj-Özel Karakterizasyon", "PhaBOX"),
-    ("V08", "AMR & Virülans", "AMRFinderPlus"),
-    ("V09", "Nihai Rapor & Export", "VirusForge"),
+    ("V00", "Input & Auto-Detection", "auto-detect"),
+    ("V01", "Read QC & Preprocessing", "FastQC / fastp / NanoPlot"),
+    ("V02", "Viral Genome Assembly", "SPAdes / Flye / Unicycler"),
+    ("V03", "Polishing & Genome Quality", "Medaka / QUAST / CheckV"),
+    ("V04", "Viral Identification", "geNomad"),
+    ("V05", "Taxonomy & Closest References", "Mash + INPHARED"),
+    ("V06", "Genome Annotation", "Pharokka"),
+    ("V07", "Phage Characterization", "PhaBOX"),
+    ("V08", "AMR & Virulence", "AMRFinderPlus"),
+    ("V09", "Final Report & Export", "VirusForge"),
 ]
