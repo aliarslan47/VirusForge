@@ -134,6 +134,13 @@ Brainstorm→spec→plan→TDD. `virusforge compare`'e **çok-genomlu interaktif
 - **T7 gerçek doğrulama:** short+hybrid `compare` → `clinker.html` (666KB portable clustermap, iki genom),
   iki rapor da linkli+çevrili, EN'e ham TR sızmadı. Spec: `docs/.../2026-08-13-*clinker*`.
 
+## 2026-08-13 — V06 GEN ANOTASYON TABLOSU (her CDS) EKLENDİ + T7 DOĞRULANDI
+Kullanıcı isteği: anotasyon bölümüne her gen için satır olan tablo. `v06_annotate.parse_cds_genes`
+(`pharokka_cds_final_merged_output.tsv` → gene/start/stop/strand/product(annot)/phrog/category) →
+V06.run `metrics.genes` (report.json'a girer) → render V06 bölümü **"Gen anotasyon listesi (her CDS)"**
+tablosu (# · Gen · Başlangıç · Bitiş · Yön · Ürün · PHROG · Kategori); TSV yoksa atlanır. i18n tr+en.
+**109 pytest yeşil** (+2). T7 hibrit: 60 CDS satırı iki raporda da, EN'e ham TR sızmadı. commit a6fe5ad.
+
 ## Şu an nerede kaldık (özet)
 - **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
