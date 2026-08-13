@@ -169,8 +169,34 @@ render V06'ya "Yapısal vs yapısal olmayan proteinler (PHROG)" tablosu (sayı +
 yeşil** (+2). T7 hibrit: 14 yapısal + 22 yapısal-değil + 24 bilinmeyen = 60 CDS. 4 rapor yenilendi. commit dd96d8e.
 - **NOT:** daha ince yapısal sınıflandırma istenirse PhANNs (10 yapısal sınıf) ayrı modül olarak eklenebilir (opsiyonel).
 
+## 2026-08-14 — M2-B RNA-VİRÜS YOLU FAZ 1 TAMAM + SARS-CoV-2 GERÇEK DOĞRULAMA
+Brainstorm(plan modu)→spec→plan(Plan ajanı)→TDD. **Karar: yeni modül/renumber YOK — RNA mantığı mevcut
+modüllerin İÇİNDE dallanır** (pipeline değişmezine uyar). Karar seti: veri=SARS-CoV-2 amplikon; fazlı
+(Faz 1 assembly/konsensus+VADR, Faz 2 varyant); assembly=ikisi de (referans→iVar konsensus, yoksa rnaviralSPAdes).
+- **module.is_rna** (config `general.molecule` override + geNomad Riboviria auto). **Kritik kısıt:** V02, V04'ten
+  önce koştuğu için auto assembly'yi süremez → Faz 1 açık `--molecule rna` ile tetiklenir.
+- **util.run_pipe** (mpileup|ivar iki-süreç pipe; `_conda_wrap stream=--no-capture-output`).
+- **tools:** rnaviralspades/minimap2/samtools sort|index|depth|mpileup/ivar trim|consensus/vadr.
+- **V02:** RNA de novo (rnaviralSPAdes) + referans-tabanlı iVar konsensus (minimap2→sort→[ivar trim]→
+  mpileup|consensus), BAM artifact (Faz 2). **V03:** CheckV yerine BAM kapsama (samtools depth→breadth/mean).
+  **V06:** Pharokka yerine VADR (v-annotate.pl, parse_vadr). **V05/V07/V08/V09:** RNA'da NOT_APPLICABLE.
+- **Rapor:** V02/V03/V06 RNA bölümleri (konsensus/kapsama/VADR pass-fail-alert), çift-dilli tr+en. config
+  general.molecule + tools.rna/vadr; registry minimap2/samtools/ivar/vadr; CLI `--molecule`.
+- **İzole env'ler kuruldu:** `vf_rna` (minimap2 2.28/samtools 1.9/ivar 1.0), `vf_vadr` (VADR 1.6.4 +
+  **sarscov2 modeli bundled**, referans NC_045512 dahil). vf_vadr kanal sırası (conda-forge önce) + samtools
+  `depth` (1.9'da coverage yok) çözüldü.
+- **145 pytest yeşil** (yeni: is_rna, run_pipe, 9 tools, parse_vadr/depth, V02 dispatch+konsensus, V06 VADR,
+  V03 kapsama, N/A guard'ları, RNA render, e2e RNA, clean_consensus).
+- **GERÇEK DOĞRULAMA (ENA `ERR11728561`, SARS-CoV-2 ARTIC Illumina amplikon, 100K+ okuma):**
+  V04 geNomad=**Riboviria** ✅; V02 iVar konsensus **29859 bp** (ref 29903); V03 kapsama **%98.88 breadth,
+  942× derinlik**; V06 VADR sarscov2 koştu (**3 iyi-huylu alert:** 5'/3' uç düşük-benzerlik = amplikon
+  dropout + 1 CDS anotasyon-ucu; %1.02 N); V05/V07/V08/V09 = N/A; rapor RNA bölümleri + 4 gri N/A pill.
+  **1 gerçek-veri bug'ı bulundu+düzeltildi:** iVar konsensus '-' (no-call) → VADR esl-reformat reddi →
+  `clean_consensus_gaps` '-'→'N'. Spec: `docs/.../2026-08-13-virusforge-m2b-rna-phase1-design.md`.
+
 ## Şu an nerede kaldık (özet)
-- **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
+- **SIRADA:** **M2-B Faz 2** (iVar variants + LoFreq quasispecies, Faz 1 BAM'i üzerinden) + lineage
+  (Pangolin/Nextclade). Ayrıca RNA de novo (rnaviralSPAdes referanssız) gerçek doğrulaması opsiyonel.
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
   (virsorter2/vibrant/kraken2) → config'te var, modül yok. (NOT: "short/long/hybrid" ayrı bir eksen = M1
   platform kapsamı, çoktan TAMAM; Item numaraları rapor-cilalama fazına aittir, okuma tipiyle ilgisiz.)
