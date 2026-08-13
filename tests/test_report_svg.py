@@ -74,6 +74,37 @@ def test_render_html_language_switch_link():
     assert "report.html" in en and "Türkçe" in en
 
 
+def test_lifestyle_label_lytic_lysogenic():
+    from virusforge.report.render import _lifestyle_label
+    assert "litik" in _lifestyle_label("virulent", "tr").lower()
+    assert "lizojenik" in _lifestyle_label("temperate", "tr").lower()
+    assert "lytic" in _lifestyle_label("virulent", "en").lower()
+    assert "lysogenic" in _lifestyle_label("temperate", "en").lower()
+    assert "virulent" in _lifestyle_label("virulent", "tr")   # ham PhaTYP enum korunur
+    assert _lifestyle_label("—", "tr") == "—"                  # bilinmeyen → olduğu gibi
+
+
+def test_break_lineage_wraps_long_taxonomy():
+    from virusforge.report.render import _break_lineage
+    lin = "acellular root:Viruses;realm:Duplodnaviria;class:Caudoviricetes;subfamily:Studiervirinae"
+    out = _break_lineage(lin)
+    assert "<wbr>" in out and "brk" in out           # her ';' sonrası kırılma noktası + kaydırma sınıfı
+    assert "Studiervirinae" in out                    # içerik korunur
+    assert "mdash" in _break_lineage("")               # boş → em-dash (çökmez)
+
+
+def test_render_html_shows_lytic_and_wraps_lineage():
+    from virusforge.report.render import render_html
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": [
+        {"code": "V07", "status": "PASS", "metrics": {
+            "lifestyle": {"TYPE": "virulent", "PhaTYPScore": "1.0"},
+            "taxonomy": {"Lineage": "class:Caudoviricetes;subfamily:Studiervirinae"}}}]}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    assert "litik" in tr and "lytic" in en           # yaşam tarzı yorumu
+    assert "brk" in tr and "<wbr>" in tr             # soy hattı kaydırılabilir (taşmaz)
+
+
 def test_render_html_gene_annotation_table():
     # V06 anotasyon bölümünde her CDS için gen listesi tablosu (tr + en)
     from virusforge.report.render import render_html

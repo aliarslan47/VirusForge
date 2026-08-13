@@ -44,7 +44,9 @@ a{color:var(--pri);text-decoration:none}a:hover{text-decoration:underline}
 .na{color:var(--mut);font-style:italic;font-size:12.5px}
 .note{color:var(--mut);font-size:11.5px;margin-top:8px}
 .mono{font-family:ui-monospace,monospace}
+.brk{overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:12px;line-height:1.5}
 .kv{font-weight:700}
+td{overflow-wrap:anywhere}
 figure{margin:12px 0;text-align:center}
 figcaption{font-size:12.5px;color:var(--tx);font-weight:600;margin-top:6px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:4px}
@@ -62,6 +64,29 @@ figcaption{font-size:12.5px;color:var(--tx);font-weight:600;margin-top:6px}
 
 def _esc(v) -> str:
     return html.escape(str(v)) if v is not None else "&mdash;"
+
+
+# PhaTYP yaşam tarzı enum → litik/lizojenik yorumu (standart faj biyolojisi; uydurma değil).
+_LIFESTYLE = {
+    "virulent": {"tr": "virulent — litik", "en": "virulent — lytic"},
+    "temperate": {"tr": "temperate — lizojenik (ılıman)", "en": "temperate — lysogenic"},
+}
+
+
+def _lifestyle_label(type_val, lang="tr") -> str:
+    """PhaTYP TYPE'ı litik/lizojenik açıklamasıyla etiketle; bilinmeyen → olduğu gibi."""
+    key = str(type_val).strip().lower()
+    m = _LIFESTYLE.get(key)
+    return m[lang if lang in ("tr", "en") else "tr"] if m else str(type_val)
+
+
+def _break_lineage(lineage) -> str:
+    """Uzun (boşluksuz, ';'-ayrık) soy hattını kaydırılabilir yap: her ';' sonrası <wbr>
+    kırılma noktası + .brk (overflow-wrap) → tablo hücresi taşmaz."""
+    s = (lineage or "").strip()
+    if not s:
+        return "<span class='mono brk'>&mdash;</span>"
+    return "<span class='mono brk'>" + _esc(s).replace(";", ";<wbr>") + "</span>"
 
 
 def _pill(status: str) -> str:
@@ -329,16 +354,16 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         stat("Tamlık (CheckV)", cv.get("completeness", "—"), "%"),
         stat("Kontaminasyon", cv.get("contamination", "—"), "%"),
         stat("Gen (CDS)", M["V06"].get("cds", "—")),
-        stat("Yaşam tarzı", v8l.get("TYPE", "—")),
+        stat("Yaşam tarzı", _lifestyle_label(v8l.get("TYPE", "—"), lang)),
     ]
     overview_rows = [
         ["Örnek", _esc(report.get("sample", ""))],
         ["Sekans tipi", _esc(report.get("mode", ""))],
         ["Viral doğrulama (geNomad)", f"{_esc(M['V04'].get('is_viral'))} · skor {_esc(M['V04'].get('top_score'))}"],
-        ["Taksonomi", f"<span class='mono'>{_esc(M['V04'].get('taxonomy',''))}</span>"],
+        ["Taksonomi", _break_lineage(M['V04'].get('taxonomy', ''))],
         ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
         ["En yakın referans (Mash)", f"{_esc(v6.get('accession','—'))} · mesafe {_esc(v6.get('mash_dist','—'))}"],
-        ["Yaşam tarzı (PhaTYP)", f"{_esc(v8l.get('TYPE','—'))} · skor {_esc(v8l.get('PhaTYPScore','—'))}"],
+        ["Yaşam tarzı (PhaTYP)", f"{_esc(_lifestyle_label(v8l.get('TYPE','—'), lang))} · skor {_esc(v8l.get('PhaTYPScore','—'))}"],
         ["Genom kalitesi (CheckV)", f"{_esc(cv.get('checkv_quality','—'))} · {_esc(cv.get('completeness','—'))}% tam"],
     ]
     p.append(f"<section><h2>{L('Genel Bakış')}</h2>"
@@ -470,12 +495,18 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
     p.append(section("V06", "Genom Annotation (Pharokka)", gmap + v07body))
 
     # V07
-    v08body = table("Faj yaşam tarzı & taksonomi (PhaBOX)", ["Alan", "Değer"], [
-        ["Yaşam tarzı (PhaTYP)", f"<span class='kv'>{_esc(v8l.get('TYPE','—'))}</span>"],
-        ["PhaTYP skoru", _esc(v8l.get("PhaTYPScore", "—"))],
-        ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
-        ["Soy hattı", f"<span class='mono'>{_esc(v8t.get('Lineage','—'))}</span>"],
-    ]) if (v8l or v8t) else f"<p class='na'>{L('Bakteriyofaj karakterizasyonu uygulanmadı.')}</p>"
+    if v8l or v8t:
+        v08body = table("Faj yaşam tarzı & taksonomi (PhaBOX)", ["Alan", "Değer"], [
+            ["Yaşam tarzı (PhaTYP)", f"<span class='kv'>{_esc(_lifestyle_label(v8l.get('TYPE','—'), lang))}</span>"],
+            ["PhaTYP skoru", _esc(v8l.get("PhaTYPScore", "—"))],
+            ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
+            ["Soy hattı", _break_lineage(v8t.get("Lineage", "—"))],
+        ])
+        _life_note = ("Litik (virulent) fajlar konağı lizisle öldürür ve genoma entegre olmaz; "
+                      "lizojenik (ılıman/temperate) fajlar konak genomuna entegre olabilir.")
+        v08body += f"<p class='note'>{L(_life_note)}</p>"
+    else:
+        v08body = f"<p class='na'>{L('Bakteriyofaj karakterizasyonu uygulanmadı.')}</p>"
     p.append(section("V07", "Faj-Özel Karakterizasyon (PhaBOX)", v08body))
 
     # V08 — AMR & virülans

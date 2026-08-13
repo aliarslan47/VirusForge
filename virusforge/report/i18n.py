@@ -45,6 +45,8 @@ EN = {
     "Gen anotasyon listesi (her CDS)": "Gene annotation list (per CDS)",
     "Başlangıç": "Start", "Bitiş": "End", "Yön": "Strand", "Ürün": "Product",
     "Faj yaşam tarzı & taksonomi (PhaBOX)": "Phage lifestyle & taxonomy (PhaBOX)",
+    "Litik (virulent) fajlar konağı lizisle öldürür ve genoma entegre olmaz; lizojenik (ılıman/temperate) fajlar konak genomuna entegre olabilir.":
+        "Lytic (virulent) phages kill the host by lysis and do not integrate into its genome; lysogenic (temperate) phages can integrate into the host genome.",
     "AMR / virülans / stres gen sayıları": "AMR / virulence / stress gene counts",
     "Saptanan genler (AMRFinderPlus)": "Detected genes (AMRFinderPlus)",
     "Tanımlama — en yakın kayıt (BLAST, online virus DB)": "Identification — closest hit (BLAST, online virus DB)",
