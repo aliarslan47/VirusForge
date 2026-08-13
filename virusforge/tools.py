@@ -139,9 +139,10 @@ def mafft_cmd(in_fasta, out_aln):
     return ["mafft", "--auto", str(in_fasta)]
 
 
-def iqtree_cmd(aln, prefix, threads=8):
-    """IQ-TREE2 ML ağaç + UFBoot bootstrap, model-otomatik."""
-    return ["iqtree2", "-s", str(aln), "--prefix", str(prefix),
+def iqtree_cmd(aln, prefix, threads=8, binary="iqtree"):
+    """IQ-TREE (v2/v3) ML ağaç + UFBoot bootstrap, model-otomatik. Binary adı sistemde
+    değişebilir (v3 = 'iqtree'); config'le override edilebilir."""
+    return [binary, "-s", str(aln), "--prefix", str(prefix),
             "-B", "1000", "-T", str(threads), "-m", "MFP", "--quiet"]
 
 

@@ -148,8 +148,9 @@ class V09Comparative(Module):
             pass
         if aln.exists() and aln.stat().st_size > 0:
             pfx = dirs["03_native_outputs"] / "iqtree"
-            if not safe_run(_wrap(tools.iqtree_cmd(aln, pfx, get(cfg, "general.threads", 8)), cenv, cbin),
-                            dirs["07_logs"] / "iqtree.log"):
+            iq = tools.iqtree_cmd(aln, pfx, get(cfg, "general.threads", 8),
+                                  get(cfg, "tools.comparative.iqtree_bin", "iqtree"))
+            if not safe_run(_wrap(iq, cenv, cbin), dirs["07_logs"] / "iqtree.log"):
                 tf = Path(str(pfx) + ".treefile")
                 if tf.exists():
                     metrics["tree"] = parse_iqtree(tf)

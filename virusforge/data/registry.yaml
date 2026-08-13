@@ -74,7 +74,7 @@ mafft:
   doi: "10.1093/molbev/mst010"
 iqtree2:
   repo: https://github.com/iqtree/iqtree2
-  version_cmd: ["iqtree2", "--version"]
+  version_cmd: ["iqtree", "--version"]
   doi: "10.1093/molbev/msaa015"
 taxmyphage:
   repo: https://github.com/millardlab/taxmyphage
