@@ -33,6 +33,51 @@ def parse_blastn_identity(tsv_path) -> dict:
     return out
 
 
+def _genome_length(fasta) -> int:
+    return sum(len(l.strip()) for l in Path(fasta).read_text().splitlines() if not l.startswith(">"))
+
+
+def _load_json(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception:
+        return {}
+
+
+def collect_samples(run_dirs) -> list:
+    """Her tamamlanmış run'dan genom + ad + ICTV (V09) + taksonomi (V04) + uzunluk topla.
+    Genomu olmayan run atlanır."""
+    samples = []
+    for rd in run_dirs:
+        rd = Path(rd)
+        genome = rd / "V03_POLISHING_VIRAL_QC" / "04_standardized" / "viral_genome.fasta"
+        if not genome.exists():
+            continue
+        v04 = next((rd / "V04_VIRAL_IDENTIFICATION" / "04_standardized").glob("*.json"), None)
+        v09 = rd / "V09_COMPARATIVE_PHYLO" / "04_standardized" / "comparative.json"
+        samples.append({
+            "name": rd.name,
+            "genome_path": str(genome),
+            "length": _genome_length(genome),
+            "taxonomy": (_load_json(v04).get("taxonomy") if v04 else "") or "",
+            "ictv": (_load_json(v09).get("ictv") or {}) if v09.exists() else {},
+        })
+    return samples
+
+
+def build_combined_fasta(samples, out_fasta) -> int:
+    """Örnek genomlarını tek fasta'ya (header = örnek adı). Yazılan örnek sayısını döndür."""
+    n = 0
+    with open(out_fasta, "w") as out:
+        for s in samples:
+            seq = "".join(l.strip() for l in Path(s["genome_path"]).read_text().splitlines()
+                          if not l.startswith(">"))
+            if seq:
+                out.write(f">{s['name']}\n{seq}\n")
+                n += 1
+    return n
+
+
 def identity_matrix(labels, pairs) -> list:
     """Etiketlerden NxN % kimlik matrisi (köşegen=100, simetrik doldurma)."""
     n = len(labels)
