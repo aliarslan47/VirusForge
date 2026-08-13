@@ -76,7 +76,12 @@ class V03PolishQC(Module):
         if ctx.mode in ("LONG_READ", "HYBRID") and long_reads:
             mout = dirs["02_work"] / "medaka"
             model = get(ctx.cfg, "tools.medaka.model", "auto")
-            model = "r1041_e82_400bps_sup_v5.0.0" if model == "auto" else model
+            if model == "auto":
+                # kimyaya-duyarlı model (Flye ile aynı R9/R10 kararı)
+                from .v02_assembly import resolve_chemistry
+                mq = (ctx.results.get("V01", {}).get("long") or {}).get("mean_qual")
+                model = ("r941_min_sup_g507" if resolve_chemistry(mq) == "r9"
+                         else "r1041_e82_400bps_sup_v5.0.0")
             err = safe_run(tools.medaka_consensus_cmd(
                 long_reads, draft, mout, model, threads,
                 conda_env=get(ctx.cfg, "tools.long.conda_env", None),

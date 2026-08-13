@@ -9,7 +9,20 @@ from ..config import get
 from ..module import Context, Module, ModuleResult, Status, safe_run
 
 
-def select_assembler(mode: str, reads: dict, out_dir, cfg: dict):
+# Flye --nano-hq (R10) yalnız düşük-hatalı okumalar için; yüksek-hatalı (R9-tipi)
+# veride çöker ("No disjointigs assembled"). Ortalama okuma kalitesiyle otomatik seç.
+_HQ_QUAL_THRESHOLD = 13.0   # ~ Q13 (<%5 hata) altı → R9 (--nano-raw)
+
+
+def resolve_chemistry(mean_qual) -> str:
+    """NanoPlot ortalama kalitesinden ONT kimyası: düşük kalite→r9, yüksek→r10.
+    Bilinmiyorsa modern varsayılan r10 (gerçek T7 doğrulamasında bulundu)."""
+    if mean_qual is None:
+        return "r10"
+    return "r10" if float(mean_qual) >= _HQ_QUAL_THRESHOLD else "r9"
+
+
+def select_assembler(mode: str, reads: dict, out_dir, cfg: dict, mean_qual=None):
     """(cmd, üretilecek contig dosyası) döndür. Gerekli okuma yoksa ValueError (sessiz PASS yasak)."""
     threads = get(cfg, "general.threads", 8)
     lenv = get(cfg, "tools.long.conda_env", None)
@@ -23,9 +36,9 @@ def select_assembler(mode: str, reads: dict, out_dir, cfg: dict):
     if mode == "LONG_READ":
         if not reads.get("long"):
             raise ValueError("LONG_READ için uzun-okuma bulunamadı")
-        chem = get(cfg, "tools.flye.chemistry", "r10")
+        chem = get(cfg, "tools.flye.chemistry", "auto")
         if str(chem).lower() == "auto":
-            chem = "r10"          # modern ONT varsayılanı (--nano-hq); medaka R10 modeliyle tutarlı
+            chem = resolve_chemistry(mean_qual)   # kaliteye-dayalı R9/R10 (Q<13 → --nano-raw)
         return tools.flye_cmd(reads["long"], out, chem, threads,
                               conda_env=lenv, conda_bin=lbin), out / "assembly.fasta"
     if mode == "HYBRID":
@@ -68,8 +81,9 @@ class V02Assembly(Module):
             "long": v01.get("clean_long") or (str(raw_long) if raw_long else None),
         }
         work = dirs["02_work"] / "asm"
+        mean_qual = (ctx.results.get("V01", {}).get("long") or {}).get("mean_qual")
         try:
-            cmd, contig = select_assembler(ctx.mode, reads, work, ctx.cfg)
+            cmd, contig = select_assembler(ctx.mode, reads, work, ctx.cfg, mean_qual=mean_qual)
         except ValueError as exc:
             m = {"error": str(exc)}
             return ModuleResult(Status.FAIL, self.write_summary(ctx.run_dir, Status.FAIL, m), m)

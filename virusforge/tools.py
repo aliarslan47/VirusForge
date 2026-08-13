@@ -45,8 +45,10 @@ def spades_cmd(r1, r2, out_dir, threads=8, careful=True):
 
 def flye_cmd(long_reads, out_dir, chemistry="r10", threads=8, conda_env=None, conda_bin="conda"):
     # R10 → --nano-hq, R9 → --nano-raw (kimya-otomatik; BacForge dersi)
+    # --meta: küçük + ultra-yüksek kapsamlı viral genomlar için şart (T7 doğrulamasında bulundu;
+    # --meta olmadan Flye "No disjointigs assembled" ile çöküyor)
     flag = "--nano-hq" if str(chemistry).lower().startswith("r10") else "--nano-raw"
-    return _conda_wrap(["flye", flag, str(long_reads), "-o", str(out_dir), "-t", str(threads)],
+    return _conda_wrap(["flye", flag, str(long_reads), "--meta", "-o", str(out_dir), "-t", str(threads)],
                        conda_env, conda_bin)
 
 

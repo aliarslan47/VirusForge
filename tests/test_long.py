@@ -21,3 +21,9 @@ def test_flye_chemistry_flag():
     # R10 → --nano-hq, R9 → --nano-raw (kimya-otomatik)
     assert "--nano-hq" in tools.flye_cmd("r.fq", "out", chemistry="r10")
     assert "--nano-raw" in tools.flye_cmd("r.fq", "out", chemistry="r9")
+
+
+def test_flye_uses_meta_for_viral():
+    # küçük + ultra-yüksek kapsamlı viral genomlar için --meta şart
+    # (T7 gerçek verisinde --meta olmadan "No disjointigs assembled" ile çöktü)
+    assert "--meta" in tools.flye_cmd("r.fq", "out")
