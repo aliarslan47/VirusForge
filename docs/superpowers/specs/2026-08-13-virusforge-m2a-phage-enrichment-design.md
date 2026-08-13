@@ -2,6 +2,12 @@
 
 > Tarih: 2026-08-13 · Durum: onaylandı (kullanıcı) · Kapsam: M2'nin faj-zenginleştirme yarısı
 > Kardeş yarım (ayrı spec): M2-B RNA-virüs yolu (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
+>
+> **GÜNCELLEME 2026-08-13:** V09 (host/RaFAH) ve V12 (termini/PhageTerm) kullanıcı kararıyla
+> **pipeline'dan çıkarıldı** — araçları (RaFAH, PhageTerm) bioconda/pypi'da yok ve dağıtım
+> kanalları (SourceForge, Pasteur GitLab) bu ortamdan ağ olarak erişilemiyor. Uygulanan+doğrulanan
+> M2-A = **V11 (AMR/AMRFinderPlus) + V13 (domain/phold)**. Aşağıdaki V09/V12 bölümleri tarihsel
+> tasarım olarak korunmuştur (ileride araçlar erişilebilir olursa yeniden eklenebilir).
 
 ## 1. Amaç ve bağlam
 

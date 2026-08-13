@@ -21,7 +21,7 @@ def latest_genome(ctx: "Context") -> Path | None:
 
 
 def is_phage(ctx: "Context") -> bool:
-    """V05 sonucuna göre örnek bakteriyofaj mı? (V09/V11/V12/V13 faj-koşulluluğu).
+    """V05 sonucuna göre örnek bakteriyofaj mı? (V11/V13 faj-koşulluluğu).
 
     Viral değilse False. Viral + taksonomi Caudo/phage içeriyorsa (ya da taksonomi
     boşsa — muhafazakâr, genel faj hattı) True."""

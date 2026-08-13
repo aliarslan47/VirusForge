@@ -1,4 +1,4 @@
-"""M2-A faj zenginleştirme testleri: V09 host, V11 AMR, V12 termini, V13 domain.
+"""M2-A faj zenginleştirme testleri: V11 AMR, V13 domain.
 
 Parser'lar gerçek tool-çıktısı fixture'larıyla; modüller araçsız ortamda dürüst
 WARNING/NOT_APPLICABLE döner (sentetik veri, gerçek indirme yok).
@@ -7,32 +7,15 @@ from pathlib import Path
 
 from virusforge.module import Context, Status, is_phage
 from virusforge.modules.v07_annotate import V07Annotate
-from virusforge.modules.v09_host import V09Host, parse_rafah, parse_iphop
 from virusforge.modules.v11_amr import V11Amr, parse_amrfinder
-from virusforge.modules.v12_termini import V12Termini, parse_phageterm
 from virusforge.modules.v13_domain import V13Domain, parse_phold
 
-from tests.conftest import write_fasta, write_fastq
+from tests.conftest import write_fasta
 
 
 # --------------------------------------------------------------------------- #
 # Parser birim testleri
 # --------------------------------------------------------------------------- #
-def test_parse_rafah_extracts_host_and_score(tmp_path):
-    p = tmp_path / "T7_Host_Predictions.tsv"
-    p.write_text("Sequence\tPredicted_Host\tScore\nT7\tEscherichia\t0.95\n")
-    m = parse_rafah(p)
-    assert m["predicted_host"] == "Escherichia" and m["confidence"] == "0.95"
-
-
-def test_parse_iphop_extracts_genus_and_confidence(tmp_path):
-    p = tmp_path / "Host_prediction_to_genus_m90.csv"
-    p.write_text("Virus,AAI to closest reference,Host genus,Confidence score,List of methods\n"
-                 "T7,,Escherichia,95.5,blast;crispr\n")
-    m = parse_iphop(p)
-    assert m["predicted_host"] == "Escherichia" and m["confidence"] == "95.5"
-
-
 def test_parse_amrfinder_v4_column_names(tmp_path):
     # AMRFinderPlus v4.x gerçek başlık: Type / Element symbol / % Coverage of reference
     p = tmp_path / "amrfinder.tsv"
@@ -71,13 +54,6 @@ def test_parse_amrfinder_empty_is_valid(tmp_path):
     assert m["amr_genes"] == []
 
 
-def test_parse_phageterm_reads_class_and_positions(tmp_path):
-    p = tmp_path / "T7_PhageTerm_report.csv"
-    p.write_text("Sequence,Class,Left,Right\nT7,DTR (long),1,160\n")
-    m = parse_phageterm(p)
-    assert m["termini_type"] == "DTR (long)" and m["left"] == "1" and m["right"] == "160"
-
-
 def test_parse_phold_sums_functions_and_unknown(tmp_path):
     # phold_all_cds_functions.tsv — pharokka ile aynı format (Description/Count/contig)
     p = tmp_path / "phold_all_cds_functions.tsv"
@@ -95,8 +71,6 @@ def test_parse_phold_sums_functions_and_unknown(tmp_path):
 def test_tool_cmds_wrap_conda_env():
     from virusforge import tools
     for cmd in (tools.amrfinder_cmd("in.faa", "o.tsv", conda_env="vf_amr", conda_bin="conda"),
-                tools.rafah_cmd("g.fa", "pfx", conda_env="vf_rafah", conda_bin="conda"),
-                tools.phageterm_cmd("r1", "r2", "g.fa", conda_env="vf_pt", conda_bin="conda"),
                 tools.phold_cmd("in.gbk", "out", conda_env="vf_phold", conda_bin="conda")):
         assert cmd[:3] == ["conda", "run", "-n"]
 
@@ -145,44 +119,12 @@ def _phage_ctx_with_genome(tmp_path, **kw):
     return c, genome
 
 
-def test_v09_not_applicable_when_not_phage(tmp_path):
-    c = _ctx(tmp_path, results={"V05": {"is_viral": False}},
-             artifacts={"V04": {"genome": str(write_fasta(tmp_path / "g.fasta"))}})
-    res = V09Host().run(c)
-    assert res.status == Status.NOT_APPLICABLE
-
-
-def test_v09_warning_when_tool_missing(tmp_path):
-    c, _ = _phage_ctx_with_genome(tmp_path)
-    res = V09Host().run(c)
-    assert res.status == Status.WARNING
-    d = c.run_dir / "V09_HOST_PREDICTION"
-    assert (d / "V09_summary.json").exists()
-    assert (d / "04_standardized" / "host_prediction.json").exists()
-    assert (d / "01_input").is_dir() and (d / "08_metadata").is_dir()  # 8 std klasör
-
-
 def test_v11_warning_when_tool_missing(tmp_path):
     c, _ = _phage_ctx_with_genome(tmp_path)
     c.artifacts["V07"] = {"faa": str(tmp_path / "pharokka.faa")}  # dosya yok → genom fallback
     res = V11Amr().run(c)
     assert res.status == Status.WARNING
     assert (c.run_dir / "V11_AMR_VIRULENCE" / "04_standardized" / "amr_virulence.json").exists()
-
-
-def test_v12_not_applicable_for_long_only(tmp_path):
-    c, _ = _phage_ctx_with_genome(tmp_path, mode="LONG_READ")
-    res = V12Termini().run(c)
-    assert res.status == Status.NOT_APPLICABLE
-
-
-def test_v12_warning_when_tool_missing(tmp_path):
-    c, _ = _phage_ctx_with_genome(tmp_path, mode="SHORT_READ")
-    r1 = write_fastq(tmp_path / "reads_R1.fastq")
-    r2 = write_fastq(tmp_path / "reads_R2.fastq")
-    c.artifacts["V01"] = {"clean_r1": str(r1), "clean_r2": str(r2)}
-    res = V12Termini().run(c)
-    assert res.status == Status.WARNING
 
 
 def test_v13_not_applicable_when_not_phage(tmp_path):

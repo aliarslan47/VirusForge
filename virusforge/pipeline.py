@@ -15,9 +15,7 @@ from .modules.v05_identify import V05Identify
 from .modules.v06_taxonomy import V06Taxonomy
 from .modules.v07_annotate import V07Annotate
 from .modules.v08_phage_char import V08PhageChar
-from .modules.v09_host import V09Host
 from .modules.v11_amr import V11Amr
-from .modules.v12_termini import V12Termini
 from .modules.v13_domain import V13Domain
 from .modules.v19_report import V19Report
 
@@ -25,7 +23,7 @@ from .modules.v19_report import V19Report
 DEFAULT_MODULES = [
     V00Input, V01ReadQC, V03Assembly, V04PolishQC,
     V05Identify, V06Taxonomy, V07Annotate, V08PhageChar,
-    V09Host, V11Amr, V12Termini, V13Domain, V19Report,
+    V11Amr, V13Domain, V19Report,
 ]
 
 

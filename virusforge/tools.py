@@ -95,18 +95,6 @@ def _conda_wrap(cmd, conda_env=None, conda_bin="conda"):
     return cmd
 
 
-def rafah_cmd(genome, out_prefix, conda_env=None, conda_bin="conda"):
-    """RaFAH konak tahmini: <out_prefix>_Host_Predictions.tsv üretir."""
-    return _conda_wrap(["RaFAH.py", "--predict", "--genomes_list", str(genome),
-                        "--file_prefix", str(out_prefix)], conda_env, conda_bin)
-
-
-def iphop_cmd(genome, out_dir, db, threads=8, conda_env=None, conda_bin="conda"):
-    """iPHoP konak tahmini (opsiyonel; DB büyük)."""
-    return _conda_wrap(["iphop", "predict", "--fa_file", str(genome), "--out_dir", str(out_dir),
-                        "--db_dir", str(db), "-t", str(threads)], conda_env, conda_bin)
-
-
 def amrfinder_cmd(input_path, out_tsv, db="", is_protein=True, threads=8,
                   conda_env=None, conda_bin="conda"):
     """AMRFinderPlus: proteinlerde (-p) veya genomda (-n) AMR/virülans/stres taraması."""
@@ -115,12 +103,6 @@ def amrfinder_cmd(input_path, out_tsv, db="", is_protein=True, threads=8,
     if db:
         cmd += ["-d", str(db)]
     return _conda_wrap(cmd, conda_env, conda_bin)
-
-
-def phageterm_cmd(r1, r2, genome, name="phageterm", conda_env=None, conda_bin="conda"):
-    """PhageTerm: genom uçları/termini tespiti (paired-end kısa okuma gerektirir)."""
-    return _conda_wrap(["PhageTerm.py", "-f", str(r1), "-r", str(r2), "-s", str(genome),
-                        "--report_title", str(name)], conda_env, conda_bin)
 
 
 def phold_cmd(gbk, out_dir, db="", threads=8, conda_env=None, conda_bin="conda"):

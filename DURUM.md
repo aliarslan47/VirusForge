@@ -25,24 +25,25 @@ Gerçek ENA verisi `ERR3804828` (Escherichia phage T7, Illumina MiSeq). conda en
 
 **Çözülen 3 gerçek bug:** (1) Pharokka parser contig-başına satırları topluyor (60→doğru); (2) env diamond 0.9.10→2.2.5 (CheckV DIAMOND); (3) PhaBOX pandas-3 `'singleton'` hatası → izole `vf_phabox` env (pandas 2.3) + `conda run`. Ayrıca CLI `--resume` + resume artifact geri-yükleme eklendi.
 
-## 2026-08-13 — M2-A FAJ ZENGİNLEŞTİRME TAMAM + T7'de DOĞRULANDI
-Brainstorm→spec (`docs/superpowers/specs/2026-08-13-...-m2a-...-design.md`)→plan→TDD ile 4 yeni modül:
-**V09 host** (RaFAH/iPHoP config-seçmeli) · **V11 AMR** (AMRFinderPlus) · **V12 termini** (PhageTerm) ·
-**V13 domain** (phold). Hepsi faj-koşullu (`is_phage`); pipeline `…V08→V09→V11→V12→V13→V19`.
+## 2026-08-13 — M2-A FAJ ZENGİNLEŞTİRME (V11+V13) TAMAM + T7'de DOĞRULANDI
+Brainstorm→spec→plan→TDD. **Uygulanan+doğrulanan M2-A = V11 (AMR) + V13 (domain).** Faj-koşullu
+(`is_phage`); pipeline `…V08→V11→V13→V19`.
+- **V09 (host/RaFAH) + V12 (termini/PhageTerm) KULLANICI KARARIYLA KALDIRILDI** (2026-08-13):
+  araçları bioconda/pypi'da yok, dağıtım kanalları (SourceForge 403, Pasteur GitLab klon bozuk) bu
+  ortamdan ağ olarak erişilemedi. Modül+test+registry+references+render+config+run-dir çıktıları +
+  `vf_rafah` env + `databases/rafah` tamamen silindi. (Tarihsel tasarım spec'te korunuyor.)
 - **Ön koşul çözüldü:** V07 artık pharokka çıktısını artifact yayınlıyor (`_protein_faa`=phanotate.faa,
   pharokka.faa DEĞİL) + `restore_artifacts` → V11/V13 resume'da besleniyor.
-- **İzole conda env deseni** (phabox gibi): `tools.<araç>.conda_env` → `vf_amr`/`vf_rafah`/`vf_phageterm`/
-  `vf_phold`; çalışan `virusforge` env'i korunur.
-- **20 yeni pytest (toplam 63 yeşil).** registry+references+config+render güncel (4 yeni amaca-özel tablo).
-- **T7 `--resume` GERÇEK DOĞRULAMA (9/9 modül tutarlı):** V00–V08 atlandı, V09–V13+V19 koştu.
+- **İzole conda env deseni** (phabox gibi): `tools.<araç>.conda_env` → `vf_amr`/`vf_phold`; çalışan
+  `virusforge` env'i korunur.
+- **56 pytest yeşil.** registry+references+config+render güncel (V11+V13 amaca-özel tablolar).
+- **T7 `--resume` GERÇEK DOĞRULAMA:** V00–V08 atlandı, V11+V13+V19 koştu.
   - **V11 PASS (gerçek):** AMRFinderPlus v4.2.7, 76 proteinde **0 AMR** (litik faj için doğru). input=protein.
-  - **V13 PASS (gerçek):** phold v1.2.6 (DB 15GB kuruldu), bilinmeyen **30→27** (yapı-tabanlı 3 CDS fonksiyon).
-  - **V09/V12 WARNING (dürüst):** RaFAH+PhageTerm bioconda/pypi'da YOK, kaynak kurulumu bu oturumda
-    yapılamadı → net "env yok" hatası (uydurma yok). Env adları config'te hazır; araçlar kurulunca çalışır.
-  - Rapor 2.6MB, 4 yeni tablo + gerçek değerler; V19 yeniden üretildi.
+  - **V13 PASS (gerçek):** phold v1.2.6 (DB 15GB), bilinmeyen **30→27** (yapı-tabanlı 3 CDS fonksiyon).
+  - Rapor V11+V13 gerçek değerlerle yeniden üretildi (V09/V12 bölümleri yok).
 - **Gerçek-veri bug'ı yakalandı+düzeltildi:** AMRFinderPlus **v4.x sütun adları** değişmiş
   (Type/Element symbol/% Coverage of reference) — parser v3+v4 uyumlu yapıldı (sessiz-hata önlendi).
-- **Kurulu env'ler:** `vf_amr` (AMRFinderPlus+DB), `vf_phold` (phold+15GB DB). Kurulamayan: RaFAH, PhageTerm.
+- **Kurulu env'ler:** `vf_amr` (AMRFinderPlus+DB), `vf_phold` (phold+15GB DB).
 
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.
@@ -50,11 +51,10 @@ Brainstorm→spec (`docs/superpowers/specs/2026-08-13-...-m2a-...-design.md`)→
 - **CLI smoke:** araçsız bile uçtan uca koşuyor — V00 PASS, V19 PASS (rapor+provenance), diğerleri dürüstçe WARNING, V08 NOT_APPLICABLE. Çökme yok.
 - Commit'ler yerelde (push için gh auth bekliyor): d647cc5 (çekirdek), 19144d4 (tam hat).
 - **2026-08-12 (akşam): RAPOR PROFESYONELLEŞTİRİLDİ.** BacForge-tarzı: numaralı/isimli 12 Tablo + 4 Şekil (pipeline akışı, Mash-mesafe grafiği, **circular genom haritası**, fonksiyonel kategori grafiği), Genel Bakış kartları, araç+sürüm+DOI tablosu. Genom haritası V07'de **otomatik** üretiliyor (pharokka_plotter gömüldü → `06_visualization/genome_map.png`). Rapor artifact olarak yayımlandı: https://claude.ai/code/artifact/0541885b-ce14-4011-87db-6eecc212b819. Kullanıcı geri bildirimi bellekte: **otonom çalış, görseller dahil her şeyi kendin üret+denetle** ([[feedback_otonom_denetim]]).
-- **M2-A faj zenginleştirme kod+doğrulama TAMAM (2026-08-13, üstteki bölüm).**
+- **M2-A (V11 AMR + V13 domain) kod+doğrulama TAMAM (2026-08-13, üstteki bölüm). V09/V12 kaldırıldı.**
 - **SIRADA seçenekleri:**
-  1. **RaFAH + PhageTerm kaynak kurulumu** → V09 host + V12 termini gerçek doğrulaması (T7 için **DTR** beklenen — bilinen doğru). İkisi de bioconda/pypi'da yok: RaFAH GitHub `felipehcoutinho/RaFAH` (HMMER+prodigal+model), PhageTerm GitLab `vlegrand/ptv` (py3). Env'ler `vf_rafah`/`vf_phageterm` config'te hazır; kurulunca modüller dokunmadan çalışır.
-  2. **long + hybrid** yolları (`samples/T7_long/…ont.fastq.gz` indi) — `conda install -n virusforge -c bioconda flye medaka unicycler nanoplot`.
-  3. **M2-B RNA-virüs yolu** ayrı spec (rnaviralSPAdes/iVar + VADR + iVar/LoFreq + V05 RNA yönlendirme).
+  1. **long + hybrid** yolları (`samples/T7_long/…ont.fastq.gz` indi) — `conda install -n virusforge -c bioconda flye medaka unicycler nanoplot`.
+  2. **M2-B RNA-virüs yolu** ayrı spec (rnaviralSPAdes/iVar + VADR + iVar/LoFreq + V05 RNA yönlendirme).
 - **Env'ler:** `virusforge` (ana) · `vf_phabox` (pandas 2.3) · `vf_amr` (AMRFinderPlus) · `vf_phold` (phold+15GB DB). DB'ler `databases/` (checkv/genomad/pharokka/inphared/phabox).
 
 ## Milestone planı

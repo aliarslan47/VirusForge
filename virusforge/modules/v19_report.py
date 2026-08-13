@@ -7,8 +7,8 @@ from pathlib import Path
 from ..module import Context, Module, ModuleResult, Status
 from ..report.render import render_html
 
-# Rapor sırası (M1 çekirdek + M2-A faj zenginleştirme)
-_ORDER = ["V00", "V01", "V03", "V04", "V05", "V06", "V07", "V08", "V09", "V11", "V12", "V13"]
+# Rapor sırası (M1 çekirdek + M2-A faj zenginleştirme: V11 AMR, V13 domain)
+_ORDER = ["V00", "V01", "V03", "V04", "V05", "V06", "V07", "V08", "V11", "V13"]
 
 
 class V19Report(Module):
