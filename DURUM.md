@@ -149,6 +149,17 @@ Kullanıcı: (1) fajın litik/lizojenik olduğu net yazsın + yorum, (2) Tablo 1
   `td{overflow-wrap:anywhere}`. Tablo 12 soy hattı + Genel Bakış taksonomi hücrelerine uygulandı.
 - i18n tr+en. **112 pytest yeşil** (+3). 4 T7 raporu yenilendi (virulent—litik, soy hattı temiz). commit fe584fe.
 
+## 2026-08-13 — V05'E MASH-MESAFE TAKSONOMİK AĞACI (Şekil 2 yanı) + T7 DOĞRULANDI
+Kullanıcı: Şekil 2 (Mash mesafesi) yanına taksonomik ağaç. Karar="İkisi de" → V05'e Mash dendrogramı +
+V09 ML ağacı yerinde (iki farklı ağaç). Fizibilite: sadece INPHARED `.msh` var (tekil fna yok) → V09'un
+zaten diskteki `sample_plus_refs.fasta`'sından kuruldu (çift efetch yok).
+- `tools.mash_sketch_indiv_cmd` (`-i` per-kayıt) + `mash_dist_table_cmd` (`-t` all-vs-all kare tablo).
+- `v09_comparative`: `parse_mash_square` + `mash_nj_newick` (biopython 1.88 NJ) + `build_mash_tree`
+  (sketch+dist→NJ newick; <3 takson/hata→None). V09.run ML ağacının yanında `metrics.tree.mash_newick` üretir.
+- render V05: Mash bar grafiğinin yanına Mash-mesafe ağacı figürü (`_svg_tree`); i18n tr+en.
+- **117 pytest yeşil** (+5). T7 hibrit: NJ ağacı örnek↔V01146 (T7 ref) en yakın küme (biyoloji tutarlı);
+  4 rapor yenilendi. commit e3b2ff2.
+
 ## Şu an nerede kaldık (özet)
 - **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
