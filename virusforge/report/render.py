@@ -228,7 +228,17 @@ def render_html(report: dict, run_dir=None) -> str:
                                        "style='max-width:100%;border:1px solid var(--bd);border-radius:8px'/>")
         return out
 
-    p = [f"<style>{_CSS}</style>", "<div class='wrap'>"]
+    # Düzgün HTML iskeleti — charset ŞART: yoksa tarayıcı UTF-8'i Latin-1 okur, Türkçe harfler bozulur
+    p = [
+        "<!DOCTYPE html>",
+        "<html lang='tr'><head>",
+        "<meta charset=\"utf-8\">",
+        "<meta name='viewport' content='width=device-width, initial-scale=1'>",
+        "<title>VirusForge — Viral / Faj Genom Analiz Raporu</title>",
+        f"<style>{_CSS}</style>",
+        "</head><body>",
+        "<div class='wrap'>",
+    ]
 
     # ---------- Header ----------
     p.append("<header><h1>VirusForge — Viral / Faj Genom Analiz Raporu</h1>"
@@ -469,4 +479,5 @@ def render_html(report: dict, run_dir=None) -> str:
     p.append("<p class='note' style='text-align:center'>VirusForge · RNA+DNA viral/faj genom analiz platformu · "
              "github.com/aliarslan47/VirusForge</p>")
     p.append("</div>")
+    p.append("</body></html>")
     return "\n".join(p)

@@ -28,3 +28,12 @@ def test_svg_synteny_renders():
 def test_svg_synteny_empty_safe():
     from virusforge.report.render import _svg_synteny
     assert "na" in _svg_synteny([], [], [], "a", "b")
+
+
+def test_report_has_utf8_charset():
+    # Türkçe harflerin bozulmaması için charset bildirimi ŞART (kalıcı çözüm)
+    from virusforge.report.render import render_html
+    h = render_html({"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": []})
+    assert "<!DOCTYPE html>" in h
+    assert 'charset="utf-8"' in h.lower() or "charset='utf-8'" in h.lower()
+    assert "<head" in h and "</head>" in h and "<body" in h

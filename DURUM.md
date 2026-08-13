@@ -90,6 +90,13 @@ online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç
      V05 (yerel Mash+INPHARED) fallback**: online BLAST birincil kalır, erişilemezse V05 akrabaları ağaç referansı.
   3. **mafft `--adjustdirection`**: ters-tümleyen genom → sahte uzun dal (2.1→0.0002) düzeltildi.
   4. **taxmyPHAGE DB** kurulumu (`taxmyphage install` → VMR + BLAST DB). ICTV yerel VIRIDIC, online gerektirmez.
+- **M3 GÖRSEL TAM (Part A+B):**
+  - **VIRIDIC benzerlik ısı-haritası** (taxmyPHAGE üretir → rapora gömülü).
+  - **Gen-düzeni SYNTENY** (özel statik SVG): clinker interaktif-HTML bağımsız rapora girmediğinden kendi
+    üretimimiz — en yakın ref'i pharokka ile annotate + örnek proteinleri ref'e **yerel blastp** (ağsız) →
+    homolog gen çiftleri → gen okları (PHROG fonksiyon renkli) + bağlantı çizgileri. **T7: 60 genden 59'u
+    homolog** (örnek vs V01146=T7 ref, neredeyse tam synteny). **86 pytest yeşil.**
+  - **V09 tam kapsam:** BLAST tanımlama + IQ-TREE2 ağaç + taxmyPHAGE ICTV + VIRIDIC heatmap + synteny.
 - **Kurulu:** blast, iqtree(v3), taxmyphage(+DB), mafft✅, efetch✅ (hepsi `virusforge` env).
 - **NOT:** online BLAST bu ortamda bloklu; V05 fallback ile ağaç+ICTV yine üretiliyor. Ağ erişimli
   ortamda online BLAST birincil çalışır (kod hazır). Spec/plan: `docs/superpowers/{specs,plans}/2026-08-13-*m3*`.

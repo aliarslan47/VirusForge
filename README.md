@@ -123,9 +123,9 @@ Gerçek ENA verisi (`ERR3804828`, Illumina MiSeq) ile **9/9 modül PASS**:
 
 - [x] **M1** — DNA/faj çekirdek · **short + long + hybrid T7 gerçek-veri doğrulandı** (platform kapsamı tam)
 - [x] **M2-A** — faj zenginleştirme: **V08 AMR & virülans (AMRFinderPlus)** · T7 doğrulandı
-- [x] **M3 Faz 1** — **V09 karşılaştırmalı tanımlama & filogeni** (BLAST + MAFFT/IQ-TREE2 + taxmyPHAGE ICTV) · T7 doğrulandı (Teseptimavirus)
+- [x] **M3** — **V09 karşılaştırmalı tanımlama & filogeni**: BLAST tanımlama + IQ-TREE2 ağaç + taxmyPHAGE ICTV + VIRIDIC heatmap + **gen-düzeni synteny** · T7 doğrulandı (Teseptimavirus T7, 59 homolog)
 - [ ] **M2-B** — RNA-virüs yolu (rnaviralSPAdes · VADR · iVar/LoFreq)
-- [ ] **M3 Faz 2** — clinker synteny + çoklu-örnek karşılaştırma
+- [ ] **M3+** — çoklu-örnek karşılaştırma + metavirome
 - [ ] **M3** — comparative/filogeni/görselleştirme + metavirome + virüse-özel plugin (Pangolin/Nextclade/IRMA)
 
 ## 📁 Yapı
