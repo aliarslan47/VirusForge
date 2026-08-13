@@ -24,3 +24,20 @@ def test_mafft_and_iqtree_cmd():
 
 def test_taxmyphage_cmd():
     assert tools.taxmyphage_cmd("g.fa", "out")[0] == "taxmyphage"
+
+
+# --------------------------------------------------------------------------- #
+# parse_blast_hits — tür-dedup top-N
+# --------------------------------------------------------------------------- #
+def test_parse_blast_hits_dedup_species_topn(tmp_path):
+    from virusforge.modules.v09_comparative import parse_blast_hits
+    p = tmp_path / "blast.tsv"
+    # sacc staxids sscinames pident qcovs length evalue bitscore
+    p.write_text(
+        "V01146\t10760\tEscherichia virus T7\t99.9\t98\t39000\t0\t7200\n"
+        "NC_XXX\t10760\tEscherichia virus T7\t99.0\t97\t38000\t0\t7000\n"   # aynı tür → tekille
+        "EU734174\t347326\tEnterobacteria phage 13a\t95.6\t90\t35000\t0\t5000\n"
+        "JQ965703\t999\tPhage X\t95.4\t88\t34000\t0\t4800\n")
+    hits = parse_blast_hits(p, n=5)
+    assert [h["species"] for h in hits] == ["Escherichia virus T7", "Enterobacteria phage 13a", "Phage X"]
+    assert hits[0]["accession"] == "V01146" and hits[0]["identity"] == "99.9"
