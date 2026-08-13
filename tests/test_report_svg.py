@@ -14,3 +14,17 @@ def test_svg_tree_empty_is_safe():
 def test_svg_matrix_renders_cells():
     svg = _svg_matrix(["s", "A"], [[100.0, 96.0], [96.0, 100.0]])
     assert svg.startswith("<svg") and "96" in svg
+
+
+def test_svg_synteny_renders():
+    from virusforge.report.render import _svg_synteny
+    top = [{"gene": "A", "start": 1, "end": 500, "strand": "+", "function": "tail"},
+           {"gene": "C", "start": 600, "end": 900, "strand": "-", "function": "lysis"}]
+    bottom = [{"gene": "B", "start": 1, "end": 500, "strand": "+", "function": "tail"}]
+    svg = _svg_synteny(top, bottom, [("A", "B")], "sample", "T7 ref")
+    assert svg.startswith("<svg") and "sample" in svg and "T7 ref" in svg
+
+
+def test_svg_synteny_empty_safe():
+    from virusforge.report.render import _svg_synteny
+    assert "na" in _svg_synteny([], [], [], "a", "b")

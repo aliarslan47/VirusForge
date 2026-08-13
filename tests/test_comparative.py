@@ -26,6 +26,13 @@ def test_taxmyphage_cmd():
     assert tools.taxmyphage_cmd("g.fa", "out")[0] == "taxmyphage"
 
 
+def test_blastp_and_makeblastdb_cmd():
+    mk = tools.makeblastdb_prot_cmd("ref.faa", "refdb")
+    assert mk[0] == "makeblastdb" and "prot" in mk
+    bp = tools.blastp_cmd("q.faa", "refdb", "out.tsv")
+    assert bp[0] == "blastp" and "-outfmt" in bp
+
+
 # --------------------------------------------------------------------------- #
 # parse_blast_hits — tür-dedup top-N
 # --------------------------------------------------------------------------- #
@@ -65,6 +72,28 @@ def test_parse_taxmyphage(tmp_path):
 # --------------------------------------------------------------------------- #
 # V09Comparative modül koşumu (araçsız/ağsız → dürüst WARNING / N/A)
 # --------------------------------------------------------------------------- #
+def test_parse_pharokka_gff_genes(tmp_path):
+    from virusforge.modules.v09_comparative import parse_pharokka_gff
+    p = tmp_path / "pharokka.gff"
+    p.write_text(
+        "##gff-version 3\n"
+        "contig_1\tPHANOTATE\tCDS\t1\t891\t-66027\t-\t0\tID=x;locus_tag=CDS_0001;function=head and packaging;product=y\n"
+        "contig_1\tPHANOTATE\tCDS\t900\t1500\t-10\t+\t0\tID=z;locus_tag=CDS_0002;function=tail;product=w\n")
+    genes = parse_pharokka_gff(p)
+    assert len(genes) == 2
+    assert genes[0] == {"gene": "CDS_0001", "start": 1, "end": 891, "strand": "-", "function": "head and packaging"}
+    assert genes[1]["function"] == "tail" and genes[1]["strand"] == "+"
+
+
+def test_parse_blastp_pairs_best_hit(tmp_path):
+    from virusforge.modules.v09_comparative import parse_blastp_pairs
+    p = tmp_path / "bp.tsv"
+    # qseqid sseqid pident bitscore
+    p.write_text("CDS_0001\tREF_01\t99\t500\nCDS_0001\tREF_02\t80\t300\nCDS_0002\tREF_05\t95\t400\n")
+    pairs = parse_blastp_pairs(p)
+    assert pairs["CDS_0001"] == "REF_01" and pairs["CDS_0002"] == "REF_05"  # en yüksek bitscore
+
+
 def test_copy_viridic_heatmap(tmp_path):
     from virusforge.modules.v09_comparative import _copy_viridic_heatmap
     tout = tmp_path / "taxmyphage" / "Results_per_genome" / "contig_1"

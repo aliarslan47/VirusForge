@@ -133,6 +133,54 @@ def _svg_matrix(labels, matrix) -> str:
     return "".join(out)
 
 
+_FUNC_COLORS = {
+    "head and packaging": "#c0392b", "connector": "#e67e22", "tail": "#2980b9",
+    "DNA, RNA and nucleotide metabolism": "#27ae60", "lysis": "#8e44ad",
+    "moron, auxiliary metabolic gene and host takeover": "#16a085",
+    "transcription regulation": "#d4ac0d", "integration and excision": "#7f8c8d",
+    "unknown function": "#bdc3c7", "other": "#95a5a6",
+}
+
+
+def _svg_synteny(top_genes, bottom_genes, links, top_label, bottom_label) -> str:
+    """İki genomun gen-düzeni synteny'si: gen okları (fonksiyona göre renkli) + homolog bağlantılar.
+    top/bottom_genes: [{gene,start,end,strand,function}]; links: [(top_gene, bottom_gene)]."""
+    if not top_genes or not bottom_genes:
+        return "<p class='na'>Synteny için gen verisi yok.</p>"
+    W, margin, gh = 680, 20, 16
+    y_top, y_bot = 40, 150
+    trackw = W - 2 * margin
+
+    def _draw(genes, y):
+        glen = max((g["end"] for g in genes), default=1) or 1
+        cx = {}
+        parts = [f"<line x1='{margin}' y1='{y+gh//2}' x2='{margin+trackw}' y2='{y+gh//2}' stroke='#d0d5da' stroke-width='1'/>"]
+        for g in genes:
+            x1 = margin + int(g["start"] / glen * trackw)
+            x2 = margin + int(g["end"] / glen * trackw)
+            w = max(3, x2 - x1)
+            col = _FUNC_COLORS.get(g.get("function", ""), "#95a5a6")
+            parts.append(f"<rect x='{x1}' y='{y}' width='{w}' height='{gh}' fill='{col}' rx='2'/>")
+            cx[g["gene"]] = x1 + w // 2
+        return "".join(parts), cx
+
+    top_svg, top_cx = _draw(top_genes, y_top)
+    bot_svg, bot_cx = _draw(bottom_genes, y_bot)
+    link_svg = []
+    for a, b in links:
+        if a in top_cx and b in bot_cx:
+            link_svg.append(f"<line x1='{top_cx[a]}' y1='{y_top+gh}' x2='{bot_cx[b]}' y2='{y_bot}' "
+                            "stroke='#8a949e' stroke-width='0.7' opacity='0.5'/>")
+    out = [f"<svg viewBox='0 0 {W} 185' width='100%' style='max-width:{W}px' font-family='system-ui' font-size='11'>"]
+    out.append(f"<text x='{margin}' y='{y_top-8}' fill='#14181d' font-weight='700'>{_esc(top_label)}</text>")
+    out.append(f"<text x='{margin}' y='{y_bot-8}' fill='#14181d' font-weight='700'>{_esc(bottom_label)}</text>")
+    out.append("".join(link_svg))          # bağlantılar altta (oklar üstte görünsün)
+    out.append(top_svg)
+    out.append(bot_svg)
+    out.append("</svg>")
+    return "".join(out)
+
+
 def _img_b64(path: Path):
     try:
         if path.exists() and path.stat().st_size > 0:
@@ -392,6 +440,13 @@ def render_html(report: dict, run_dir=None) -> str:
     # taxmyPHAGE VIRIDIC ısı-haritası (varsa) — gerçek intergenomic benzerlik
     v09body += figs_for("V09", "VIRIDIC genomlar-arası benzerlik ısı-haritası "
                                "(taxmyPHAGE; ICTV eşiği ≥95% tür, ≥70% cins).")
+    # synteny: örnek vs en yakın referans gen-düzeni (homolog bağlantılar)
+    syn = cmp.get("synteny") or {}
+    if syn.get("sample_genes") and syn.get("ref_genes"):
+        v09body += figure(f"Gen-düzeni synteny — örnek vs en yakın referans ({_esc(syn.get('ref','—'))}); "
+                          f"{_esc(syn.get('n_links', 0))} homolog gen bağlantısı, renk = PHROG fonksiyonel kategorisi.",
+                          _svg_synteny(syn["sample_genes"], syn["ref_genes"], syn.get("links", []),
+                                       "örnek", syn.get("ref", "referans")))
     p.append(section("V09", "Karşılaştırmalı Tanımlama & Filogeni", v09body))
 
     # ---------- Araçlar & referanslar ----------

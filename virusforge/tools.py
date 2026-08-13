@@ -150,3 +150,15 @@ def iqtree_cmd(aln, prefix, threads=8, binary="iqtree"):
 def taxmyphage_cmd(genome, out_dir, threads=8):
     """taxmyPHAGE: VIRIDIC + ICTV VMR → cins/tür."""
     return ["taxmyphage", "run", "-i", str(genome), "-o", str(out_dir), "-t", str(threads)]
+
+
+def makeblastdb_prot_cmd(faa, db_prefix):
+    """Yerel protein BLAST DB (synteny homolog eşleme için)."""
+    return ["makeblastdb", "-in", str(faa), "-dbtype", "prot", "-out", str(db_prefix)]
+
+
+def blastp_cmd(query_faa, db_prefix, out_tsv, threads=8):
+    """Yerel blastp: örnek proteinleri ref proteinlerine karşı (homolog gen çiftleri)."""
+    return ["blastp", "-query", str(query_faa), "-db", str(db_prefix),
+            "-max_target_seqs", "1", "-evalue", "1e-5", "-num_threads", str(threads),
+            "-outfmt", "6 qseqid sseqid pident bitscore", "-out", str(out_tsv)]

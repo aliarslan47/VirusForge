@@ -74,6 +74,39 @@ def _v05_fallback_hits(ctx, n) -> list[dict]:
              "identity": None, "coverage": None} for c in closest[:n] if c.get("accession")]
 
 
+def parse_pharokka_gff(gff_path) -> list[dict]:
+    """pharokka GFF CDS satırları → gen listesi (koordinat, strand, PHROG fonksiyon kategorisi)."""
+    genes = []
+    for line in Path(gff_path).read_text().splitlines():
+        if line.startswith("#"):
+            continue
+        c = line.split("\t")
+        if len(c) < 9 or c[2] != "CDS":
+            continue
+        attrs = dict(kv.split("=", 1) for kv in c[8].split(";") if "=" in kv)
+        genes.append({"gene": attrs.get("locus_tag") or attrs.get("ID"),
+                      "start": int(c[3]), "end": int(c[4]), "strand": c[6],
+                      "function": attrs.get("function", "unknown function")})
+    return genes
+
+
+def parse_blastp_pairs(tsv_path) -> dict:
+    """blastp tabular (qseqid sseqid pident bitscore) → query başına en yüksek bitscore'lu subject."""
+    best: dict[str, tuple] = {}
+    for line in Path(tsv_path).read_text().splitlines():
+        c = line.split("\t")
+        if len(c) < 4:
+            continue
+        q, s = c[0], c[1]
+        try:
+            bit = float(c[3])
+        except ValueError:
+            continue
+        if q not in best or bit > best[q][1]:
+            best[q] = (s, bit)
+    return {q: v[0] for q, v in best.items()}
+
+
 def _copy_viridic_heatmap(taxmyphage_out, viz_dir) -> bool:
     """taxmyPHAGE'in ürettiği VIRIDIC benzerlik ısı-haritasını rapor görselleştirmesine kopyala."""
     hm = next(Path(taxmyphage_out).rglob("heatmap.png"), None)
@@ -85,6 +118,48 @@ def _copy_viridic_heatmap(taxmyphage_out, viz_dir) -> bool:
 
 def _read_seq(fasta) -> str:
     return "".join(l.strip() for l in Path(fasta).read_text().splitlines() if not l.startswith(">"))
+
+
+def _find_faa(native_dir):
+    d = Path(native_dir)
+    for name in ("phanotate.faa", "prodigal.faa"):
+        if (d / name).exists():
+            return d / name
+    return next((f for f in d.glob("*.faa") if f.name != "terL.faa"), None)
+
+
+def _build_synteny(ctx, dirs, hits, cfg, threads):
+    """En yakın ref'i pharokka ile annotate et, yerel blastp ile homolog gen çiftleri bul,
+    örnek+ref gen listelerini + bağlantıları döndür (statik synteny SVG için render'a gider)."""
+    v06 = ctx.artifacts.get("V06", {}) or {}
+    native = v06.get("native_dir")
+    sample_faa = v06.get("faa")
+    sample_gff = Path(native) / "pharokka.gff" if native else None
+    if not (sample_gff and sample_gff.exists() and sample_faa and Path(sample_faa).exists()):
+        return None
+    ref_acc = hits[0]["accession"]
+    ref_fa = Path(get(cfg, "tools.comparative.ref_cache", "databases/ref_cache")) / f"{ref_acc}.fasta"
+    if not ref_fa.exists():
+        return None
+    logs = dirs["07_logs"]
+    refout = dirs["02_work"] / "ref_pharokka"
+    db = get(cfg, "tools.pharokka.db", "databases/pharokka")
+    if safe_run(tools.pharokka_cmd(ref_fa, refout, db, threads), logs / "ref_pharokka.log"):
+        return None
+    ref_gff = refout / "pharokka.gff"
+    ref_faa = _find_faa(refout)
+    if not (ref_gff.exists() and ref_faa):
+        return None
+    dbpfx = dirs["02_work"] / "refdb"
+    safe_run(tools.makeblastdb_prot_cmd(ref_faa, dbpfx), logs / "makeblastdb.log")
+    bp = dirs["03_native_outputs"] / "synteny_blastp.tsv"
+    safe_run(tools.blastp_cmd(sample_faa, dbpfx, bp, threads), logs / "blastp.log")
+    pairs = parse_blastp_pairs(bp) if bp.exists() else {}
+    return {"ref": ref_acc,
+            "sample_genes": parse_pharokka_gff(sample_gff),
+            "ref_genes": parse_pharokka_gff(ref_gff),
+            "links": [[q, s] for q, s in pairs.items()],
+            "n_links": len(pairs)}
 
 
 def _wrap(cmd, cenv, cbin):
@@ -186,6 +261,10 @@ class V09Comparative(Module):
                     tf = Path(str(pfx) + ".treefile")
                     if tf.exists():
                         metrics["tree"] = parse_iqtree(tf)
+            # synteny: örnek vs en yakın ref (pharokka annotate + yerel blastp homolog)
+            syn = _build_synteny(ctx, dirs, hits, cfg, get(cfg, "general.threads", 8))
+            if syn:
+                metrics["synteny"] = syn
         else:
             metrics.setdefault("error", "yeterli akraba yok (online BLAST + V05 fallback) — ağaç atlandı")
 
