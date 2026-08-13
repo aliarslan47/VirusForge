@@ -79,7 +79,7 @@ en yakın V01146 (0.0010), **virulent**, **0 AMR**. **2 gerçek hibrit-bug bulun
 ## 2026-08-13 — M3 FAZ 1: V09 KARŞILAŞTIRMALI TANIMLAMA & FİLOGENİ TAMAM + T7 DOĞRULANDI
 Brainstorm→spec→plan(8 task)→TDD. Yeni **V09 Comparative** modülü (rapor V09→**V10**'a kaydı). Akış:
 online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç + taxmyPHAGE ICTV cins/tür.
-**BLAST=tanımlama, ICTV=verdikt** (best-hit'ten türetilmez). **79→79 pytest yeşil.**
+**BLAST=tanımlama, ICTV=verdikt** (best-hit'ten türetilmez). **79 pytest yeşil.**
 - **T7 hibrit gerçek doğrulama (V09 PASS, 11/11 modül):**
   - **ICTV (taxmyPHAGE):** cins **Teseptimavirus**, tür **Teseptimavirus T7** (=Escherichia virus T7);
     örnek vs V01146 %98.25 intergenomic → ICTV %95 tür eşiği üstü; "cins düzeyinde tutarlı".
