@@ -83,3 +83,19 @@ taxmyphage:
 efetch:
   repo: https://www.ncbi.nlm.nih.gov/books/NBK179288/
   version_cmd: ["efetch", "-version"]
+minimap2:
+  repo: https://github.com/lh3/minimap2
+  version_cmd: ["minimap2", "--version"]
+  doi: "10.1093/bioinformatics/bty191"
+samtools:
+  repo: https://github.com/samtools/samtools
+  version_cmd: ["samtools", "--version"]
+  doi: "10.1093/gigascience/giab008"
+ivar:
+  repo: https://github.com/andersen-lab/ivar
+  version_cmd: ["ivar", "version"]
+  doi: "10.1186/s13059-018-1618-7"
+vadr:
+  repo: https://github.com/ncbi/vadr
+  version_cmd: ["v-annotate.pl", "-h"]
+  doi: "10.1186/s12859-020-3537-3"

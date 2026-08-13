@@ -32,6 +32,18 @@ def is_phage(ctx: "Context") -> bool:
     return ("caudo" in tax) or ("phage" in tax) or (tax == "")
 
 
+def is_rna(ctx: "Context") -> bool:
+    """Örnek RNA virüsü mü? İki katman:
+    (a) config `general.molecule` = dna/rna → otorite (V04'ten ÖNCE koşan V02 dahil tüm modüllere açık);
+    (b) auto → V04 geNomad taksonomisinde Riboviria realm'i (RNA virüs) varsa RNA.
+    Auto, V04'ten sonra anlamlıdır; RNA yolunun V02 assembly'sini sürmek için açık `--molecule rna` gerekir."""
+    molecule = str(((ctx.cfg or {}).get("general") or {}).get("molecule", "auto")).lower()
+    if molecule in ("dna", "rna"):
+        return molecule == "rna"
+    tax = ((ctx.results.get("V04", {}) or {}).get("taxonomy") or "").lower()
+    return "riboviria" in tax
+
+
 def safe_run(cmd: list[str], log_path) -> str | None:
     """Komutu çalıştır; başarılıysa None, hata olursa hata mesajı döndür (yüksek sesle kaydeder)."""
     try:

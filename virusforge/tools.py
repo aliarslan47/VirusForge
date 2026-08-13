@@ -102,11 +102,70 @@ def pharokka_plotter_cmd(genome, pharokka_out, name="genome_map", title="phage")
 
 # ---- M2-A faj zenginleştirme araçları ----
 
-def _conda_wrap(cmd, conda_env=None, conda_bin="conda"):
+def rnaviralspades_cmd(r1, r2, out_dir, threads=8):
+    """rnaviralSPAdes: RNA-virüs de novo assembly (spades.py --rnaviral). Base env (spades)."""
+    return ["spades.py", "--rnaviral", "-1", str(r1), "-2", str(r2),
+            "-o", str(out_dir), "-t", str(threads)]
+
+
+def minimap2_cmd(reference, reads, threads=8, preset="sr", conda_env=None, conda_bin="conda"):
+    """minimap2 hizalama → SAM (stdout, run_redirect ile). reads = tek dosya veya [r1,r2] listesi.
+    preset 'sr'=kısa okuma, 'map-ont'=ONT."""
+    rlist = [str(r) for r in (reads if isinstance(reads, (list, tuple)) else [reads])]
+    cmd = ["minimap2", "-ax", preset, "-t", str(threads), str(reference), *rlist]
+    return _conda_wrap(cmd, conda_env, conda_bin)
+
+
+def samtools_sort_cmd(in_path, out_bam, threads=8, conda_env=None, conda_bin="conda"):
+    return _conda_wrap(["samtools", "sort", "-@", str(threads), "-o", str(out_bam), str(in_path)],
+                       conda_env, conda_bin)
+
+
+def samtools_index_cmd(bam, conda_env=None, conda_bin="conda"):
+    return _conda_wrap(["samtools", "index", str(bam)], conda_env, conda_bin)
+
+
+def samtools_depth_cmd(bam, conda_env=None, conda_bin="conda"):
+    """samtools depth -a: HER pozisyonda derinlik (stdout, run_redirect). Breadth/mean için
+    (sürümden bağımsız; samtools 1.9'da 'coverage' yok, 'depth' var)."""
+    return _conda_wrap(["samtools", "depth", "-a", str(bam)], conda_env, conda_bin)
+
+
+def samtools_mpileup_cmd(reference, bam, conda_env=None, conda_bin="conda"):
+    """ivar consensus için mpileup (önerilen bayraklar: -aa -A -d 0 -Q 0). Pipe'ın 1. komutu."""
+    cmd = ["samtools", "mpileup", "-aa", "-A", "-d", "0", "-Q", "0",
+           "--reference", str(reference), str(bam)]
+    return _conda_wrap(cmd, conda_env, conda_bin, stream=True)
+
+
+def ivar_consensus_cmd(out_prefix, min_depth=10, min_freq=0.5, conda_env=None, conda_bin="conda"):
+    """ivar consensus: mpileup'ı STDIN'den okur (pipe 2. komutu). -m min derinlik, -t min frekans."""
+    cmd = ["ivar", "consensus", "-p", str(out_prefix), "-m", str(min_depth), "-t", str(min_freq)]
+    return _conda_wrap(cmd, conda_env, conda_bin, stream=True)
+
+
+def ivar_trim_cmd(bam, primer_bed, out_prefix, conda_env=None, conda_bin="conda"):
+    """ivar trim: ARTIC amplikon primer kırpma (BAM in → BAM out_prefix)."""
+    cmd = ["ivar", "trim", "-i", str(bam), "-b", str(primer_bed), "-p", str(out_prefix)]
+    return _conda_wrap(cmd, conda_env, conda_bin)
+
+
+def vadr_cmd(genome, out_dir, model_dir, model_key, conda_env=None, conda_bin="conda"):
+    """VADR v-annotate.pl: RNA virüs anotasyon/doğrulama (pass/fail + alert). İzole vf_vadr env."""
+    cmd = ["v-annotate.pl", "--mdir", str(model_dir), "--mkey", str(model_key),
+           str(genome), str(out_dir)]
+    return _conda_wrap(cmd, conda_env, conda_bin)
+
+
+def _conda_wrap(cmd, conda_env=None, conda_bin="conda", stream=False):
     """Araç izole bir conda env'inde ise `conda run -n <env>` ile sar (phabox deseni;
-    çalışan virusforge env'ini korur)."""
+    çalışan virusforge env'ini korur). stream=True → `--no-capture-output` (pipe'ta stdout
+    tamponlanmasın; `samtools mpileup | ivar consensus` gibi)."""
     if conda_env:
-        return [conda_bin, "run", "-n", conda_env, *cmd]
+        pre = [conda_bin, "run", "-n", conda_env]
+        if stream:
+            pre.append("--no-capture-output")
+        return [*pre, *cmd]
     return cmd
 
 

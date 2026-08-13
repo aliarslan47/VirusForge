@@ -87,6 +87,39 @@ def test_parse_cds_genes_from_merged_tsv(tmp_path):
     assert genes[1]["product"] == "tail protein" and genes[1]["strand"] == "+"
 
 
+def test_parse_samtools_depth_breadth_and_mean(tmp_path):
+    from virusforge.modules.v03_polish_qc import parse_samtools_depth
+    # ref pos depth — 5 pozisyon, 4'ü kapsanmış (>=1), biri 0
+    p = tmp_path / "depth.tsv"
+    p.write_text("NC\t1\t10\nNC\t2\t20\nNC\t3\t0\nNC\t4\t30\nNC\t5\t40\n")
+    m = parse_samtools_depth(p)
+    assert m["positions"] == 5 and m["covered_bases"] == 4
+    assert m["breadth_pct"] == 80.0                       # 4/5
+    assert m["mean_depth"] == 20.0                        # (10+20+0+30+40)/5
+
+
+def test_parse_vadr_pass_fail_alerts(tmp_path):
+    from virusforge.modules.v06_annotate import parse_vadr
+    d = tmp_path / "vout"
+    d.mkdir()
+    (d / "vout.vadr.pass.list").write_text("#comment\nseq1\n")
+    (d / "vout.vadr.fail.list").write_text("#comment\n")            # boş → fail yok
+    (d / "vout.vadr.alt.list").write_text("#idx\tseq\tcode\tdesc\n1\tseq1\tambgnt5s\tN at start\n")
+    m = parse_vadr(d)
+    assert m["n_pass"] == 1 and m["n_fail"] == 0 and m["pass"] is True
+    assert m["n_alerts"] == 1
+
+
+def test_parse_vadr_fail_when_fail_list_nonempty(tmp_path):
+    from virusforge.modules.v06_annotate import parse_vadr
+    d = tmp_path / "vout"
+    d.mkdir()
+    (d / "vout.vadr.pass.list").write_text("")
+    (d / "vout.vadr.fail.list").write_text("seqX\n")
+    m = parse_vadr(d)
+    assert m["n_fail"] == 1 and m["pass"] is False
+
+
 def test_parse_phabox(tmp_path):
     (tmp_path / "phatyp_prediction.tsv").write_text("Accession\tTYPE\tScore\nc1\ttemperate\t0.9\n")
     m = parse_phabox(tmp_path)

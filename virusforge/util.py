@@ -64,6 +64,34 @@ def run_redirect(cmd: list[str], out_path: str | Path,
         )
 
 
+def run_pipe(cmd1: list[str], cmd2: list[str], out_path: str | Path,
+             log_path: str | Path | None = None) -> None:
+    """cmd1 | cmd2 (iki-süreç pipe); cmd2 stdout → out_path. Shell yok (subprocess list).
+    `samtools mpileup | ivar consensus` gibi araçlar için; herhangi biri hata verirse YÜKSEK SESLE fırlat."""
+    try:
+        with open(out_path, "wb") as out:
+            p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p2 = subprocess.Popen(cmd2, stdin=p1.stdout, stdout=out, stderr=subprocess.PIPE)
+            p1.stdout.close()  # p2 EOF alabilsin
+            err2 = p2.communicate()[1]
+            err1 = p1.communicate()[1]
+    except FileNotFoundError as exc:
+        raise RuntimeError(f"araç bulunamadı (kurulu değil?): {exc.filename or cmd1[0]}")
+    if log_path:
+        Path(log_path).write_text(
+            f"$ {' '.join(cmd1)} | {' '.join(cmd2)} > {out_path}\n\n"
+            f"[STDERR cmd1]\n{(err1 or b'').decode(errors='replace')}\n\n"
+            f"[STDERR cmd2]\n{(err2 or b'').decode(errors='replace')}\n"
+        )
+    if p1.returncode not in (0, None):
+        raise RuntimeError(f"Pipe 1. komut başarısız (exit {p1.returncode}): {' '.join(cmd1)}")
+    if p2.returncode != 0:
+        raise RuntimeError(
+            f"Pipe 2. komut başarısız (exit {p2.returncode}): {' '.join(cmd2)}\n"
+            f"{(err2 or b'').decode(errors='replace')[-2000:]}"
+        )
+
+
 def _is_fastq(p: Path) -> bool:
     name = p.name.lower()
     return any(name.endswith(s) for s in _FASTQ_SUF)

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .. import tools, util
 from ..config import get
-from ..module import Context, Module, ModuleResult, Status, safe_run
+from ..module import Context, Module, ModuleResult, Status, is_rna, safe_run
 
 
 # Flye --nano-hq (R10) yalnız düşük-hatalı okumalar için; yüksek-hatalı (R9-tipi)
@@ -78,6 +78,12 @@ def select_assembler(mode: str, reads: dict, out_dir, cfg: dict, mean_qual=None)
     lenv = get(cfg, "tools.long.conda_env", None)
     lbin = get(cfg, "tools.long.conda_bin", "conda")
     out = Path(out_dir)
+    # RNA + kısa okuma + referans YOK → de novo rnaviralSPAdes (referans varsa run() konsensus yolunu seçer)
+    molecule = str(get(cfg, "general.molecule", "auto")).lower()
+    if molecule == "rna" and mode == "SHORT_READ":
+        if not (reads.get("r1") and reads.get("r2")):
+            raise ValueError("RNA SHORT_READ için R1/R2 bulunamadı")
+        return tools.rnaviralspades_cmd(reads["r1"], reads["r2"], out, threads), out / "contigs.fasta"
     if mode == "SHORT_READ":
         if not (reads.get("r1") and reads.get("r2")):
             raise ValueError("SHORT_READ için R1/R2 bulunamadı")
@@ -105,9 +111,76 @@ class V02Assembly(Module):
     dirname = "V02_VIRAL_ASSEMBLY"
 
     def restore_artifacts(self, ctx: Context) -> None:
-        draft = self.module_dir(ctx.run_dir) / "04_standardized" / "draft_viral_genome.fasta"
+        base = self.module_dir(ctx.run_dir) / "04_standardized"
+        draft = base / "draft_viral_genome.fasta"
         if draft.exists():
-            ctx.artifacts[self.code] = {"draft": str(draft)}
+            art = {"draft": str(draft)}
+            bam = base / "aligned_sorted.bam"          # RNA referans-tabanlı → Faz 2 varyant için
+            if bam.exists():
+                art["bam"] = str(bam)
+            ctx.artifacts[self.code] = art
+
+    def _run_reference_consensus(self, ctx: Context, dirs, reads, ref) -> ModuleResult:
+        """RNA referans-tabanlı konsensus: minimap2 → samtools sort → (primer varsa ivar trim) →
+        mpileup | ivar consensus → draft + BAM artifact (BAM Faz 2 varyant çağırma için saklanır)."""
+        env = get(ctx.cfg, "tools.rna.conda_env", None)
+        cbin = get(ctx.cfg, "tools.rna.conda_bin", "conda")
+        threads = get(ctx.cfg, "general.threads", 8)
+        work = dirs["02_work"]
+        logs = dirs["07_logs"]
+        rlist = [r for r in (reads.get("r1"), reads.get("r2")) if r] or [reads.get("long")]
+        if not any(rlist):
+            m = {"error": "RNA konsensus için okuma bulunamadı"}
+            return ModuleResult(Status.FAIL, self.write_summary(ctx.run_dir, Status.FAIL, m), m)
+        preset = "map-ont" if (ctx.mode == "LONG_READ") else "sr"
+
+        sam = work / "aln.sam"
+        err = None
+        try:
+            util.run_redirect(tools.minimap2_cmd(ref, rlist, threads, preset, env, cbin), sam,
+                              logs / "minimap2.log")
+        except RuntimeError as exc:
+            err = str(exc)
+        sorted_bam = dirs["04_standardized"] / "aligned_sorted.bam"
+        if not err:
+            primer_bed = get(ctx.cfg, "tools.rna.primer_bed", "")
+            if primer_bed:
+                pre_bam = work / "aligned.bam"
+                err = (safe_run(tools.samtools_sort_cmd(sam, pre_bam, threads, env, cbin), logs / "sort1.log")
+                       or safe_run(tools.samtools_index_cmd(pre_bam, env, cbin), logs / "index1.log"))
+                if not err:
+                    trimmed = work / "trimmed"        # ivar trim → trimmed.bam
+                    err = safe_run(tools.ivar_trim_cmd(pre_bam, primer_bed, trimmed, env, cbin),
+                                   logs / "ivar_trim.log")
+                    src = str(trimmed) + ".bam"
+                    err = err or safe_run(tools.samtools_sort_cmd(src, sorted_bam, threads, env, cbin),
+                                          logs / "sort2.log")
+            else:
+                err = safe_run(tools.samtools_sort_cmd(sam, sorted_bam, threads, env, cbin), logs / "sort.log")
+            err = err or safe_run(tools.samtools_index_cmd(sorted_bam, env, cbin), logs / "index.log")
+
+        prefix = work / "consensus"
+        if not err:
+            try:
+                util.run_pipe(tools.samtools_mpileup_cmd(ref, sorted_bam, env, cbin),
+                              tools.ivar_consensus_cmd(prefix,
+                                                       get(ctx.cfg, "tools.rna.ivar_min_depth", 10),
+                                                       get(ctx.cfg, "tools.rna.ivar_min_freq", 0.5), env, cbin),
+                              work / "ivar_consensus.stdout", logs / "consensus.log")
+            except RuntimeError as exc:
+                err = str(exc)
+        cons_fa = Path(str(prefix) + ".fa")
+        if err or not cons_fa.exists() or cons_fa.stat().st_size == 0:
+            m = {"error": err or "konsensus üretilmedi", "reference": str(ref)}
+            return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
+
+        draft = dirs["04_standardized"] / "draft_viral_genome.fasta"
+        sanitize_contig_names(cons_fa, draft)
+        m = {"assembler": "referans-tabanlı (iVar consensus)", "reference": str(ref),
+             "bam": str(sorted_bam), "consensus": str(draft), "draft": str(draft)}
+        ctx.artifacts[self.code] = {"draft": str(draft), "bam": str(sorted_bam), "reference": str(ref)}
+        ctx.results[self.code] = m
+        return ModuleResult(Status.PASS, self.write_summary(ctx.run_dir, Status.PASS, m), m)
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
@@ -130,6 +203,10 @@ class V02Assembly(Module):
             "r2": v01.get("clean_r2") or (str(raw_short[1]) if raw_short else None),
             "long": v01.get("clean_long") or (str(raw_long) if raw_long else None),
         }
+        # RNA + referans verildiyse → referans-tabanlı iVar konsensus (de novo yerine)
+        if is_rna(ctx) and get(ctx.cfg, "tools.rna.reference", ""):
+            return self._run_reference_consensus(ctx, dirs, reads, get(ctx.cfg, "tools.rna.reference"))
+
         work = dirs["02_work"] / "asm"
         mean_qual = (ctx.results.get("V01", {}).get("long") or {}).get("mean_qual")
         try:
@@ -146,7 +223,8 @@ class V02Assembly(Module):
         draft = dirs["04_standardized"] / "draft_viral_genome.fasta"
         # gerçek assembler adı (conda-sarmalı komutta cmd[0]=conda olur)
         _names = {"SHORT_READ": "SPAdes", "LONG_READ": "Flye", "HYBRID": "Unicycler"}
-        m = {"assembler": _names.get(ctx.mode, cmd[0])}
+        asm_name = "rnaviralSPAdes" if "--rnaviral" in cmd else _names.get(ctx.mode, cmd[0])
+        m = {"assembler": asm_name}
         # Flye (long) çıktısında düşük-kapsamlı junk contig'leri ele (host/kimera → downstream kirlenmesi)
         info = Path(work) / "assembly_info.txt"
         kept = None

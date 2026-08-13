@@ -7,7 +7,7 @@ from pathlib import Path
 
 from .. import tools, util
 from ..config import get
-from ..module import Context, Module, ModuleResult, Status, latest_genome
+from ..module import Context, Module, ModuleResult, Status, is_rna, latest_genome
 
 _ACC = re.compile(r"(GCF_\d+\.\d+|GCA_\d+\.\d+|[A-Z]{1,2}\d{5,8}\.\d+)")
 
@@ -49,6 +49,10 @@ class V05Taxonomy(Module):
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
+        if is_rna(ctx):                                   # INPHARED faj DB RNA virüse anlamsız
+            m = {"note": "RNA virüs — faj referans DB'si (INPHARED) uygulanmadı"}
+            return ModuleResult(Status.NOT_APPLICABLE,
+                                self.write_summary(ctx.run_dir, Status.NOT_APPLICABLE, m), m)
         genome = latest_genome(ctx)
         sketch = get(ctx.cfg, "tools.mash.inphared_sketch", "databases/inphared/inphared.msh")
         if not genome or not Path(sketch).exists():

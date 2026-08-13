@@ -33,3 +33,20 @@ def test_run_cmd_raises_on_failure(tmp_path):
     util.run_cmd(["true"])  # sorunsuz
     with pytest.raises(RuntimeError):
         util.run_cmd(["false"])
+
+
+def test_run_pipe_streams_cmd1_into_cmd2(tmp_path):
+    # cmd1 stdout → cmd2 stdin; cmd2 stdout → out_path (samtools mpileup | ivar consensus deseni)
+    out = tmp_path / "piped.txt"
+    util.run_pipe(["printf", "b\\na\\nc\\n"], ["sort"], out, tmp_path / "log.txt")
+    assert out.read_text() == "a\nb\nc\n"
+
+
+def test_run_pipe_raises_when_second_fails(tmp_path):
+    with pytest.raises(RuntimeError):
+        util.run_pipe(["printf", "x"], ["false"], tmp_path / "o.txt", tmp_path / "l.txt")
+
+
+def test_run_pipe_raises_on_missing_tool(tmp_path):
+    with pytest.raises(RuntimeError):
+        util.run_pipe(["printf", "x"], ["no_such_tool_xyz"], tmp_path / "o.txt", tmp_path / "l.txt")

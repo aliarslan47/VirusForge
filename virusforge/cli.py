@@ -14,6 +14,8 @@ def cmd_run(args) -> int:
         cfg.setdefault("general", {})["threads"] = args.threads
     if args.mode:
         cfg.setdefault("general", {})["mode"] = args.mode
+    if args.molecule:
+        cfg.setdefault("general", {})["molecule"] = args.molecule
     run_dir = pipeline.run(args.sample, args.out, cfg, run_dir=args.resume)
     print(f"Bitti. Run dizini: {run_dir}")
     print(f"Rapor: {run_dir / 'report.html'}")
@@ -35,7 +37,8 @@ def cmd_info(args) -> int:
     print(f"VirusForge {__version__}")
     print("Kurulu araç sürümleri (uydurma yok — yoksa 'kurulu değil'):")
     for name in ("fastp", "spades", "flye", "unicycler", "checkv",
-                 "genomad", "mash", "pharokka", "phabox"):
+                 "genomad", "mash", "pharokka", "phabox",
+                 "minimap2", "samtools", "ivar", "vadr"):
         try:
             ver = registry.detect_version(name)
         except KeyError:
@@ -54,6 +57,8 @@ def main(argv=None) -> int:
     pr.add_argument("--config", default=None, help="kullanıcı config YAML")
     pr.add_argument("--threads", type=int, default=None)
     pr.add_argument("--mode", default=None, choices=["auto", "short", "long", "hybrid", "assembly"])
+    pr.add_argument("--molecule", default=None, choices=["auto", "dna", "rna"],
+                    help="DNA/faj vs RNA virüs yolu (RNA yolu için 'rna')")
     pr.add_argument("--resume", default=None, help="mevcut run dizinine devam et (yolu ver)")
     pr.set_defaults(func=cmd_run)
 

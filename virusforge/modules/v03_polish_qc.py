@@ -6,7 +6,26 @@ from pathlib import Path
 
 from .. import tools, util
 from ..config import get
-from ..module import Context, Module, ModuleResult, Status, safe_run
+from ..module import Context, Module, ModuleResult, Status, is_rna, safe_run
+
+
+def parse_samtools_depth(depth_path, min_depth=1) -> dict:
+    """`samtools depth -a` çıktısı (ref<TAB>pos<TAB>depth) → kapsama özeti (RNA referans-tabanlı QC).
+    breadth_pct = derinlik≥min_depth pozisyon oranı; mean_depth = ortalama derinlik."""
+    depths = []
+    for line in Path(depth_path).read_text().splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 3:
+            try:
+                depths.append(int(parts[2]))
+            except ValueError:
+                pass
+    if not depths:
+        return {"positions": 0, "covered_bases": 0, "breadth_pct": 0.0, "mean_depth": 0.0}
+    covered = sum(1 for d in depths if d >= min_depth)
+    return {"positions": len(depths), "covered_bases": covered,
+            "breadth_pct": round(100 * covered / len(depths), 2),
+            "mean_depth": round(sum(depths) / len(depths), 2)}
 
 
 def parse_quast(report_tsv) -> dict:
@@ -109,15 +128,33 @@ class V03PolishQC(Module):
         else:
             problems.append("QUAST çıktısı bulunamadı")
 
-        # CheckV
-        cout = dirs["03_native_outputs"] / "checkv"
-        db = get(ctx.cfg, "tools.checkv.db", "databases/checkv")
-        err = safe_run(tools.checkv_cmd(genome, cout, db, threads), dirs["07_logs"] / "checkv.log")
-        cqs = cout / "quality_summary.tsv"
-        if not err and cqs.exists():
-            metrics["checkv"] = parse_checkv(cqs)
+        if is_rna(ctx):
+            # RNA: CheckV faj/prokaryot-virüs odaklı → yerine referans BAM'inden kapsama (varsa).
+            bam = ctx.artifacts.get("V02", {}).get("bam")
+            if bam and Path(bam).exists():
+                depth_tsv = dirs["02_work"] / "depth.tsv"
+                min_d = get(ctx.cfg, "tools.rna.ivar_min_depth", 10)
+                try:
+                    util.run_redirect(tools.samtools_depth_cmd(
+                        bam, get(ctx.cfg, "tools.rna.conda_env", None),
+                        get(ctx.cfg, "tools.rna.conda_bin", "conda")), depth_tsv, dirs["07_logs"] / "depth.log")
+                    cov = parse_samtools_depth(depth_tsv, min_d)
+                    metrics["coverage"] = cov
+                    if cov["breadth_pct"] < 90.0:
+                        problems.append(f"düşük kapsama genişliği: {cov['breadth_pct']}% (@depth≥{min_d})")
+                except RuntimeError:
+                    problems.append("kapsama hesaplanamadı")
+            # de novo RNA (BAM yok): CheckV atlanır, QUAST uzunluk/N50 yeterli
         else:
-            problems.append("CheckV değeri yok")
+            # CheckV (DNA/faj)
+            cout = dirs["03_native_outputs"] / "checkv"
+            db = get(ctx.cfg, "tools.checkv.db", "databases/checkv")
+            err = safe_run(tools.checkv_cmd(genome, cout, db, threads), dirs["07_logs"] / "checkv.log")
+            cqs = cout / "quality_summary.tsv"
+            if not err and cqs.exists():
+                metrics["checkv"] = parse_checkv(cqs)
+            else:
+                problems.append("CheckV değeri yok")
 
         (dirs["04_standardized"] / "genome_quality.json").write_text(
             __import__("json").dumps(metrics, indent=2, ensure_ascii=False))

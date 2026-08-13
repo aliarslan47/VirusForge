@@ -11,7 +11,7 @@ from pathlib import Path
 
 from .. import tools, util
 from ..config import get
-from ..module import Context, Module, ModuleResult, Status, latest_genome, safe_run
+from ..module import Context, Module, ModuleResult, Status, is_rna, latest_genome, safe_run
 
 
 def parse_mash_square(text) -> tuple:
@@ -236,6 +236,10 @@ class V09Comparative(Module):
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
+        if is_rna(ctx):                                   # taxmyPHAGE/INPHARED faj-özel → RNA'da N/A
+            m = {"note": "RNA virüs — faj karşılaştırmalı analizi (taxmyPHAGE) uygulanmadı"}
+            return ModuleResult(Status.NOT_APPLICABLE,
+                                self.write_summary(ctx.run_dir, Status.NOT_APPLICABLE, m), m)
         if not (ctx.results.get("V04", {}) or {}).get("is_viral"):
             m = {"note": "viral değil — karşılaştırma uygulanmadı"}
             return ModuleResult(Status.NOT_APPLICABLE,

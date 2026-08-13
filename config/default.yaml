@@ -2,7 +2,8 @@
 general:
   threads: 8
   memory_gb: 32
-  mode: auto            # auto | short | long | hybrid | assembly  (override)
+  mode: auto            # auto | short | long | hybrid | assembly  (override, okuma-tipi ekseni)
+  molecule: auto        # auto | dna | rna  (DNA/faj vs RNA virüs yolu; read-tipine DİK eksen)
   keep_native: true
 
 detect:
@@ -57,6 +58,20 @@ tools:
     min_hits: 3
     ref_cache: databases/ref_cache
     conda_env: ""                       # gerekirse vf_phylo
+    conda_bin: /home/ali/miniconda3/bin/conda
+
+  # --- M2-B RNA-virüs yolu Faz 1 (izole vf_rna/vf_vadr env'leri) ---
+  rna:
+    reference: ""                 # referans FASTA verilirse → referans-tabanlı iVar konsensus; yoksa rnaviralSPAdes
+    primer_bed: ""                # ARTIC amplikon primer BED (ivar trim); boşsa kırpma atlanır
+    conda_env: vf_rna             # minimap2 / samtools / ivar
+    conda_bin: /home/ali/miniconda3/bin/conda
+    ivar_min_depth: 10
+    ivar_min_freq: 0.5
+  vadr:
+    db: databases/vadr
+    model: sarscov2               # v-annotate.pl --mkey
+    conda_env: vf_vadr
     conda_bin: /home/ali/miniconda3/bin/conda
 
 optional:                # default kapalı (tasarım kararı)
