@@ -1,4 +1,4 @@
-"""V09 — Final Report & Export."""
+"""V10 — Final Report & Export."""
 from __future__ import annotations
 
 import json
@@ -11,10 +11,10 @@ from ..report.render import render_html
 _ORDER = ["V00", "V01", "V02", "V03", "V04", "V05", "V06", "V07", "V08"]
 
 
-class V09Report(Module):
+class V10Report(Module):
     name = "Final Report & Export"
-    code = "V09"
-    dirname = "V09_REPORT_EXPORT"
+    code = "V10"
+    dirname = "V10_REPORT_EXPORT"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
@@ -41,8 +41,8 @@ class V09Report(Module):
             modules.append(data)
             provenance.extend(data.get("provenance", []))
 
-        # V09 kendini de PASS olarak ekle (rapor kendi summary'sinden önce üretiliyor)
-        modules.append({"code": "V09", "module": self.name, "status": "PASS",
+        # V10 kendini de PASS olarak ekle (rapor kendi summary'sinden önce üretiliyor)
+        modules.append({"code": "V10", "module": self.name, "status": "PASS",
                         "metrics": {"note": "rapor + provenance üretildi"}})
         report = {
             "sample": Path(ctx.sample_dir).name,

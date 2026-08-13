@@ -32,5 +32,5 @@ PIPELINE_STEPS = [
     ("V06", "Genome Annotation", "Pharokka"),
     ("V07", "Phage Characterization", "PhaBOX"),
     ("V08", "AMR & Virulence", "AMRFinderPlus"),
-    ("V09", "Final Report & Export", "VirusForge"),
+    ("V10", "Final Report & Export", "VirusForge"),
 ]
