@@ -105,14 +105,6 @@ def amrfinder_cmd(input_path, out_tsv, db="", is_protein=True, threads=8,
     return _conda_wrap(cmd, conda_env, conda_bin)
 
 
-def phold_cmd(gbk, out_dir, db="", threads=8, conda_env=None, conda_bin="conda"):
-    """phold: pharokka GenBank'inden yapı-tabanlı (ProstT5/Foldseek) fonksiyon ataması."""
-    cmd = ["phold", "run", "-i", str(gbk), "-o", str(out_dir), "-t", str(threads), "-f"]
-    if db:
-        cmd += ["-d", str(db)]
-    return _conda_wrap(cmd, conda_env, conda_bin)
-
-
 def phabox_cmd(genome, out_dir, db, threads=8, conda_env=None, conda_bin="conda"):
     base = ["phabox2", "--task", "end_to_end", "--contigs", str(genome),
             "--outpth", str(out_dir), "--dbdir", str(db), "--threads", str(threads)]

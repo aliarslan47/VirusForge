@@ -1,4 +1,4 @@
-"""V06 — Taxonomy & Closest References (Mash vs INPHARED)."""
+"""V05 — Taxonomy & Closest References (Mash vs INPHARED)."""
 from __future__ import annotations
 
 import json
@@ -42,10 +42,10 @@ def parse_mash(dist_tsv, top: int = 10) -> list[dict]:
     return out
 
 
-class V06Taxonomy(Module):
+class V05Taxonomy(Module):
     name = "Taxonomy & Closest References"
-    code = "V06"
-    dirname = "V06_TAXONOMY_CLOSEST_REFERENCES"
+    code = "V05"
+    dirname = "V05_TAXONOMY_CLOSEST_REFERENCES"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)

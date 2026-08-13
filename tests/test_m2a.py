@@ -1,20 +1,17 @@
-"""M2-A faj zenginleştirme testleri: V11 AMR, V13 domain.
+"""M2-A faj zenginleştirme testleri: AMR modülü (AMRFinderPlus).
 
-Parser'lar gerçek tool-çıktısı fixture'larıyla; modüller araçsız ortamda dürüst
+Parser gerçek tool-çıktısı fixture'larıyla; modül araçsız ortamda dürüst
 WARNING/NOT_APPLICABLE döner (sentetik veri, gerçek indirme yok).
 """
-from pathlib import Path
-
 from virusforge.module import Context, Status, is_phage
-from virusforge.modules.v07_annotate import V07Annotate
-from virusforge.modules.v11_amr import V11Amr, parse_amrfinder
-from virusforge.modules.v13_domain import V13Domain, parse_phold
+from virusforge.modules.v06_annotate import V06Annotate
+from virusforge.modules.v08_amr import V08Amr, parse_amrfinder
 
 from tests.conftest import write_fasta
 
 
 # --------------------------------------------------------------------------- #
-# Parser birim testleri
+# Parser birim testleri (AMRFinderPlus)
 # --------------------------------------------------------------------------- #
 def test_parse_amrfinder_v4_column_names(tmp_path):
     # AMRFinderPlus v4.x gerçek başlık: Type / Element symbol / % Coverage of reference
@@ -54,31 +51,18 @@ def test_parse_amrfinder_empty_is_valid(tmp_path):
     assert m["amr_genes"] == []
 
 
-def test_parse_phold_sums_functions_and_unknown(tmp_path):
-    # phold_all_cds_functions.tsv — pharokka ile aynı format (Description/Count/contig)
-    p = tmp_path / "phold_all_cds_functions.tsv"
-    p.write_text("Description\tCount\tcontig\n"
-                 "CDS\t60\tc1\nunknown function\t20\tc1\ntail\t10\tc1\nCDS\t2\tc2\n")
-    m = parse_phold(p)
-    assert m["cds"] == 62                 # contig'ler toplandı
-    assert m["unknown_function"] == 20
-    assert m["functions"]["tail"] == 10
-
-
 # --------------------------------------------------------------------------- #
 # conda_env sarmalayıcı (izole env — çalışan virusforge env'i korur)
 # --------------------------------------------------------------------------- #
-def test_tool_cmds_wrap_conda_env():
+def test_amrfinder_cmd_wraps_conda_env():
     from virusforge import tools
-    for cmd in (tools.amrfinder_cmd("in.faa", "o.tsv", conda_env="vf_amr", conda_bin="conda"),
-                tools.phold_cmd("in.gbk", "out", conda_env="vf_phold", conda_bin="conda")):
-        assert cmd[:3] == ["conda", "run", "-n"]
+    cmd = tools.amrfinder_cmd("in.faa", "o.tsv", conda_env="vf_amr", conda_bin="conda")
+    assert cmd[:3] == ["conda", "run", "-n"]
 
 
-def test_tool_cmds_bare_without_env():
+def test_amrfinder_cmd_bare_without_env():
     from virusforge import tools
     assert tools.amrfinder_cmd("in.faa", "o.tsv")[0] == "amrfinder"
-    assert tools.phold_cmd("in.gbk", "out")[0] == "phold"
 
 
 # --------------------------------------------------------------------------- #
@@ -93,12 +77,12 @@ def _ctx(tmp_path, **kw):
 
 
 def test_is_phage_true_for_caudoviricetes(tmp_path):
-    c = _ctx(tmp_path, results={"V05": {"is_viral": True, "taxonomy": "Viruses;Caudoviricetes"}})
+    c = _ctx(tmp_path, results={"V04": {"is_viral": True, "taxonomy": "Viruses;Caudoviricetes"}})
     assert is_phage(c) is True
 
 
 def test_is_phage_false_when_not_viral(tmp_path):
-    c = _ctx(tmp_path, results={"V05": {"is_viral": False, "taxonomy": ""}})
+    c = _ctx(tmp_path, results={"V04": {"is_viral": False, "taxonomy": ""}})
     assert is_phage(c) is False
 
 
@@ -108,50 +92,31 @@ def test_is_phage_false_without_v05(tmp_path):
 
 
 # --------------------------------------------------------------------------- #
-# Modül koşumları (araçsız → dürüst WARNING / N/A)
+# AMR modülü koşumu (araçsız → dürüst WARNING)
 # --------------------------------------------------------------------------- #
-def _phage_ctx_with_genome(tmp_path, **kw):
+def test_amr_warning_when_tool_missing(tmp_path):
     genome = write_fasta(tmp_path / "genome.fasta")
     c = _ctx(tmp_path,
-             results={"V05": {"is_viral": True, "taxonomy": "Caudoviricetes"}},
-             artifacts={"V04": {"genome": str(genome)}},
-             **kw)
-    return c, genome
-
-
-def test_v11_warning_when_tool_missing(tmp_path):
-    c, _ = _phage_ctx_with_genome(tmp_path)
-    c.artifacts["V07"] = {"faa": str(tmp_path / "pharokka.faa")}  # dosya yok → genom fallback
-    res = V11Amr().run(c)
+             results={"V04": {"is_viral": True, "taxonomy": "Caudoviricetes"}},
+             artifacts={"V03": {"genome": str(genome)},
+                        "V06": {"faa": str(tmp_path / "pharokka.faa")}})  # dosya yok → genom fallback
+    res = V08Amr().run(c)
     assert res.status == Status.WARNING
-    assert (c.run_dir / "V11_AMR_VIRULENCE" / "04_standardized" / "amr_virulence.json").exists()
-
-
-def test_v13_not_applicable_when_not_phage(tmp_path):
-    c = _ctx(tmp_path, results={"V05": {"is_viral": False}})
-    res = V13Domain().run(c)
-    assert res.status == Status.NOT_APPLICABLE
-
-
-def test_v13_warning_when_tool_missing(tmp_path):
-    c, _ = _phage_ctx_with_genome(tmp_path)
-    c.artifacts["V07"] = {"gbk": str(tmp_path / "pharokka.gbk")}
-    res = V13Domain().run(c)
-    assert res.status == Status.WARNING
+    assert (c.run_dir / "V08_AMR_VIRULENCE" / "04_standardized" / "amr_virulence.json").exists()
 
 
 # --------------------------------------------------------------------------- #
-# V07 artifact yayınlama (V11/V13 ön koşulu) + resume geri-yükleme
+# V06 artifact yayınlama (AMR ön koşulu) + resume geri-yükleme
 # --------------------------------------------------------------------------- #
 def test_v07_restore_artifacts_resolves_phanotate_faa(tmp_path):
     # gerçek pharokka çıktısı: protein FASTA = phanotate.faa (PHANOTATE), pharokka.faa DEĞİL
     run_dir = tmp_path / "run"
-    native = run_dir / "V07_GENOME_ANNOTATION" / "03_native_outputs" / "pharokka"
+    native = run_dir / "V06_GENOME_ANNOTATION" / "03_native_outputs" / "pharokka"
     native.mkdir(parents=True)
     (native / "phanotate.faa").write_text(">p1\nMAA\n")
     (native / "terL.faa").write_text(">terL\nMAA\n")   # bu SEÇİLMEMELİ
     (native / "pharokka.gbk").write_text("LOCUS x\n")
     c = Context(sample_dir=tmp_path, run_dir=run_dir, cfg={}, mode="SHORT_READ")
-    V07Annotate().restore_artifacts(c)
-    assert c.artifacts["V07"]["faa"] == str(native / "phanotate.faa")
-    assert c.artifacts["V07"]["gbk"] == str(native / "pharokka.gbk")
+    V06Annotate().restore_artifacts(c)
+    assert c.artifacts["V06"]["faa"] == str(native / "phanotate.faa")
+    assert c.artifacts["V06"]["gbk"] == str(native / "pharokka.gbk")

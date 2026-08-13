@@ -1,4 +1,4 @@
-"""V04 — Polishing (long) + Viral Genome Quality (QUAST + CheckV)."""
+"""V03 — Polishing (long) + Viral Genome Quality (QUAST + CheckV)."""
 from __future__ import annotations
 
 import shutil
@@ -50,10 +50,10 @@ def parse_checkv(quality_summary_tsv) -> dict:
     }
 
 
-class V04PolishQC(Module):
+class V03PolishQC(Module):
     name = "Polishing & Viral Genome Quality"
-    code = "V04"
-    dirname = "V04_POLISHING_VIRAL_QC"
+    code = "V03"
+    dirname = "V03_POLISHING_VIRAL_QC"
 
     def restore_artifacts(self, ctx: Context) -> None:
         genome = self.module_dir(ctx.run_dir) / "04_standardized" / "viral_genome.fasta"
@@ -63,7 +63,7 @@ class V04PolishQC(Module):
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
         threads = get(ctx.cfg, "general.threads", 8)
-        draft = ctx.artifacts.get("V03", {}).get("draft")
+        draft = ctx.artifacts.get("V02", {}).get("draft")
         if not draft or not Path(draft).exists():
             m = {"error": "assembly draft bulunamadı"}
             return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)

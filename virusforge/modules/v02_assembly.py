@@ -1,4 +1,4 @@
-"""V03 — Viral Genome Assembly (SPAdes/Flye/Unicycler yönlendirme)."""
+"""V02 — Viral Genome Assembly (SPAdes/Flye/Unicycler yönlendirme)."""
 from __future__ import annotations
 
 import shutil
@@ -30,10 +30,10 @@ def select_assembler(mode: str, reads: dict, out_dir, cfg: dict):
     raise ValueError(f"assembly bu modda çalışmaz: {mode}")
 
 
-class V03Assembly(Module):
+class V02Assembly(Module):
     name = "Viral Genome Assembly"
-    code = "V03"
-    dirname = "V03_VIRAL_ASSEMBLY"
+    code = "V02"
+    dirname = "V02_VIRAL_ASSEMBLY"
 
     def restore_artifacts(self, ctx: Context) -> None:
         draft = self.module_dir(ctx.run_dir) / "04_standardized" / "draft_viral_genome.fasta"

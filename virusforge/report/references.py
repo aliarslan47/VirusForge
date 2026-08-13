@@ -19,20 +19,18 @@ TOOL_REFERENCES = [
     ("pharokka", "Pharokka", "Bakteriyofaj genom annotation", "https://github.com/gbouras13/pharokka", "10.1093/bioinformatics/btac776"),
     ("phabox", "PhaBOX", "Faj karakterizasyon (PhaMer/PhaGCN/PhaTYP)", "https://github.com/KennthShang/PhaBOX", "10.1093/bioadv/vbad101"),
     ("amrfinderplus", "AMRFinderPlus", "AMR / virülans / stres geni taraması", "https://github.com/ncbi/amr", "10.1038/s41598-021-91456-0"),
-    ("phold", "phold", "Yapısal / domain annotation (ProstT5+Foldseek)", "https://github.com/gbouras13/phold", "10.1093/nar/gkaf1448"),
 ]
 
 # Rapor bölüm sırası ve modül adları
 PIPELINE_STEPS = [
     ("V00", "Input & Auto-Detection", "auto-detect"),
     ("V01", "Read QC & Preprocessing", "FastQC / fastp / NanoPlot"),
-    ("V03", "Viral Genome Assembly", "SPAdes / Flye / Unicycler"),
-    ("V04", "Polishing & Genome Quality", "Medaka / QUAST / CheckV"),
-    ("V05", "Viral Identification", "geNomad"),
-    ("V06", "Taxonomy & Closest References", "Mash + INPHARED"),
-    ("V07", "Genome Annotation", "Pharokka"),
-    ("V08", "Phage Characterization", "PhaBOX"),
-    ("V11", "AMR & Virulence", "AMRFinderPlus"),
-    ("V13", "Structural / Domain Annotation", "phold"),
-    ("V19", "Final Report & Export", "VirusForge"),
+    ("V02", "Viral Genome Assembly", "SPAdes / Flye / Unicycler"),
+    ("V03", "Polishing & Genome Quality", "Medaka / QUAST / CheckV"),
+    ("V04", "Viral Identification", "geNomad"),
+    ("V05", "Taxonomy & Closest References", "Mash + INPHARED"),
+    ("V06", "Genome Annotation", "Pharokka"),
+    ("V07", "Phage Characterization", "PhaBOX"),
+    ("V08", "AMR & Virulence", "AMRFinderPlus"),
+    ("V09", "Final Report & Export", "VirusForge"),
 ]

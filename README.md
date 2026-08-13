@@ -14,7 +14,7 @@
 
 ---
 
-VirusForge; short-read, long-read, hybrid ve hazır-assembly girdilerini **otomatik tanıyıp** kalite kontrolünden nihai rapora kadar tek komutla işler. Genel viral hat her uygun virüste çalışır; **bakteriyofaj tespit edilirse** phage-özel modüller (host, yaşam tarzı, termini...) devreye girer; **RNA virüsleri** için reference-based/consensus + varyant/quasispecies yolu aktifleşir.
+VirusForge; short-read, long-read, hybrid ve hazır-assembly girdilerini **otomatik tanıyıp** kalite kontrolünden nihai rapora kadar tek komutla işler. Genel viral hat her uygun virüste çalışır; **bakteriyofaj tespit edilirse** phage-özel modüller (yaşam tarzı, AMR/virülans...) devreye girer. **RNA virüsleri** için reference-based/consensus + varyant/quasispecies yolu (M2-B) planlıdır.
 
 BacForge (bakteri) ve Vaxforge'un kardeşi olan bu platform, aynı mimari deseni izler ama **tamamen izole** bir kurulumdur.
 
@@ -32,18 +32,19 @@ BacForge (bakteri) ve Vaxforge'un kardeşi olan bu platform, aynı mimari deseni
 flowchart LR
     IN([FASTQ / FASTA]) --> V00[V00 Input + Auto-Detect]
     V00 --> V01[V01 Read QC]
-    V01 --> V03[V03 Assembly]
-    V03 --> V04[V04 Polishing + Quality]
-    V04 --> V05[V05 Viral ID]
-    V05 --> V06[V06 Taxonomy]
-    V06 --> V07[V07 Annotation]
-    V07 --> V08[V08 Phage Char]
-    V08 --> V19[V19 Report]
-    V19 --> OUT([HTML + JSON + Provenance])
+    V01 --> V02[V02 Assembly]
+    V02 --> V03[V03 Polishing + Quality]
+    V03 --> V04[V04 Viral ID]
+    V04 --> V05[V05 Taxonomy]
+    V05 --> V06[V06 Annotation]
+    V06 --> V07[V07 Phage Char]
+    V07 --> V08[V08 AMR + Virulence]
+    V08 --> V09[V09 Report]
+    V09 --> OUT([HTML + JSON + Provenance])
 
-    V03 -. short .-> SP[SPAdes]
-    V03 -. long .-> FL[Flye]
-    V03 -. hybrid .-> UC[Unicycler]
+    V02 -. short .-> SP[SPAdes]
+    V02 -. long .-> FL[Flye]
+    V02 -. hybrid .-> UC[Unicycler]
 ```
 
 ## 🧩 Modüller
@@ -52,15 +53,15 @@ flowchart LR
 |:---:|---|---|:---:|
 | **V00** | Input & Otomatik Tespit | *(özel)* | ✅ M1 |
 | **V01** | Okuma Kalitesi & Ön-İşleme | FastQC · fastp · NanoPlot | ✅ M1 |
-| **V03** | Viral Genom Assembly | SPAdes / Flye / Unicycler | ✅ M1 |
-| **V04** | Cilalama & Genom Kalitesi | QUAST · CheckV · Medaka | ✅ M1 |
-| **V05** | Viral Dizi Tanıma | geNomad | ✅ M1 |
-| **V06** | Taksonomi & En Yakın Referanslar | Mash + INPHARED | ✅ M1 |
-| **V07** | Genom Annotation | Pharokka (+phold) | ✅ M1 |
-| **V08** | Faj-Özel Karakterizasyon | PhaBOX | ✅ M1 |
-| V09–V13 | Host · Lifestyle · AMR · Termini · Domain | iPHoP · BACPHLIP · AMRFinderPlus · PhageTerm · InterProScan | 🔜 M2 |
-| V14–V18 | Varyant · Synteny · Comparative · Filogeni · İstatistik | iVar/LoFreq · clinker · VIRIDIC · IQ-TREE2 | 🔜 M3 |
-| **V19** | Nihai Rapor & Export | *(özel)* | ✅ M1 |
+| **V02** | Viral Genom Assembly | SPAdes / Flye / Unicycler | ✅ M1 |
+| **V03** | Cilalama & Genom Kalitesi | QUAST · CheckV · Medaka | ✅ M1 |
+| **V04** | Viral Dizi Tanıma | geNomad | ✅ M1 |
+| **V05** | Taksonomi & En Yakın Referanslar | Mash + INPHARED | ✅ M1 |
+| **V06** | Genom Annotation | Pharokka | ✅ M1 |
+| **V07** | Faj-Özel Karakterizasyon | PhaBOX | ✅ M1 |
+| **V08** | AMR & Virülans | AMRFinderPlus | ✅ M2-A |
+| **V09** | Nihai Rapor & Export | *(özel)* | ✅ M1 |
+| 🔜 | RNA-virüs yolu (M2-B) + karşılaştırmalı / filogeni (M3) | rnaviralSPAdes · VADR · iVar/LoFreq · VIRIDIC · IQ-TREE2 | 🔜 |
 
 ## 🚀 Kurulum
 
@@ -121,8 +122,9 @@ Gerçek ENA verisi (`ERR3804828`, Illumina MiSeq) ile **9/9 modül PASS**:
 ## 🗺️ Yol haritası
 
 - [x] **M1** — DNA/faj çekirdek, 3 okuma tipi · short-read uçtan-uca doğrulandı
+- [x] **M2-A** — faj zenginleştirme: **V08 AMR & virülans (AMRFinderPlus)** · T7 gerçek-veri doğrulandı
 - [ ] **M1+** — long & hybrid gerçek-veri doğrulaması
-- [ ] **M2** — RNA-virüs yolu (rnaviralSPAdes · VADR · iVar/LoFreq) + host/AMR/termini/domain
+- [ ] **M2-B** — RNA-virüs yolu (rnaviralSPAdes · VADR · iVar/LoFreq)
 - [ ] **M3** — comparative/filogeni/görselleştirme + metavirome + virüse-özel plugin (Pangolin/Nextclade/IRMA)
 
 ## 📁 Yapı

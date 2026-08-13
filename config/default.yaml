@@ -42,14 +42,9 @@ tools:
     use_abricate: false           # opsiyonel VFDB/CARD hook (varsayılan kapalı)
     conda_env: vf_amr
     conda_bin: /home/ali/miniconda3/bin/conda
-  phold:
-    db: ""                        # boş = phold varsayılan DB
-    conda_env: vf_phold
-    conda_bin: /home/ali/miniconda3/bin/conda
 
 optional:                # default kapalı (tasarım kararı)
   virsorter2: false
   vibrant: false
   sourmash: false
-  phold: false
   kraken2: false

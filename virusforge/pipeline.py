@@ -1,4 +1,4 @@
-"""Pipeline orkestrasyonu: V00 → ... → V19, moda göre yönlendirme + resume."""
+"""Pipeline orkestrasyonu: V00 → ... → V09, moda göre yönlendirme + resume."""
 from __future__ import annotations
 
 import json
@@ -9,21 +9,20 @@ from . import config, detect
 from .module import Context, Status
 from .modules.v00_input import V00Input
 from .modules.v01_qc import V01ReadQC
-from .modules.v03_assembly import V03Assembly
-from .modules.v04_polish_qc import V04PolishQC
-from .modules.v05_identify import V05Identify
-from .modules.v06_taxonomy import V06Taxonomy
-from .modules.v07_annotate import V07Annotate
-from .modules.v08_phage_char import V08PhageChar
-from .modules.v11_amr import V11Amr
-from .modules.v13_domain import V13Domain
-from .modules.v19_report import V19Report
+from .modules.v02_assembly import V02Assembly
+from .modules.v03_polish_qc import V03PolishQC
+from .modules.v04_identify import V04Identify
+from .modules.v05_taxonomy import V05Taxonomy
+from .modules.v06_annotate import V06Annotate
+from .modules.v07_phage_char import V07PhageChar
+from .modules.v08_amr import V08Amr
+from .modules.v09_report import V09Report
 
 # M1 çekirdek + M2-A faj zenginleştirme (modüller okuma-tipine/faja göre kendi içinde dallanır)
 DEFAULT_MODULES = [
-    V00Input, V01ReadQC, V03Assembly, V04PolishQC,
-    V05Identify, V06Taxonomy, V07Annotate, V08PhageChar,
-    V11Amr, V13Domain, V19Report,
+    V00Input, V01ReadQC, V02Assembly, V03PolishQC,
+    V04Identify, V05Taxonomy, V06Annotate, V07PhageChar,
+    V08Amr, V09Report,
 ]
 
 

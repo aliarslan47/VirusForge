@@ -1,6 +1,6 @@
 import pytest
 
-from virusforge.modules.v03_assembly import select_assembler
+from virusforge.modules.v02_assembly import select_assembler
 
 _CFG = {"general": {"threads": 4},
         "tools": {"flye": {"chemistry": "r10"}, "spades": {"careful": True}}}

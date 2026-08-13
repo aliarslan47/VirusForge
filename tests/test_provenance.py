@@ -3,7 +3,7 @@ from virusforge import provenance
 
 def test_record_has_all_fields():
     rec = provenance.record(
-        module="V05", tool="genomad", version="1.11.0",
+        module="V04", tool="genomad", version="1.11.0",
         database="genomad_db", database_version="1.7",
         command="genomad end-to-end ...", params={"threads": 8},
         input_sha256="abc", output_sha256="def",

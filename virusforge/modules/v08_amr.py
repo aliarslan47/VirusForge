@@ -1,4 +1,4 @@
-"""V11 — AMR + Virülans taraması (AMRFinderPlus). Yalnız fajlarda.
+"""V08 — AMR + Virülans taraması (AMRFinderPlus). Yalnız fajlarda.
 
 Boş sonuç (0 gen) geçerli bir PASS'tir — fajlarda AMR nadir; dürüstçe raporlanır.
 """
@@ -51,10 +51,10 @@ def parse_amrfinder(tsv_path) -> dict:
     return out
 
 
-class V11Amr(Module):
+class V08Amr(Module):
     name = "AMR & Virulence"
-    code = "V11"
-    dirname = "V11_AMR_VIRULENCE"
+    code = "V08"
+    dirname = "V08_AMR_VIRULENCE"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
@@ -63,7 +63,7 @@ class V11Amr(Module):
             return ModuleResult(Status.NOT_APPLICABLE,
                                 self.write_summary(ctx.run_dir, Status.NOT_APPLICABLE, m), m)
 
-        faa = ctx.artifacts.get("V07", {}).get("faa")
+        faa = ctx.artifacts.get("V06", {}).get("faa")
         if faa and Path(faa).exists():
             inp, is_protein = faa, True
         else:

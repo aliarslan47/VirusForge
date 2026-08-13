@@ -1,4 +1,4 @@
-"""V07 — Genome Annotation (Pharokka; PHANOTATE/Prodigal-gv/tRNAscan-SE içeride)."""
+"""V06 — Genome Annotation (Pharokka; PHANOTATE/Prodigal-gv/tRNAscan-SE içeride)."""
 from __future__ import annotations
 
 import json
@@ -31,10 +31,10 @@ def parse_pharokka(cds_functions_tsv) -> dict:
     }
 
 
-class V07Annotate(Module):
+class V06Annotate(Module):
     name = "Genome Annotation"
-    code = "V07"
-    dirname = "V07_GENOME_ANNOTATION"
+    code = "V06"
+    dirname = "V06_GENOME_ANNOTATION"
 
     def _protein_faa(self, native_dir) -> str:
         """Pharokka protein FASTA'sı: gen-çağırıcıya göre phanotate.faa | prodigal.faa
@@ -54,7 +54,7 @@ class V07Annotate(Module):
                 "gff": str(out / "pharokka.gff"), "native_dir": str(out)}
 
     def restore_artifacts(self, ctx: Context) -> None:
-        """Resume: pharokka çıktı yolları V11/V13 için ctx'e geri yüklenir."""
+        """Resume: pharokka çıktı yolları V08 (AMR) için ctx'e geri yüklenir."""
         art = self._pharokka_artifacts(ctx.run_dir)
         if Path(art["native_dir"]).exists():
             ctx.artifacts[self.code] = art
@@ -89,7 +89,7 @@ class V07Annotate(Module):
         (dirs["04_standardized"] / "annotation_summary.json").write_text(
             json.dumps(metrics, indent=2, ensure_ascii=False))
         ctx.results[self.code] = metrics
-        # pharokka çıktı yollarını aşağı-akışa yayınla (V11 AMR proteinler, V13 phold GenBank)
+        # pharokka çıktı yollarını aşağı-akışa yayınla (V08 AMR proteinleri)
         if status == Status.PASS:
             ctx.artifacts[self.code] = self._pharokka_artifacts(ctx.run_dir)
         return ModuleResult(status, self.write_summary(ctx.run_dir, status, metrics), metrics)

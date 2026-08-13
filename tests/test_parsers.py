@@ -1,12 +1,12 @@
-"""V01/V04/V05/V06/V07/V08 parser'ları — gerçek tool çıktı fixture'larıyla."""
+"""V01/V03/V04/V05/V06/V07 parser'ları — gerçek tool çıktı fixture'larıyla."""
 import json
 
 from virusforge.modules.v01_qc import parse_fastp_json, parse_nanoplot
-from virusforge.modules.v04_polish_qc import parse_checkv, parse_quast
-from virusforge.modules.v05_identify import parse_genomad
-from virusforge.modules.v06_taxonomy import parse_mash
-from virusforge.modules.v07_annotate import parse_pharokka
-from virusforge.modules.v08_phage_char import parse_phabox
+from virusforge.modules.v03_polish_qc import parse_checkv, parse_quast
+from virusforge.modules.v04_identify import parse_genomad
+from virusforge.modules.v05_taxonomy import parse_mash
+from virusforge.modules.v06_annotate import parse_pharokka
+from virusforge.modules.v07_phage_char import parse_phabox
 
 
 def test_parse_fastp_json(tmp_path):

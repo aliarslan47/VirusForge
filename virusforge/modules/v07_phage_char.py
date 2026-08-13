@@ -1,4 +1,4 @@
-"""V08 — Phage-Specific Characterization (PhaBOX). Yalnız bakteriyofajlarda."""
+"""V07 — Phage-Specific Characterization (PhaBOX). Yalnız bakteriyofajlarda."""
 from __future__ import annotations
 
 import json
@@ -31,15 +31,15 @@ def parse_phabox(final_dir) -> dict:
     return out
 
 
-class V08PhageChar(Module):
+class V07PhageChar(Module):
     name = "Phage-Specific Characterization"
-    code = "V08"
-    dirname = "V08_PHAGE_CHARACTERIZATION"
+    code = "V07"
+    dirname = "V07_PHAGE_CHARACTERIZATION"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
-        # V05 faj demiyorsa N/A (genel viral hat devam eder, bu modül atlanır)
-        v05 = ctx.results.get("V05", {})
+        # V04 faj demiyorsa N/A (genel viral hat devam eder, bu modül atlanır)
+        v05 = ctx.results.get("V04", {})
         tax = (v05.get("taxonomy") or "").lower()
         if v05 and v05.get("is_viral") and tax and "caudo" not in tax and "phage" not in tax and "virus" in tax:
             # viral ama faj değil görünüyor → N/A (yine de PhaBOX phamer ile teyit edebilir; muhafazakar)

@@ -10,8 +10,8 @@ from . import util
 
 
 def latest_genome(ctx: "Context") -> Path | None:
-    """En güncel genom dosyası (V04 cilalı > V03 draft)."""
-    for code in ("V04", "V03"):
+    """En güncel genom dosyası (V03 cilalı > V02 draft)."""
+    for code in ("V03", "V02"):
         art = ctx.artifacts.get(code, {})
         for key in ("genome", "draft"):
             g = art.get(key)
@@ -21,11 +21,11 @@ def latest_genome(ctx: "Context") -> Path | None:
 
 
 def is_phage(ctx: "Context") -> bool:
-    """V05 sonucuna göre örnek bakteriyofaj mı? (V11/V13 faj-koşulluluğu).
+    """V04 sonucuna göre örnek bakteriyofaj mı? (V08 AMR faj-koşulluluğu).
 
     Viral değilse False. Viral + taksonomi Caudo/phage içeriyorsa (ya da taksonomi
     boşsa — muhafazakâr, genel faj hattı) True."""
-    v05 = ctx.results.get("V05", {}) or {}
+    v05 = ctx.results.get("V04", {}) or {}
     if not v05.get("is_viral"):
         return False
     tax = (v05.get("taxonomy") or "").lower()

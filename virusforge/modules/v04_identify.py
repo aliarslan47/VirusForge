@@ -1,4 +1,4 @@
-"""V05 — Viral Sequence Identification (geNomad)."""
+"""V04 — Viral Sequence Identification (geNomad)."""
 from __future__ import annotations
 
 import json
@@ -30,10 +30,10 @@ def parse_genomad(virus_summary_tsv) -> dict:
             "top_score": best_score, "taxonomy": tax}
 
 
-class V05Identify(Module):
+class V04Identify(Module):
     name = "Viral Sequence Identification"
-    code = "V05"
-    dirname = "V05_VIRAL_IDENTIFICATION"
+    code = "V04"
+    dirname = "V04_VIRAL_IDENTIFICATION"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)

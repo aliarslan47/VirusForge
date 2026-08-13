@@ -5,8 +5,7 @@ import subprocess
 from virusforge import pipeline, util
 from tests.conftest import write_fastq
 
-_CORE = ["V00", "V01", "V03", "V04", "V05", "V06", "V07", "V08",
-         "V11", "V13", "V19"]
+_CORE = ["V00", "V01", "V02", "V03", "V04", "V05", "V06", "V07", "V08", "V09"]
 
 
 def test_short_pipeline_runs_all_modules(tmp_path, monkeypatch):

@@ -143,10 +143,10 @@ def render_html(report: dict, run_dir=None) -> str:
              f"Run: <span class='mono'>{_esc(report.get('run_id',''))}</span> &nbsp;·&nbsp; {date}</p></header>")
 
     # ---------- Genel Bakış (executive summary) ----------
-    q, cv = M["V04"].get("quast", {}), M["V04"].get("checkv", {})
-    v6 = (M["V06"].get("closest_10") or [{}])[0]
-    v8l, v8t = M["V08"].get("lifestyle", {}), M["V08"].get("taxonomy", {})
-    lineage = v8t.get("Lineage", "") or M["V05"].get("taxonomy", "")
+    q, cv = M["V03"].get("quast", {}), M["V03"].get("checkv", {})
+    v6 = (M["V05"].get("closest_10") or [{}])[0]
+    v8l, v8t = M["V07"].get("lifestyle", {}), M["V07"].get("taxonomy", {})
+    lineage = v8t.get("Lineage", "") or M["V04"].get("taxonomy", "")
     subfam = lineage.split("subfamily:")[-1].split(";")[0] if "subfamily:" in lineage else ""
 
     def stat(label, val, unit=""):
@@ -158,14 +158,14 @@ def render_html(report: dict, run_dir=None) -> str:
         stat("Contig", q.get("contigs", "—")),
         stat("Tamlık (CheckV)", cv.get("completeness", "—"), "%"),
         stat("Kontaminasyon", cv.get("contamination", "—"), "%"),
-        stat("Gen (CDS)", M["V07"].get("cds", "—")),
+        stat("Gen (CDS)", M["V06"].get("cds", "—")),
         stat("Yaşam tarzı", v8l.get("TYPE", "—")),
     ]
     overview_rows = [
         ["Örnek", _esc(report.get("sample", ""))],
         ["Sekans tipi", _esc(report.get("mode", ""))],
-        ["Viral doğrulama (geNomad)", f"{_esc(M['V05'].get('is_viral'))} · skor {_esc(M['V05'].get('top_score'))}"],
-        ["Taksonomi", f"<span class='mono'>{_esc(M['V05'].get('taxonomy',''))}</span>"],
+        ["Viral doğrulama (geNomad)", f"{_esc(M['V04'].get('is_viral'))} · skor {_esc(M['V04'].get('top_score'))}"],
+        ["Taksonomi", f"<span class='mono'>{_esc(M['V04'].get('taxonomy',''))}</span>"],
         ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
         ["En yakın referans (Mash)", f"{_esc(v6.get('accession','—'))} · mesafe {_esc(v6.get('mash_dist','—'))}"],
         ["Yaşam tarzı (PhaTYP)", f"{_esc(v8l.get('TYPE','—'))} · skor {_esc(v8l.get('PhaTYPScore','—'))}"],
@@ -225,14 +225,14 @@ def render_html(report: dict, run_dir=None) -> str:
     p.append(section("V01", "Okuma Kalitesi & Ön-İşleme (fastp)",
         table("Okuma kalite metrikleri", ["Metrik", "Değer"], v01rows)))
 
-    # V03
-    p.append(section("V03", "Viral Genom Assembly",
+    # V02
+    p.append(section("V02", "Viral Genom Assembly",
         table("Assembly", ["Alan", "Değer"], [
-            ["Assembler", _esc(M["V03"].get("assembler", "—"))],
+            ["Assembler", _esc(M["V02"].get("assembler", "—"))],
             ["Taslak genom", f"<span class='mono'>draft_viral_genome.fasta</span>"],
         ])))
 
-    # V04
+    # V03
     v04body = table("Assembly kalite metrikleri (QUAST)", ["Metrik", "Değer"], [
         ["Toplam uzunluk", f"{_esc(q.get('total_length'))} bp"],
         ["Contig sayısı", _esc(q.get("contigs"))],
@@ -246,19 +246,19 @@ def render_html(report: dict, run_dir=None) -> str:
         ["CheckV kalitesi", f"<span class='kv'>{_esc(cv.get('checkv_quality'))}</span>"],
         ["Değerlendirilen contig", f"{_esc(cv.get('contig_length'))} bp"],
     ] if cv else [])
-    p.append(section("V04", "Cilalama & Genom Kalitesi (QUAST + CheckV)", v04body))
+    p.append(section("V03", "Cilalama & Genom Kalitesi (QUAST + CheckV)", v04body))
 
-    # V05
-    p.append(section("V05", "Viral Dizi Tanıma (geNomad)",
+    # V04
+    p.append(section("V04", "Viral Dizi Tanıma (geNomad)",
         table("Viral identification", ["Alan", "Değer"], [
-            ["Viral mi?", _esc(M["V05"].get("is_viral"))],
-            ["Viral dizi sayısı", _esc(M["V05"].get("n_viral"))],
-            ["En yüksek virus skoru", _esc(M["V05"].get("top_score"))],
-            ["Taksonomi", f"<span class='mono'>{_esc(M['V05'].get('taxonomy',''))}</span>"],
+            ["Viral mi?", _esc(M["V04"].get("is_viral"))],
+            ["Viral dizi sayısı", _esc(M["V04"].get("n_viral"))],
+            ["En yüksek virus skoru", _esc(M["V04"].get("top_score"))],
+            ["Taksonomi", f"<span class='mono'>{_esc(M['V04'].get('taxonomy',''))}</span>"],
         ])))
 
-    # V06
-    closest = M["V06"].get("closest_10") or []
+    # V05
+    closest = M["V05"].get("closest_10") or []
     v06rows = [[str(i+1), f"<span class='mono'>{_esc(c.get('accession'))}</span>", _esc(round(c.get('mash_dist',0),5)),
                 f"{100*(1-c.get('mash_dist',0)):.2f} %"]
                for i, c in enumerate(closest[:10])]
@@ -268,37 +268,37 @@ def render_html(report: dict, run_dir=None) -> str:
         v06body += figure("En yakın referanslara Mash mesafesi (küçük = daha yakın).",
                           _svg_hbar([(c.get("accession"), c.get("mash_dist")) for c in closest[:10]],
                                     color="#0d6b8f"))
-    p.append(section("V06", "Taksonomi & En Yakın Referanslar", v06body))
+    p.append(section("V05", "Taksonomi & En Yakın Referanslar", v06body))
 
-    # V07
-    fns = M["V07"].get("functions", {}) or {}
+    # V06
+    fns = M["V06"].get("functions", {}) or {}
     func_rows = [[_esc(k), _esc(v)] for k, v in fns.items()
                  if isinstance(v, int) and v > 0 and k not in ("CDS",)]
     v07body = table("Annotation özeti (Pharokka)", ["Alan", "Değer"], [
-        ["Toplam CDS", _esc(M["V07"].get("cds"))],
-        ["tRNA", _esc(M["V07"].get("trna"))],
+        ["Toplam CDS", _esc(M["V06"].get("cds"))],
+        ["tRNA", _esc(M["V06"].get("trna"))],
     ])
     v07body += table("Fonksiyonel kategori dağılımı (PHROGs)", ["Kategori", "Gen sayısı"], func_rows)
     # circular genom haritası (öne çıkan görsel)
-    gmap = figs_for("V07", "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), "
+    gmap = figs_for("V06", "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), "
                            "tRNA, GC içeriği ve GC-skew.")
     if func_rows:
         v07body += figure("Fonksiyonel kategorilere göre gen dağılımı.",
                           _svg_hbar([(k, v) for k, v in fns.items() if isinstance(v, int) and v > 0 and k != "CDS"],
                                     color="#0d8f86"))
-    p.append(section("V07", "Genom Annotation (Pharokka)", gmap + v07body))
+    p.append(section("V06", "Genom Annotation (Pharokka)", gmap + v07body))
 
-    # V08
+    # V07
     v08body = table("Faj yaşam tarzı & taksonomi (PhaBOX)", ["Alan", "Değer"], [
         ["Yaşam tarzı (PhaTYP)", f"<span class='kv'>{_esc(v8l.get('TYPE','—'))}</span>"],
         ["PhaTYP skoru", _esc(v8l.get("PhaTYPScore", "—"))],
         ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
         ["Soy hattı", f"<span class='mono'>{_esc(v8t.get('Lineage','—'))}</span>"],
     ]) if (v8l or v8t) else "<p class='na'>Bakteriyofaj karakterizasyonu uygulanmadı.</p>"
-    p.append(section("V08", "Faj-Özel Karakterizasyon (PhaBOX)", v08body))
+    p.append(section("V07", "Faj-Özel Karakterizasyon (PhaBOX)", v08body))
 
-    # V11 — AMR & virülans
-    a11 = M["V11"]
+    # V08 — AMR & virülans
+    a11 = M["V08"]
     cnt = a11.get("counts", {}) or {}
     amr_rows = [[_esc(g.get("gene")), _esc(g.get("class")), f"{_esc(g.get('identity'))} %",
                  f"{_esc(g.get('coverage'))} %"]
@@ -315,24 +315,7 @@ def render_html(report: dict, run_dir=None) -> str:
                     "<p class='na'>AMR / virülans geni saptanmadı — fajlarda beklenen sonuç.</p>")
     else:
         v11body = "<p class='na'>AMR taraması uygulanmadı.</p>"
-    p.append(section("V11", "AMR & Virülans (AMRFinderPlus)", v11body))
-
-    # V13 — Yapısal / domain annotation
-    d13 = M["V13"]
-    d13fns = d13.get("functions", {}) or {}
-    d13_rows = [[_esc(k), _esc(v)] for k, v in d13fns.items()
-                if isinstance(v, int) and v > 0 and k not in ("CDS",)]
-    if d13.get("annotated_cds") is not None:
-        v13body = table("Yapısal annotation özeti (phold)", ["Alan", "Değer"], [
-            ["Fonksiyona atanan CDS", _esc(d13.get("annotated_cds"))],
-            ["Bilinmeyen (pharokka önce)", _esc(d13.get("unknown_before", "—"))],
-            ["Bilinmeyen (phold sonra)", _esc(d13.get("unknown_after", "—"))],
-        ])
-        v13body += table("Fonksiyonel kategori dağılımı (phold)", ["Kategori", "Gen sayısı"], d13_rows)
-        v13body += figs_for("V13", "phold yapısal annotation görseli.")
-    else:
-        v13body = "<p class='na'>Domain annotation uygulanmadı / sonuç yok.</p>"
-    p.append(section("V13", "Yapısal / Domain Annotation (phold)", v13body))
+    p.append(section("V08", "AMR & Virülans (AMRFinderPlus)", v11body))
 
     # ---------- Araçlar & referanslar ----------
     tool_rows = []
