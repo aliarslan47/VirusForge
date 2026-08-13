@@ -36,9 +36,21 @@ class V07Annotate(Module):
     code = "V07"
     dirname = "V07_GENOME_ANNOTATION"
 
+    def _protein_faa(self, native_dir) -> str:
+        """Pharokka protein FASTA'sı: gen-çağırıcıya göre phanotate.faa | prodigal.faa
+        (pharokka.faa DEĞİL). terL.faa hariç herhangi bir .faa fallback."""
+        d = Path(native_dir)
+        for name in ("phanotate.faa", "prodigal.faa", "pharokka.faa"):
+            if (d / name).exists():
+                return str(d / name)
+        for f in sorted(d.glob("*.faa")):
+            if f.name != "terL.faa":
+                return str(f)
+        return str(d / "phanotate.faa")
+
     def _pharokka_artifacts(self, run_dir) -> dict:
         out = self.module_dir(run_dir) / "03_native_outputs" / "pharokka"
-        return {"faa": str(out / "pharokka.faa"), "gbk": str(out / "pharokka.gbk"),
+        return {"faa": self._protein_faa(out), "gbk": str(out / "pharokka.gbk"),
                 "gff": str(out / "pharokka.gff"), "native_dir": str(out)}
 
     def restore_artifacts(self, ctx: Context) -> None:

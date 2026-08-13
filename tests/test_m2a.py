@@ -167,13 +167,15 @@ def test_v13_warning_when_tool_missing(tmp_path):
 # --------------------------------------------------------------------------- #
 # V07 artifact yayınlama (V11/V13 ön koşulu) + resume geri-yükleme
 # --------------------------------------------------------------------------- #
-def test_v07_restore_artifacts_rebuilds_pharokka_paths(tmp_path):
+def test_v07_restore_artifacts_resolves_phanotate_faa(tmp_path):
+    # gerçek pharokka çıktısı: protein FASTA = phanotate.faa (PHANOTATE), pharokka.faa DEĞİL
     run_dir = tmp_path / "run"
     native = run_dir / "V07_GENOME_ANNOTATION" / "03_native_outputs" / "pharokka"
     native.mkdir(parents=True)
-    (native / "pharokka.faa").write_text(">p1\nMAA\n")
+    (native / "phanotate.faa").write_text(">p1\nMAA\n")
+    (native / "terL.faa").write_text(">terL\nMAA\n")   # bu SEÇİLMEMELİ
     (native / "pharokka.gbk").write_text("LOCUS x\n")
     c = Context(sample_dir=tmp_path, run_dir=run_dir, cfg={}, mode="SHORT_READ")
     V07Annotate().restore_artifacts(c)
-    assert c.artifacts["V07"]["faa"] == str(native / "pharokka.faa")
+    assert c.artifacts["V07"]["faa"] == str(native / "phanotate.faa")
     assert c.artifacts["V07"]["gbk"] == str(native / "pharokka.gbk")
