@@ -64,3 +64,23 @@ phold:
 phabox:
   repo: https://github.com/KennthShang/PhaBOX
   version_cmd: ["phabox2", "--version"]
+rafah:
+  repo: https://sourceforge.net/projects/rafah/
+  version_cmd: ["RaFAH.py", "--help"]
+  doi: "10.1016/j.patter.2021.100274"
+iphop:
+  repo: https://bitbucket.org/srouxjgi/iphop
+  version_cmd: ["iphop", "--version"]
+  note: "opsiyonel — DB çok büyük (>200GB)"
+amrfinderplus:
+  repo: https://github.com/ncbi/amr
+  version_cmd: ["amrfinder", "--version"]
+  doi: "10.1038/s41598-021-91456-0"
+abricate:
+  repo: https://github.com/tseemann/abricate
+  version_cmd: ["abricate", "--version"]
+  note: "opsiyonel — çoklu-DB (CARD/VFDB/ResFinder) hook"
+phageterm:
+  repo: https://gitlab.pasteur.fr/vlegrand/ptv
+  version_cmd: ["PhageTerm.py", "--version"]
+  doi: "10.1038/s41598-017-07910-5"

@@ -18,6 +18,10 @@ TOOL_REFERENCES = [
     ("inphared", "INPHARED", "Faj referans veritabanı (Mash sketch, ICTV)", "https://github.com/RyanCook94/inphared", "10.1089/phage.2021.0007"),
     ("pharokka", "Pharokka", "Bakteriyofaj genom annotation", "https://github.com/gbouras13/pharokka", "10.1093/bioinformatics/btac776"),
     ("phabox", "PhaBOX", "Faj karakterizasyon (PhaMer/PhaGCN/PhaTYP)", "https://github.com/KennthShang/PhaBOX", "10.1093/bioadv/vbad101"),
+    ("rafah", "RaFAH", "Faj konak tahmini (random-forest)", "https://sourceforge.net/projects/rafah/", "10.1016/j.patter.2021.100274"),
+    ("amrfinderplus", "AMRFinderPlus", "AMR / virülans / stres geni taraması", "https://github.com/ncbi/amr", "10.1038/s41598-021-91456-0"),
+    ("phageterm", "PhageTerm", "Genom uçları / paketleme mekanizması", "https://gitlab.pasteur.fr/vlegrand/ptv", "10.1038/s41598-017-07910-5"),
+    ("phold", "phold", "Yapısal / domain annotation (ProstT5+Foldseek)", "https://github.com/gbouras13/phold", "10.1093/nar/gkaf1448"),
 ]
 
 # Rapor bölüm sırası ve modül adları
@@ -30,5 +34,9 @@ PIPELINE_STEPS = [
     ("V06", "Taxonomy & Closest References", "Mash + INPHARED"),
     ("V07", "Genome Annotation", "Pharokka"),
     ("V08", "Phage Characterization", "PhaBOX"),
+    ("V09", "Host Prediction", "RaFAH / iPHoP"),
+    ("V11", "AMR & Virulence", "AMRFinderPlus"),
+    ("V12", "Genome Termini", "PhageTerm"),
+    ("V13", "Structural / Domain Annotation", "phold"),
     ("V19", "Final Report & Export", "VirusForge"),
 ]

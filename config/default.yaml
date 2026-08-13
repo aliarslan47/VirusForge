@@ -36,6 +36,18 @@ tools:
     db: databases/phabox
     conda_env: vf_phabox          # phabox izole env (pandas<2 uyumlu)
     conda_bin: /home/ali/miniconda3/bin/conda
+  # --- M2-A faj zenginleştirme ---
+  host:
+    method: rafah                 # rafah (varsayılan) | iphop
+    rafah_db: databases/rafah     # RaFAH modeli kendi içinde; gerekirse yol
+    iphop_db: databases/iphop     # opsiyonel — dev'de indirilmez (>200GB)
+  amrfinder:
+    db: ""                        # boş = AMRFinderPlus varsayılan kurulum DB
+    use_abricate: false           # opsiyonel VFDB/CARD hook (varsayılan kapalı)
+  phageterm:
+    extra_args: ""
+  phold:
+    db: ""                        # boş = phold varsayılan DB
 
 optional:                # default kapalı (tasarım kararı)
   virsorter2: false

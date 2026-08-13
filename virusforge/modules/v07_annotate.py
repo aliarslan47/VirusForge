@@ -36,6 +36,17 @@ class V07Annotate(Module):
     code = "V07"
     dirname = "V07_GENOME_ANNOTATION"
 
+    def _pharokka_artifacts(self, run_dir) -> dict:
+        out = self.module_dir(run_dir) / "03_native_outputs" / "pharokka"
+        return {"faa": str(out / "pharokka.faa"), "gbk": str(out / "pharokka.gbk"),
+                "gff": str(out / "pharokka.gff"), "native_dir": str(out)}
+
+    def restore_artifacts(self, ctx: Context) -> None:
+        """Resume: pharokka çıktı yolları V11/V13 için ctx'e geri yüklenir."""
+        art = self._pharokka_artifacts(ctx.run_dir)
+        if Path(art["native_dir"]).exists():
+            ctx.artifacts[self.code] = art
+
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
         genome = latest_genome(ctx)
@@ -66,4 +77,7 @@ class V07Annotate(Module):
         (dirs["04_standardized"] / "annotation_summary.json").write_text(
             json.dumps(metrics, indent=2, ensure_ascii=False))
         ctx.results[self.code] = metrics
+        # pharokka çıktı yollarını aşağı-akışa yayınla (V11 AMR proteinler, V13 phold GenBank)
+        if status == Status.PASS:
+            ctx.artifacts[self.code] = self._pharokka_artifacts(ctx.run_dir)
         return ModuleResult(status, self.write_summary(ctx.run_dir, status, metrics), metrics)

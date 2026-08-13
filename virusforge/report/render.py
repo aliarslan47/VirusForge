@@ -297,6 +297,62 @@ def render_html(report: dict, run_dir=None) -> str:
     ]) if (v8l or v8t) else "<p class='na'>Bakteriyofaj karakterizasyonu uygulanmadı.</p>"
     p.append(section("V08", "Faj-Özel Karakterizasyon (PhaBOX)", v08body))
 
+    # V09 — Host tahmini
+    h9 = M["V09"]
+    v09body = table("Konak (host) tahmini", ["Alan", "Değer"], [
+        ["Yöntem", _esc(h9.get("method", "—"))],
+        ["Tahmin edilen konak", f"<span class='kv'>{_esc(h9.get('predicted_host', '—'))}</span>"],
+        ["Güven skoru", _esc(h9.get("confidence", "—"))],
+    ]) if h9.get("predicted_host") else "<p class='na'>Konak tahmini uygulanmadı / sonuç yok.</p>"
+    p.append(section("V09", "Konak Tahmini (RaFAH / iPHoP)", v09body))
+
+    # V11 — AMR & virülans
+    a11 = M["V11"]
+    cnt = a11.get("counts", {}) or {}
+    amr_rows = [[_esc(g.get("gene")), _esc(g.get("class")), f"{_esc(g.get('identity'))} %",
+                 f"{_esc(g.get('coverage'))} %"]
+                for g in (a11.get("amr_genes", []) + a11.get("virulence_genes", [])
+                          + a11.get("stress_genes", []))]
+    if a11.get("counts") is not None:
+        v11body = table("AMR / virülans / stres gen sayıları", ["Kategori", "Gen sayısı"], [
+            ["AMR", _esc(cnt.get("amr", 0))],
+            ["Virülans", _esc(cnt.get("virulence", 0))],
+            ["Stres", _esc(cnt.get("stress", 0))],
+        ])
+        v11body += (table("Saptanan genler (AMRFinderPlus)", ["Gen", "Sınıf", "Kimlik", "Kapsam"], amr_rows)
+                    if amr_rows else
+                    "<p class='na'>AMR / virülans geni saptanmadı — fajlarda beklenen sonuç.</p>")
+    else:
+        v11body = "<p class='na'>AMR taraması uygulanmadı.</p>"
+    p.append(section("V11", "AMR & Virülans (AMRFinderPlus)", v11body))
+
+    # V12 — Genom termini
+    t12 = M["V12"]
+    v12body = table("Genom uçları / paketleme mekanizması", ["Alan", "Değer"], [
+        ["Termini tipi", f"<span class='kv'>{_esc(t12.get('termini_type', '—'))}</span>"],
+        ["Sol pozisyon", _esc(t12.get("left", "—"))],
+        ["Sağ pozisyon", _esc(t12.get("right", "—"))],
+        ["Yöntem", _esc(t12.get("method", "PhageTerm"))],
+    ]) if t12.get("termini_type") else "<p class='na'>Termini analizi uygulanmadı / sonuç yok.</p>"
+    p.append(section("V12", "Genom Uçları / Termini (PhageTerm)", v12body))
+
+    # V13 — Yapısal / domain annotation
+    d13 = M["V13"]
+    d13fns = d13.get("functions", {}) or {}
+    d13_rows = [[_esc(k), _esc(v)] for k, v in d13fns.items()
+                if isinstance(v, int) and v > 0 and k not in ("CDS",)]
+    if d13.get("annotated_cds") is not None:
+        v13body = table("Yapısal annotation özeti (phold)", ["Alan", "Değer"], [
+            ["Fonksiyona atanan CDS", _esc(d13.get("annotated_cds"))],
+            ["Bilinmeyen (pharokka önce)", _esc(d13.get("unknown_before", "—"))],
+            ["Bilinmeyen (phold sonra)", _esc(d13.get("unknown_after", "—"))],
+        ])
+        v13body += table("Fonksiyonel kategori dağılımı (phold)", ["Kategori", "Gen sayısı"], d13_rows)
+        v13body += figs_for("V13", "phold yapısal annotation görseli.")
+    else:
+        v13body = "<p class='na'>Domain annotation uygulanmadı / sonuç yok.</p>"
+    p.append(section("V13", "Yapısal / Domain Annotation (phold)", v13body))
+
     # ---------- Araçlar & referanslar ----------
     tool_rows = []
     for key, disp, purpose, repo, doi in TOOL_REFERENCES:

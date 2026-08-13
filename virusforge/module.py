@@ -20,6 +20,18 @@ def latest_genome(ctx: "Context") -> Path | None:
     return None
 
 
+def is_phage(ctx: "Context") -> bool:
+    """V05 sonucuna göre örnek bakteriyofaj mı? (V09/V11/V12/V13 faj-koşulluluğu).
+
+    Viral değilse False. Viral + taksonomi Caudo/phage içeriyorsa (ya da taksonomi
+    boşsa — muhafazakâr, genel faj hattı) True."""
+    v05 = ctx.results.get("V05", {}) or {}
+    if not v05.get("is_viral"):
+        return False
+    tax = (v05.get("taxonomy") or "").lower()
+    return ("caudo" in tax) or ("phage" in tax) or (tax == "")
+
+
 def safe_run(cmd: list[str], log_path) -> str | None:
     """Komutu çalıştır; başarılıysa None, hata olursa hata mesajı döndür (yüksek sesle kaydeder)."""
     try:

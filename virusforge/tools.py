@@ -85,6 +85,43 @@ def pharokka_plotter_cmd(genome, pharokka_out, name="genome_map", title="phage")
             "-n", name, "-t", str(title)]
 
 
+# ---- M2-A faj zenginleştirme araçları ----
+
+def rafah_cmd(genome, out_prefix):
+    """RaFAH konak tahmini: <out_prefix>_Host_Predictions.tsv üretir."""
+    return ["RaFAH.py", "--predict", "--genomes_list", str(genome),
+            "--file_prefix", str(out_prefix)]
+
+
+def iphop_cmd(genome, out_dir, db, threads=8):
+    """iPHoP konak tahmini (opsiyonel; DB büyük)."""
+    return ["iphop", "predict", "--fa_file", str(genome), "--out_dir", str(out_dir),
+            "--db_dir", str(db), "-t", str(threads)]
+
+
+def amrfinder_cmd(input_path, out_tsv, db="", is_protein=True, threads=8):
+    """AMRFinderPlus: proteinlerde (-p) veya genomda (-n) AMR/virülans/stres taraması."""
+    flag = "-p" if is_protein else "-n"
+    cmd = ["amrfinder", flag, str(input_path), "-o", str(out_tsv), "--threads", str(threads)]
+    if db:
+        cmd += ["-d", str(db)]
+    return cmd
+
+
+def phageterm_cmd(r1, r2, genome, name="phageterm"):
+    """PhageTerm: genom uçları/termini tespiti (paired-end kısa okuma gerektirir)."""
+    return ["PhageTerm.py", "-f", str(r1), "-r", str(r2), "-s", str(genome),
+            "--report_title", str(name)]
+
+
+def phold_cmd(gbk, out_dir, db="", threads=8):
+    """phold: pharokka GenBank'inden yapı-tabanlı (ProstT5/Foldseek) fonksiyon ataması."""
+    cmd = ["phold", "run", "-i", str(gbk), "-o", str(out_dir), "-t", str(threads), "-f"]
+    if db:
+        cmd += ["-d", str(db)]
+    return cmd
+
+
 def phabox_cmd(genome, out_dir, db, threads=8, conda_env=None, conda_bin="conda"):
     base = ["phabox2", "--task", "end_to_end", "--contigs", str(genome),
             "--outpth", str(out_dir), "--dbdir", str(db), "--threads", str(threads)]
