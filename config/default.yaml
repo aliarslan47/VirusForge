@@ -51,6 +51,7 @@ tools:
   # --- M3 karşılaştırmalı & filogeni (online BLAST + MAFFT/IQ-TREE2 + taxmyPHAGE) ---
   comparative:
     blast_db: ref_viruses_rep_genomes   # online NCBI viral DB (indirme yok)
+    blast_timeout: 120                  # sn — Blast4 erişilemezse asılma, V05 fallback'e düş
     iqtree_bin: iqtree                  # v3 = 'iqtree'; bazı sistemlerde 'iqtree2'
     n_closest: 5
     min_hits: 3

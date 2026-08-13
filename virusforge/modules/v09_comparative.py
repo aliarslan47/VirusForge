@@ -124,9 +124,11 @@ class V09Comparative(Module):
         min_hits = get(cfg, "tools.comparative.min_hits", 3)
 
         # (1) online BLAST → en yakın türler (birincil, tanımlama)
+        # timeout ile sar: NCBI Blast4 servisi erişilemezse asılmasın, fallback'e düşsün
         blast_tsv = dirs["03_native_outputs"] / "blast.tsv"
-        bcmd = _wrap(tools.blastn_remote_cmd(genome, blast_tsv,
-                     get(cfg, "tools.comparative.blast_db", "ref_viruses_rep_genomes")), cenv, cbin)
+        bt = get(cfg, "tools.comparative.blast_timeout", 120)
+        bcmd = ["timeout", str(bt), *_wrap(tools.blastn_remote_cmd(genome, blast_tsv,
+                get(cfg, "tools.comparative.blast_db", "ref_viruses_rep_genomes")), cenv, cbin)]
         err = safe_run(bcmd, dirs["07_logs"] / "blast.log")
         hits = parse_blast_hits(blast_tsv, n) if (not err and blast_tsv.exists()) else []
         if hits:
