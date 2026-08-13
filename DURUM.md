@@ -194,9 +194,27 @@ modüllerin İÇİNDE dallanır** (pipeline değişmezine uyar). Karar seti: ver
   **1 gerçek-veri bug'ı bulundu+düzeltildi:** iVar konsensus '-' (no-call) → VADR esl-reformat reddi →
   `clean_consensus_gaps` '-'→'N'. Spec: `docs/.../2026-08-13-virusforge-m2b-rna-phase1-design.md`.
 
+## 2026-08-14 — M2-B RNA FAZ 2: V11 VARYANT & QUASISPECIES TAMAM + SARS-CoV-2 DOĞRULANDI
+(plan modu → spec → TDD, otonom). **Karar: yeni V11 modülü** (varyant çağırmanın DNA karşılığı yok →
+Faz 1'in "mevcut slota dallan" deseninden farklı; kendi modülü, DNA/faj'da N/A). Kapsam: sadece
+varyant/quasispecies (lineage sonra).
+- **v11_variants.py (V11VariantCall):** RNA+BAM(V02'den)→varyant; DNA veya de novo(BAM yok)→NOT_APPLICABLE.
+  **iVar variants** (mpileup|ivar variants pipe, vf_rna) + **LoFreq** (izole `vf_lofreq` env). parse_ivar_variants/
+  parse_lofreq_vcf/variant_summary (konsensus≥0.5 vs minör<0.5=quasispecies sinyali).
+- tools: `ivar_variants_cmd` (stream, opsiyonel GFF→AA) + `lofreq_call_cmd`. pipeline DEFAULT_MODULES'a V11
+  (V09↔V10 arası); v10_report `_ORDER`+"V11"; references PIPELINE_STEPS (V09→V11→V10). render V11 bölümü
+  (özet + iVar/LoFreq tabloları) çift-dilli. config tools.rna.gff/ivar_var_*, tools.lofreq; registry lofreq.
+  V02 restore_artifacts referansı da geri yükler (V11 resume dayanıklılığı).
+- **154 pytest yeşil** (+9). **Gerçek doğrulama** (Faz 1 SARS-CoV-2 BAM'i, `--resume`): **iVar 109 varyant
+  (105 konsensus + 4 minör/intra-host → quasispecies=True), LoFreq 97**; 241C>T freq 1.0 (bilinen 5'UTR
+  mutasyonu); V11 rapor bölümü TR+EN. **vf_lofreq (LoFreq 2.1.3.1) kuruldu.**
+  Spec: `docs/.../2026-08-14-virusforge-m2b-rna-phase2-design.md`. commit b30ef53.
+
 ## Şu an nerede kaldık (özet)
-- **SIRADA:** **M2-B Faz 2** (iVar variants + LoFreq quasispecies, Faz 1 BAM'i üzerinden) + lineage
-  (Pangolin/Nextclade). Ayrıca RNA de novo (rnaviralSPAdes referanssız) gerçek doğrulaması opsiyonel.
+- **M2-B RNA yolu TAMAM: Faz 1 (yönlendirme+konsensus+VADR) + Faz 2 (V11 varyant/quasispecies)** — ikisi de
+  SARS-CoV-2 gerçek doğrulandı.
+- **SIRADA (opsiyonel/sonraki):** lineage (Pangolin/Nextclade); RNA de novo (rnaviralSPAdes referanssız)
+  gerçek doğrulama; iVar variants GFF→AA etkisi; Item 4 (virsorter2/vibrant/kraken2). M3 kalan fazlar.
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
   (virsorter2/vibrant/kraken2) → config'te var, modül yok. (NOT: "short/long/hybrid" ayrı bir eksen = M1
   platform kapsamı, çoktan TAMAM; Item numaraları rapor-cilalama fazına aittir, okuma tipiyle ilgisiz.)
