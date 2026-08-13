@@ -6,6 +6,7 @@ BLAST = en-yakın-tür seçme + tanımlama; ICTV taksonomi BLAST best-hit'ten T�
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 from .. import tools, util
@@ -71,6 +72,15 @@ def _v05_fallback_hits(ctx, n) -> list[dict]:
     closest = (ctx.results.get("V05", {}) or {}).get("closest_10") or []
     return [{"accession": c["accession"], "species": c["accession"],
              "identity": None, "coverage": None} for c in closest[:n] if c.get("accession")]
+
+
+def _copy_viridic_heatmap(taxmyphage_out, viz_dir) -> bool:
+    """taxmyPHAGE'in ürettiği VIRIDIC benzerlik ısı-haritasını rapor görselleştirmesine kopyala."""
+    hm = next(Path(taxmyphage_out).rglob("heatmap.png"), None)
+    if hm and hm.exists():
+        shutil.copy(hm, Path(viz_dir) / "viridic_heatmap.png")
+        return True
+    return False
 
 
 def _read_seq(fasta) -> str:
@@ -149,6 +159,9 @@ class V09Comparative(Module):
         if not safe_run(_wrap(tools.taxmyphage_cmd(genome, tout, get(cfg, "general.threads", 8)), cenv, cbin),
                         dirs["07_logs"] / "taxmyphage.log") and tout.exists():
             metrics["ictv"] = parse_taxmyphage(tout)
+            # VIRIDIC benzerlik ısı-haritasını (taxmyPHAGE üretir) rapora al
+            if _copy_viridic_heatmap(tout, dirs["06_visualization"]):
+                metrics["viridic_heatmap"] = "06_visualization/viridic_heatmap.png"
 
         # (3) yeterli referans varsa: efetch → MAFFT → IQ-TREE2 ağaç
         if len(hits) >= min_hits:

@@ -389,6 +389,9 @@ def render_html(report: dict, run_dir=None) -> str:
     if cmp.get("similarity_matrix") and cmp.get("matrix_labels"):
         v09body += figure("Genomlar arası benzerlik matrisi (VIRIDIC %; ≥95 tür, ≥70 cins).",
                           _svg_matrix(cmp["matrix_labels"], cmp["similarity_matrix"]))
+    # taxmyPHAGE VIRIDIC ısı-haritası (varsa) — gerçek intergenomic benzerlik
+    v09body += figs_for("V09", "VIRIDIC genomlar-arası benzerlik ısı-haritası "
+                               "(taxmyPHAGE; ICTV eşiği ≥95% tür, ≥70% cins).")
     p.append(section("V09", "Karşılaştırmalı Tanımlama & Filogeni", v09body))
 
     # ---------- Araçlar & referanslar ----------

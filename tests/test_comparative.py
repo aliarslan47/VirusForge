@@ -65,6 +65,23 @@ def test_parse_taxmyphage(tmp_path):
 # --------------------------------------------------------------------------- #
 # V09Comparative modül koşumu (araçsız/ağsız → dürüst WARNING / N/A)
 # --------------------------------------------------------------------------- #
+def test_copy_viridic_heatmap(tmp_path):
+    from virusforge.modules.v09_comparative import _copy_viridic_heatmap
+    tout = tmp_path / "taxmyphage" / "Results_per_genome" / "contig_1"
+    tout.mkdir(parents=True)
+    (tout / "heatmap.png").write_bytes(b"\x89PNG\r\n")
+    viz = tmp_path / "viz"
+    viz.mkdir()
+    ok = _copy_viridic_heatmap(tmp_path / "taxmyphage", viz)
+    assert ok and (viz / "viridic_heatmap.png").exists()
+
+
+def test_copy_viridic_heatmap_missing(tmp_path):
+    from virusforge.modules.v09_comparative import _copy_viridic_heatmap
+    (tmp_path / "empty").mkdir()
+    assert _copy_viridic_heatmap(tmp_path / "empty", tmp_path) is False
+
+
 def test_v05_fallback_hits_uses_closest_when_blast_empty():
     from virusforge.modules.v09_comparative import _v05_fallback_hits
     from virusforge.module import Context
