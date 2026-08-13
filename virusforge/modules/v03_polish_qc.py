@@ -77,8 +77,11 @@ class V03PolishQC(Module):
             mout = dirs["02_work"] / "medaka"
             model = get(ctx.cfg, "tools.medaka.model", "auto")
             model = "r1041_e82_400bps_sup_v5.0.0" if model == "auto" else model
-            err = safe_run(tools.medaka_consensus_cmd(long_reads, draft, mout, model, threads),
-                           dirs["07_logs"] / "medaka.log")
+            err = safe_run(tools.medaka_consensus_cmd(
+                long_reads, draft, mout, model, threads,
+                conda_env=get(ctx.cfg, "tools.long.conda_env", None),
+                conda_bin=get(ctx.cfg, "tools.long.conda_bin", "conda")),
+                dirs["07_logs"] / "medaka.log")
             polished = mout / "consensus.fasta"
             if not err and polished.exists():
                 genome_src = polished

@@ -12,6 +12,8 @@ from ..module import Context, Module, ModuleResult, Status, safe_run
 def select_assembler(mode: str, reads: dict, out_dir, cfg: dict):
     """(cmd, üretilecek contig dosyası) döndür. Gerekli okuma yoksa ValueError (sessiz PASS yasak)."""
     threads = get(cfg, "general.threads", 8)
+    lenv = get(cfg, "tools.long.conda_env", None)
+    lbin = get(cfg, "tools.long.conda_bin", "conda")
     out = Path(out_dir)
     if mode == "SHORT_READ":
         if not (reads.get("r1") and reads.get("r2")):
@@ -22,11 +24,15 @@ def select_assembler(mode: str, reads: dict, out_dir, cfg: dict):
         if not reads.get("long"):
             raise ValueError("LONG_READ için uzun-okuma bulunamadı")
         chem = get(cfg, "tools.flye.chemistry", "r10")
-        return tools.flye_cmd(reads["long"], out, chem, threads), out / "assembly.fasta"
+        if str(chem).lower() == "auto":
+            chem = "r10"          # modern ONT varsayılanı (--nano-hq); medaka R10 modeliyle tutarlı
+        return tools.flye_cmd(reads["long"], out, chem, threads,
+                              conda_env=lenv, conda_bin=lbin), out / "assembly.fasta"
     if mode == "HYBRID":
         if not (reads.get("r1") and reads.get("r2") and reads.get("long")):
             raise ValueError("HYBRID için short+long birlikte gerekli")
-        return tools.unicycler_cmd(reads["r1"], reads["r2"], reads["long"], out, threads), out / "assembly.fasta"
+        return tools.unicycler_cmd(reads["r1"], reads["r2"], reads["long"], out, threads,
+                                   conda_env=lenv, conda_bin=lbin), out / "assembly.fasta"
     raise ValueError(f"assembly bu modda çalışmaz: {mode}")
 
 

@@ -86,11 +86,13 @@ class V01ReadQC(Module):
             else:
                 problems.append("fastp çıktısı (fastp.json) bulunamadı")
 
-        # --- long kol ---
+        # --- long kol (izole vf_long env) ---
         if ctx.mode in ("LONG_READ", "HYBRID") and long_r:
+            lenv = get(ctx.cfg, "tools.long.conda_env", None)
+            lbin = get(ctx.cfg, "tools.long.conda_bin", "conda")
             np_out = dirs["03_native_outputs"] / "nanoplot"
             np_out.mkdir(parents=True, exist_ok=True)
-            err = safe_run(tools.nanoplot_cmd(long_r, np_out, threads),
+            err = safe_run(tools.nanoplot_cmd(long_r, np_out, threads, conda_env=lenv, conda_bin=lbin),
                            dirs["07_logs"] / "nanoplot.log")
             stats = np_out / "NanoStats.txt"
             if not err and stats.exists():
@@ -100,7 +102,8 @@ class V01ReadQC(Module):
             # filtlong → temiz uzun okuma (.fastq, gz DEĞİL — BacForge dersi)
             clean_long = dirs["02_work"] / "clean_long.fastq"
             fl = tools.filtlong_cmd(long_r, get(ctx.cfg, "tools.filtlong.min_length", 1000),
-                                    get(ctx.cfg, "tools.filtlong.keep_percent", 90))
+                                    get(ctx.cfg, "tools.filtlong.keep_percent", 90),
+                                    conda_env=lenv, conda_bin=lbin)
             try:
                 util.run_redirect(fl, clean_long, dirs["07_logs"] / "filtlong.log")
                 if clean_long.stat().st_size > 0:

@@ -15,6 +15,10 @@ tools:
   filtlong:
     min_length: 1000
     keep_percent: 90
+  # long-okuma araçları (NanoPlot/filtlong/Flye/Medaka/Unicycler) izole env'de
+  long:
+    conda_env: vf_long
+    conda_bin: /home/ali/miniconda3/bin/conda
   spades:
     careful: true
   flye:

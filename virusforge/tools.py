@@ -22,13 +22,14 @@ def fastqc_cmd(inputs, out_dir, threads=8):
     return ["fastqc", "-t", str(threads), "-o", str(out_dir), *[str(i) for i in inputs]]
 
 
-def nanoplot_cmd(long_reads, out_dir, threads=8):
-    return ["NanoPlot", "--fastq", str(long_reads), "-o", str(out_dir), "-t", str(threads)]
+def nanoplot_cmd(long_reads, out_dir, threads=8, conda_env=None, conda_bin="conda"):
+    return _conda_wrap(["NanoPlot", "--fastq", str(long_reads), "-o", str(out_dir),
+                        "-t", str(threads)], conda_env, conda_bin)
 
 
-def filtlong_cmd(long_reads, min_length=1000, keep_percent=90):
-    return ["filtlong", "--min_length", str(min_length),
-            "--keep_percent", str(keep_percent), str(long_reads)]
+def filtlong_cmd(long_reads, min_length=1000, keep_percent=90, conda_env=None, conda_bin="conda"):
+    return _conda_wrap(["filtlong", "--min_length", str(min_length),
+                        "--keep_percent", str(keep_percent), str(long_reads)], conda_env, conda_bin)
 
 
 def multiqc_cmd(scan_dir, out_dir):
@@ -42,20 +43,22 @@ def spades_cmd(r1, r2, out_dir, threads=8, careful=True):
     return cmd
 
 
-def flye_cmd(long_reads, out_dir, chemistry="r10", threads=8):
+def flye_cmd(long_reads, out_dir, chemistry="r10", threads=8, conda_env=None, conda_bin="conda"):
     # R10 → --nano-hq, R9 → --nano-raw (kimya-otomatik; BacForge dersi)
     flag = "--nano-hq" if str(chemistry).lower().startswith("r10") else "--nano-raw"
-    return ["flye", flag, str(long_reads), "-o", str(out_dir), "-t", str(threads)]
+    return _conda_wrap(["flye", flag, str(long_reads), "-o", str(out_dir), "-t", str(threads)],
+                       conda_env, conda_bin)
 
 
-def unicycler_cmd(r1, r2, long_reads, out_dir, threads=8):
-    return ["unicycler", "-1", str(r1), "-2", str(r2), "-l", str(long_reads),
-            "-o", str(out_dir), "-t", str(threads)]
+def unicycler_cmd(r1, r2, long_reads, out_dir, threads=8, conda_env=None, conda_bin="conda"):
+    return _conda_wrap(["unicycler", "-1", str(r1), "-2", str(r2), "-l", str(long_reads),
+                        "-o", str(out_dir), "-t", str(threads)], conda_env, conda_bin)
 
 
-def medaka_consensus_cmd(long_reads, draft, out_dir, model="r1041_e82_400bps_sup_v5.0.0", threads=8):
-    return ["medaka_consensus", "-i", str(long_reads), "-d", str(draft),
-            "-o", str(out_dir), "-m", model, "-t", str(threads)]
+def medaka_consensus_cmd(long_reads, draft, out_dir, model="r1041_e82_400bps_sup_v5.0.0",
+                         threads=8, conda_env=None, conda_bin="conda"):
+    return _conda_wrap(["medaka_consensus", "-i", str(long_reads), "-d", str(draft),
+                        "-o", str(out_dir), "-m", model, "-t", str(threads)], conda_env, conda_bin)
 
 
 def quast_cmd(genome, out_dir, threads=8):
