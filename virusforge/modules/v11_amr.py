@@ -32,16 +32,19 @@ def parse_amrfinder(tsv_path) -> dict:
 
     for row in lines[1:]:
         cols = row.split("\t")
-        etype = (g(cols, "element type") or "").upper()
+        # v4.x: "Type" · v3.x: "Element type"
+        etype = (g(cols, "element type", "type") or "").upper()
         key = _TYPE_KEY.get(etype)
         if not key:
             continue
         gene = {
-            "gene": g(cols, "gene symbol"),
-            "name": g(cols, "sequence name"),
+            # v4.x: Element symbol / Element name / % ... of reference
+            # v3.x: Gene symbol / Sequence name / % ... of reference sequence
+            "gene": g(cols, "element symbol", "gene symbol"),
+            "name": g(cols, "element name", "sequence name"),
             "class": g(cols, "class"),
-            "coverage": g(cols, "% coverage of reference sequence"),
-            "identity": g(cols, "% identity to reference sequence"),
+            "coverage": g(cols, "% coverage of reference", "% coverage of reference sequence"),
+            "identity": g(cols, "% identity to reference", "% identity to reference sequence"),
         }
         out[f"{key}_genes"].append(gene)
         out["counts"][key] += 1

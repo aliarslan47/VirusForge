@@ -33,18 +33,34 @@ def test_parse_iphop_extracts_genus_and_confidence(tmp_path):
     assert m["predicted_host"] == "Escherichia" and m["confidence"] == "95.5"
 
 
-def test_parse_amrfinder_groups_by_element_type(tmp_path):
+def test_parse_amrfinder_v4_column_names(tmp_path):
+    # AMRFinderPlus v4.x gerçek başlık: Type / Element symbol / % Coverage of reference
     p = tmp_path / "amrfinder.tsv"
     p.write_text(
-        "Protein identifier\tGene symbol\tSequence name\tElement type\tClass"
-        "\t% Coverage of reference sequence\t% Identity to reference sequence\n"
-        "p1\tblaTEM\tbeta-lactamase\tAMR\tBETA-LACTAM\t100\t99.5\n"
-        "p2\tvgrG\tType VI secretion\tVIRULENCE\tVIRULENCE\t98\t88.0\n")
+        "Protein id\tElement symbol\tElement name\tScope\tType\tSubtype\tClass\tSubclass"
+        "\tMethod\tTarget length\tReference sequence length\t% Coverage of reference"
+        "\t% Identity to reference\n"
+        "p1\tblaTEM\tbeta-lactamase\tcore\tAMR\tAMR\tBETA-LACTAM\tBETA-LACTAM"
+        "\tBLASTP\t100\t100\t100\t99.5\n"
+        "p2\tvgrG\tType VI secretion\tcore\tVIRULENCE\tVIRULENCE\tVIRULENCE\tVIRULENCE"
+        "\tBLASTP\t50\t50\t98\t88.0\n")
     m = parse_amrfinder(p)
     assert m["counts"] == {"amr": 1, "virulence": 1, "stress": 0}
     assert m["amr_genes"][0]["gene"] == "blaTEM"
     assert m["amr_genes"][0]["identity"] == "99.5"
+    assert m["amr_genes"][0]["coverage"] == "100"
     assert m["virulence_genes"][0]["gene"] == "vgrG"
+
+
+def test_parse_amrfinder_v3_column_names_still_work(tmp_path):
+    # eski v3 başlıkları da desteklenmeli (geri uyumluluk)
+    p = tmp_path / "amrfinder.tsv"
+    p.write_text(
+        "Protein identifier\tGene symbol\tSequence name\tElement type\tClass"
+        "\t% Coverage of reference sequence\t% Identity to reference sequence\n"
+        "p1\tblaTEM\tbeta-lactamase\tAMR\tBETA-LACTAM\t100\t99.5\n")
+    m = parse_amrfinder(p)
+    assert m["counts"]["amr"] == 1 and m["amr_genes"][0]["gene"] == "blaTEM"
 
 
 def test_parse_amrfinder_empty_is_valid(tmp_path):
