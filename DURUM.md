@@ -119,7 +119,23 @@ online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç
   (+6 yeni: lang attr, dil linki, comparison EN, v10 dual, compare dual, na/tools EN).
   **T7 hibrit gerçek doğrulama:** report.html (TR) + report_en.html (EN) üretildi; doğru lang, charset,
   çalışan dil linki, mojibake yok, Autographiviridae/virulent korundu. Spec: `docs/.../2026-08-13-*bilingual*`.
-- **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq); **M3 Faz 2 (clinker)**.
+## 2026-08-13 — M3 FAZ 2: clinker İNTERAKTİF SYNTENY TAMAM + T7 DOĞRULANDI
+Brainstorm→spec→plan→TDD. `virusforge compare`'e **çok-genomlu interaktif** gen-kümesi hizalaması eklendi.
+- **Yerleşim (kullanıcı kararı):** `compare` komutu (çok-örnek); clinker'ın asıl gücü çok-genom, GenBank'lar hazır.
+- **Env (kullanıcı kararı):** mevcut `ali-clinker` (v0.0.32) yeniden kullanıldı (saf araç, yeni env kurulmadı);
+  config `tools.clinker.conda_env`.
+- **Akış:** her run'ın `V06_.../pharokka/pharokka.gbk`'ı → `stage_genbanks` örnek-adıyla evele → `build_clinker`
+  `conda run -n ali-clinker clinker <gbk...> -p clinker.html` → **portable clustermap HTML** (gömülmez) →
+  `render_comparison` iki rapordan (tr+en) relatif link. Statik-SVG synteny (V09) korunur; clinker tamamlar.
+- **Hata yönetimi (sessiz yok):** gbk'sız run dürüst `skipped`; <2 anotasyonlu genom veya clinker hatası → None
+  (bölüm atlanır, rapor gerisi üretilir).
+- **107 pytest yeşil** (+5: `clinker_cmd`, `stage_genbanks` evele/skip, `<2→None`, render link tr+en,
+  **gerçek clinker koşusu** minik gbk→clustermap HTML).
+- **T7 gerçek doğrulama:** short+hybrid `compare` → `clinker.html` (666KB portable clustermap, iki genom),
+  iki rapor da linkli+çevrili, EN'e ham TR sızmadı. Spec: `docs/.../2026-08-13-*clinker*`.
+
+## Şu an nerede kaldık (özet)
+- **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
   (virsorter2/vibrant/kraken2) → config'te var, modül yok. (NOT: "short/long/hybrid" ayrı bir eksen = M1
   platform kapsamı, çoktan TAMAM; Item numaraları rapor-cilalama fazına aittir, okuma tipiyle ilgisiz.)
