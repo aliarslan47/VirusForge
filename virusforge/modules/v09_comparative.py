@@ -66,6 +66,13 @@ def parse_taxmyphage(out_dir) -> dict:
     return {"genus": g("genus"), "species": g("species"), "method": "taxmyPHAGE"}
 
 
+def _v05_fallback_hits(ctx, n) -> list[dict]:
+    """Online BLAST erişilemezse: V05'in yerel Mash+INPHARED en yakın akrabalarını referans yap."""
+    closest = (ctx.results.get("V05", {}) or {}).get("closest_10") or []
+    return [{"accession": c["accession"], "species": c["accession"],
+             "identity": None, "coverage": None} for c in closest[:n] if c.get("accession")]
+
+
 def _read_seq(fasta) -> str:
     return "".join(l.strip() for l in Path(fasta).read_text().splitlines() if not l.startswith(">"))
 
@@ -114,7 +121,9 @@ class V09Comparative(Module):
         n = get(cfg, "tools.comparative.n_closest", 5)
         metrics: dict = {}
 
-        # (1) online BLAST → en yakın türler
+        min_hits = get(cfg, "tools.comparative.min_hits", 3)
+
+        # (1) online BLAST → en yakın türler (birincil, tanımlama)
         blast_tsv = dirs["03_native_outputs"] / "blast.tsv"
         bcmd = _wrap(tools.blastn_remote_cmd(genome, blast_tsv,
                      get(cfg, "tools.comparative.blast_db", "ref_viruses_rep_genomes")), cenv, cbin)
@@ -123,43 +132,47 @@ class V09Comparative(Module):
         if hits:
             metrics["blast_top_hit"] = hits[0]
             metrics["closest_species"] = hits
-        if len(hits) < get(cfg, "tools.comparative.min_hits", 3):
-            metrics["error"] = err or "yeterli BLAST hit yok (ağ? DB?)"
-            (dirs["04_standardized"] / "comparative.json").write_text(
-                json.dumps(metrics, indent=2, ensure_ascii=False))
-            ctx.results[self.code] = metrics
-            return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, metrics), metrics)
+            metrics["ref_source"] = "blast_online"
 
-        # (2) efetch → akraba genomları + örnek birleşik fasta
-        combined = dirs["02_work"] / "sample_plus_refs.fasta"
-        with open(combined, "w") as out:
-            out.write(f">sample\n{_read_seq(genome)}\n")
-        refs = _fetch_genomes(hits, get(cfg, "tools.comparative.ref_cache", "databases/ref_cache"),
-                              cenv, cbin, dirs["07_logs"])
-        for fa in refs:
-            with open(combined, "a") as out:
-                out.write(Path(fa).read_text())
+        # (1b) fallback: online BLAST erişilemezse V05 (yerel Mash+INPHARED) akrabaları
+        if len(hits) < min_hits:
+            fb = _v05_fallback_hits(ctx, n)
+            if len(fb) >= min_hits:
+                hits = fb
+                metrics["ref_source"] = "v05_mash_fallback"
+                metrics["blast_note"] = err or "online BLAST erişilemedi → V05 en yakın akrabaları kullanıldı"
 
-        # (3) MAFFT + IQ-TREE2
-        aln = dirs["02_work"] / "aln.fasta"
-        try:
-            util.run_redirect(_wrap(tools.mafft_cmd(combined, aln), cenv, cbin), aln, dirs["07_logs"] / "mafft.log")
-        except RuntimeError:
-            pass
-        if aln.exists() and aln.stat().st_size > 0:
-            pfx = dirs["03_native_outputs"] / "iqtree"
-            iq = tools.iqtree_cmd(aln, pfx, get(cfg, "general.threads", 8),
-                                  get(cfg, "tools.comparative.iqtree_bin", "iqtree"))
-            if not safe_run(_wrap(iq, cenv, cbin), dirs["07_logs"] / "iqtree.log"):
-                tf = Path(str(pfx) + ".treefile")
-                if tf.exists():
-                    metrics["tree"] = parse_iqtree(tf)
-
-        # (4) taxmyPHAGE → ICTV cins/tür
+        # (2) taxmyPHAGE → ICTV cins/tür (BLAST'tan BAĞIMSIZ; yerel VIRIDIC)
         tout = dirs["03_native_outputs"] / "taxmyphage"
         if not safe_run(_wrap(tools.taxmyphage_cmd(genome, tout, get(cfg, "general.threads", 8)), cenv, cbin),
                         dirs["07_logs"] / "taxmyphage.log") and tout.exists():
             metrics["ictv"] = parse_taxmyphage(tout)
+
+        # (3) yeterli referans varsa: efetch → MAFFT → IQ-TREE2 ağaç
+        if len(hits) >= min_hits:
+            combined = dirs["02_work"] / "sample_plus_refs.fasta"
+            with open(combined, "w") as out:
+                out.write(f">sample\n{_read_seq(genome)}\n")
+            refs = _fetch_genomes(hits, get(cfg, "tools.comparative.ref_cache", "databases/ref_cache"),
+                                  cenv, cbin, dirs["07_logs"])
+            for fa in refs:
+                with open(combined, "a") as out:
+                    out.write(Path(fa).read_text())
+            aln = dirs["02_work"] / "aln.fasta"
+            try:
+                util.run_redirect(_wrap(tools.mafft_cmd(combined, aln), cenv, cbin), aln, dirs["07_logs"] / "mafft.log")
+            except RuntimeError:
+                pass
+            if aln.exists() and aln.stat().st_size > 0:
+                pfx = dirs["03_native_outputs"] / "iqtree"
+                iq = tools.iqtree_cmd(aln, pfx, get(cfg, "general.threads", 8),
+                                      get(cfg, "tools.comparative.iqtree_bin", "iqtree"))
+                if not safe_run(_wrap(iq, cenv, cbin), dirs["07_logs"] / "iqtree.log"):
+                    tf = Path(str(pfx) + ".treefile")
+                    if tf.exists():
+                        metrics["tree"] = parse_iqtree(tf)
+        else:
+            metrics.setdefault("error", "yeterli akraba yok (online BLAST + V05 fallback) — ağaç atlandı")
 
         (dirs["04_standardized"] / "comparative.json").write_text(
             json.dumps(metrics, indent=2, ensure_ascii=False))

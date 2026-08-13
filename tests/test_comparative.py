@@ -65,6 +65,17 @@ def test_parse_taxmyphage(tmp_path):
 # --------------------------------------------------------------------------- #
 # V09Comparative modül koşumu (araçsız/ağsız → dürüst WARNING / N/A)
 # --------------------------------------------------------------------------- #
+def test_v05_fallback_hits_uses_closest_when_blast_empty():
+    from virusforge.modules.v09_comparative import _v05_fallback_hits
+    from virusforge.module import Context
+    c = Context(sample_dir=".", run_dir=".", cfg={}, mode="SHORT_READ")
+    c.results["V05"] = {"closest_10": [{"accession": "V01146", "mash_dist": 0.001},
+                                       {"accession": "EU734174", "mash_dist": 0.04}]}
+    hits = _v05_fallback_hits(c, 5)
+    assert hits[0]["accession"] == "V01146" and hits[0]["species"] == "V01146"
+    assert len(hits) == 2
+
+
 def test_v09_not_applicable_when_not_viral(tmp_path):
     from virusforge.module import Context, Status
     from virusforge.modules.v09_comparative import V09Comparative
