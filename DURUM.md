@@ -160,6 +160,15 @@ zaten diskteki `sample_plus_refs.fasta`'sından kuruldu (çift efetch yok).
 - **117 pytest yeşil** (+5). T7 hibrit: NJ ağacı örnek↔V01146 (T7 ref) en yakın küme (biyoloji tutarlı);
   4 rapor yenilendi. commit e3b2ff2.
 
+## 2026-08-13 — YAPISAL vs YAPISAL OLMAYAN PROTEİN ÖZETİ (PHROG'dan) + T7 DOĞRULANDI
+Kullanıcı: yapısal/yapısal-olmayan protein gösterimi (PhANNs repo'su araştırıldı → github.com/Adrian-Cantu/
+PhANNs; ama karar=(A) mevcut PHROG'dan türet, yeni araç yok). `_structural_summary`: PHROG kategorilerini
+**Yapısal**(virion: head&packaging/connector/tail) / **Yapısal olmayan**(DNA-RNA metab/lizis/transkripsiyon/
+integrasyon/moron-AMG/other) / **Bilinmeyen**(unknown function) topla; CDS/tRNA/AMR/VFDB sayaç anahtarları hariç.
+render V06'ya "Yapısal vs yapısal olmayan proteinler (PHROG)" tablosu (sayı + %). i18n tr+en. **119 pytest
+yeşil** (+2). T7 hibrit: 14 yapısal + 22 yapısal-değil + 24 bilinmeyen = 60 CDS. 4 rapor yenilendi. commit dd96d8e.
+- **NOT:** daha ince yapısal sınıflandırma istenirse PhANNs (10 yapısal sınıf) ayrı modül olarak eklenebilir (opsiyonel).
+
 ## Şu an nerede kaldık (özet)
 - **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
