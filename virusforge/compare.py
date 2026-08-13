@@ -109,7 +109,8 @@ def pairwise_identity_matrix(combined_fasta, work_dir, labels, threads=8):
 
 def _write_outputs(out, data):
     (out / "comparison.json").write_text(json.dumps(data, indent=2, ensure_ascii=False))
-    (out / "comparison_report.html").write_text(render_comparison(data))
+    (out / "comparison_report.html").write_text(render_comparison(data, lang="tr"))
+    (out / "comparison_report_en.html").write_text(render_comparison(data, lang="en"))
 
 
 def run_compare(run_dirs, out_dir, cfg=None):

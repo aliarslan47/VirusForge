@@ -79,6 +79,17 @@ def test_render_comparison_smoke():
     assert "T7_hybrid" in h and "Teseptimavirus" in h and "99.5" in h
 
 
+def test_render_comparison_english():
+    from virusforge.report.render import render_comparison
+    data = {"samples": [{"name": "T7_hybrid", "length": 40532,
+                         "ictv": {"genus": "Teseptimavirus", "species": "Teseptimavirus T7"},
+                         "taxonomy": "Viruses;Caudoviricetes;Autographiviridae"}]}
+    en = render_comparison(data, lang="en")
+    tr = render_comparison(data, lang="tr")
+    assert "Multi-Sample Comparison" in en and "<html lang='en'>" in en
+    assert "Çoklu-Örnek Karşılaştırma" in tr and "Multi-Sample Comparison" not in tr
+
+
 def test_run_compare_warns_under_two(tmp_path):
     from virusforge.compare import run_compare
     _mkrun(tmp_path, "runA")  # tek örnek
@@ -87,3 +98,13 @@ def test_run_compare_warns_under_two(tmp_path):
     assert rep.exists() and '<!doctype html>' in rep.read_text().lower()
     data = json.loads((out / "comparison.json").read_text())
     assert data.get("warning")  # <2 genom → dürüst uyarı
+
+
+def test_run_compare_writes_dual_language(tmp_path):
+    # Çift-dilli: karşılaştırma da tr + en iki rapor üretir
+    from virusforge.compare import run_compare
+    _mkrun(tmp_path, "runA")
+    out = run_compare([tmp_path / "runA"], tmp_path / "cmp", cfg={"general": {"threads": 1}})
+    assert (out / "comparison_report.html").exists()
+    en = out / "comparison_report_en.html"
+    assert en.exists() and "Multi-Sample Comparison" in en.read_text()

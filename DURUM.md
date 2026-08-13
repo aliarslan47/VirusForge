@@ -109,12 +109,20 @@ online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç
   ortak MAFFT+IQ-TREE2 ağaç + yerel all-vs-all blastn benzerlik matrisi + ICTV özet tablosu → charset'li
   `comparison_report.html`. `compare.py` + CLI `compare` alt-komutu. **Doğrulandı:** 4 T7 run %100, EU734174
   (phage13a) %94.4 (farklı tür/aynı cins). **94 pytest yeşil.** Spec: `docs/superpowers/specs/2026-08-13-*compare*`.
-- **Item 3 — ÇİFT-DİLLİ RAPOR (WIP, yarın devam):** kullanıcı seçimi = **iki dosya** (`report.html` tr +
-  `report_en.html` en, üstte dil linki). YAPILDI: `report/i18n.py` (EN sözlüğü + `t()`), `render_html(lang=)`
-  choke-point çevirisi (table/section/stat/figure + başlık/Genel Bakış/header). TR varsayılan değişmez. 96 test.
-  **YARIN KALAN:** (1) na-mesajları + Araçlar bölümü çevirisi; (2) dil-geçiş nav linki; (3) **v10_report.py +
-  compare.py DUAL çıktı** (tr+en iki dosya); (4) T7 gerçek doğrulama. Spec: `docs/.../2026-08-13-*bilingual*`.
-- **SIRADA (Item 3 bitince):** Item 4 (opsiyonel araçlar virsorter2/vibrant/kraken2 → modül yok, config'te var).
+- **Item 3 — ÇİFT-DİLLİ RAPOR TAMAM ✅** (kullanıcı seçimi = **iki dosya**: `report.html` tr +
+  `report_en.html` en, üstte dil linki). `report/i18n.py` (EN sözlüğü + `t()`), `render_html(lang=)` +
+  `render_comparison(lang=)` choke-point çevirisi (table/section/stat/figure + başlık/Genel Bakış/header +
+  na-mesajları + Araçlar bölümü). TR varsayılan değişmez; bilimsel terimler (PHROG/taksonomi/enum) korunur.
+  **YARIN KALAN 4 madde bitti:** (1) na-mesajları + Araçlar bölümü çevirisi `L()`'e bağlandı; (2) dil-geçiş
+  nav linki (`_lang_switch`: EN→Türkçe, TR→English); (3) `v10_report.py` + `compare.py` DUAL çıktı (tr+en);
+  (4) T7 gerçek doğrulama. `_document(lang=)` → `<html lang=>` gerçek dili yansıtır. **102 pytest yeşil**
+  (+6 yeni: lang attr, dil linki, comparison EN, v10 dual, compare dual, na/tools EN).
+  **T7 hibrit gerçek doğrulama:** report.html (TR) + report_en.html (EN) üretildi; doğru lang, charset,
+  çalışan dil linki, mojibake yok, Autographiviridae/virulent korundu. Spec: `docs/.../2026-08-13-*bilingual*`.
+- **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq); **M3 Faz 2 (clinker)**.
+- **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
+  (virsorter2/vibrant/kraken2) → config'te var, modül yok. (NOT: "short/long/hybrid" ayrı bir eksen = M1
+  platform kapsamı, çoktan TAMAM; Item numaraları rapor-cilalama fazına aittir, okuma tipiyle ilgisiz.)
 
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.

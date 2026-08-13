@@ -89,11 +89,11 @@ def _svg_hbar(pairs, unit="", color="#0d8f86", max_rows=12):
     return "".join(out)
 
 
-def _document(title, css, body) -> str:
+def _document(title, css, body, lang="tr") -> str:
     """charset'li düzgün HTML iskeleti (Türkçe mojibake önlenir) — tek kaynak."""
     return "\n".join([
         "<!DOCTYPE html>",
-        "<html lang='tr'><head>",
+        f"<html lang='{lang}'><head>",
         "<meta charset=\"utf-8\">",
         "<meta name='viewport' content='width=device-width, initial-scale=1'>",
         f"<title>{_esc(title)}</title>",
@@ -104,8 +104,16 @@ def _document(title, css, body) -> str:
     ])
 
 
-def render_comparison(data) -> str:
+def _lang_switch(lang, tr_href, en_href) -> str:
+    """Dil-geçiş linki: EN raporunda Türkçe'ye, TR raporunda İngilizce'ye. (Dil adları endonim, çevrilmez.)"""
+    href, label = (tr_href, "Türkçe") if lang == "en" else (en_href, "English")
+    return f"<div class='langsw' style='text-align:right;font-size:13px'><a href='{href}'>{label}</a></div>"
+
+
+def render_comparison(data, lang="tr") -> str:
     """Çoklu-örnek karşılaştırma raporu: örnek tablosu + ortak ağaç + benzerlik matrisi."""
+    def L(s):
+        return t(s, lang)
     samples = data.get("samples", [])
     rows = "".join(
         f"<tr><td>{_esc(s.get('name'))}</td><td>{_esc(s.get('length'))} bp</td>"
@@ -114,22 +122,23 @@ def render_comparison(data) -> str:
         f"<td class='mono'>{_esc((s.get('taxonomy') or '').split(';')[-1] or '—')}</td></tr>"
         for s in samples)
     body = ["<div class='wrap'>",
-            "<header><h1>VirusForge — Çoklu-Örnek Karşılaştırma</h1>"
-            f"<p class='sub'><b>{len(samples)}</b> örnek karşılaştırıldı</p></header>",
-            "<section><h2>Örnekler</h2><table><thead><tr><th>Örnek</th><th>Genom</th>"
-            "<th>Cins (ICTV)</th><th>Tür (ICTV)</th><th>Familya</th></tr></thead>"
+            _lang_switch(lang, "comparison_report.html", "comparison_report_en.html"),
+            f"<header><h1>{L('VirusForge — Çoklu-Örnek Karşılaştırma')}</h1>"
+            f"<p class='sub'><b>{len(samples)}</b> {L('örnek karşılaştırıldı')}</p></header>",
+            f"<section><h2>{L('Örnekler')}</h2><table><thead><tr><th>{L('Örnek')}</th><th>{L('Genom')}</th>"
+            f"<th>{L('Cins (ICTV)')}</th><th>{L('Tür (ICTV)')}</th><th>{L('Familya')}</th></tr></thead>"
             f"<tbody>{rows}</tbody></table></section>"]
     if data.get("tree_newick"):
-        body.append("<section><h2>Ortak Filogenetik Ağaç</h2><figure>"
+        body.append(f"<section><h2>{L('Ortak Filogenetik Ağaç')}</h2><figure>"
                     + _svg_tree(data["tree_newick"])
-                    + "<figcaption>Örneklerin (ve varsa akrabaların) ortak ML ağacı — kim kiminle kümeleniyor.</figcaption></figure></section>")
+                    + f"<figcaption>{L('Örneklerin (ve varsa akrabaların) ortak ML ağacı — kim kiminle kümeleniyor.')}</figcaption></figure></section>")
     if data.get("matrix") and data.get("matrix_labels"):
-        body.append("<section><h2>Örnekler-Arası Benzerlik</h2><figure>"
+        body.append(f"<section><h2>{L('Örnekler-Arası Benzerlik')}</h2><figure>"
                     + _svg_matrix(data["matrix_labels"], data["matrix"])
-                    + "<figcaption>İkili genom % kimliği (yerel blastn; yüksek = koyu).</figcaption></figure></section>")
+                    + f"<figcaption>{L('İkili genom % kimliği (yerel blastn; yüksek = koyu).')}</figcaption></figure></section>")
     body.append("<p class='note' style='text-align:center'>VirusForge · çoklu-örnek karşılaştırma · "
                 "github.com/aliarslan47/VirusForge</p></div>")
-    return _document("VirusForge — Çoklu-Örnek Karşılaştırma", _CSS, "\n".join(body))
+    return _document(L("VirusForge — Çoklu-Örnek Karşılaştırma"), _CSS, "\n".join(body), lang=lang)
 
 
 def _svg_tree(newick: str) -> str:
@@ -278,13 +287,14 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
     # Düzgün HTML iskeleti — charset ŞART: yoksa tarayıcı UTF-8'i Latin-1 okur, Türkçe harfler bozulur
     p = [
         "<!DOCTYPE html>",
-        "<html lang='tr'><head>",
+        f"<html lang='{lang}'><head>",
         "<meta charset=\"utf-8\">",
         "<meta name='viewport' content='width=device-width, initial-scale=1'>",
         f"<title>{L('VirusForge — Viral / Faj Genom Analiz Raporu')}</title>",
         f"<style>{_CSS}</style>",
         "</head><body>",
         "<div class='wrap'>",
+        _lang_switch(lang, "report.html", "report_en.html"),
     ]
 
     # ---------- Header ----------
@@ -445,7 +455,7 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         ["PhaTYP skoru", _esc(v8l.get("PhaTYPScore", "—"))],
         ["Alt-familya (PhaGCN)", _esc(subfam) or "—"],
         ["Soy hattı", f"<span class='mono'>{_esc(v8t.get('Lineage','—'))}</span>"],
-    ]) if (v8l or v8t) else "<p class='na'>Bakteriyofaj karakterizasyonu uygulanmadı.</p>"
+    ]) if (v8l or v8t) else f"<p class='na'>{L('Bakteriyofaj karakterizasyonu uygulanmadı.')}</p>"
     p.append(section("V07", "Faj-Özel Karakterizasyon (PhaBOX)", v08body))
 
     # V08 — AMR & virülans
@@ -463,9 +473,9 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         ])
         v11body += (table("Saptanan genler (AMRFinderPlus)", ["Gen", "Sınıf", "Kimlik", "Kapsam"], amr_rows)
                     if amr_rows else
-                    "<p class='na'>AMR / virülans geni saptanmadı — fajlarda beklenen sonuç.</p>")
+                    f"<p class='na'>{L('AMR / virülans geni saptanmadı — fajlarda beklenen sonuç.')}</p>")
     else:
-        v11body = "<p class='na'>AMR taraması uygulanmadı.</p>"
+        v11body = f"<p class='na'>{L('AMR taraması uygulanmadı.')}</p>"
     p.append(section("V08", "AMR & Virülans (AMRFinderPlus)", v11body))
 
     # V09 — Karşılaştırmalı tanımlama & filogeni
@@ -477,7 +487,7 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         ["Tür", f"<span class='kv'>{_esc(bh.get('species','—'))}</span>"],
         ["% Kimlik", f"{_esc(bh.get('identity','—'))} %"],
         ["% Kapsam", f"{_esc(bh.get('coverage','—'))} %"],
-    ]) if bh else "<p class='na'>BLAST tanımlaması yapılmadı (ağ/DB?).</p>"
+    ]) if bh else f"<p class='na'>{L('BLAST tanımlaması yapılmadı (ağ/DB?).')}</p>"
     v09body += table("ICTV sınıflandırma", ["Düzey", "Değer"], [
         ["Familya (geNomad)", _esc((M["V04"].get("taxonomy", "") or "").split(";")[-1] or "—")],
         ["Alt-familya (PhaBOX)", _esc(subfam) or "—"],
@@ -517,7 +527,7 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         doi_txt = f"<a href='https://doi.org/{_esc(doi)}'>{_esc(doi)}</a>" if doi else "—"
         tool_rows.append([f"<b>{_esc(disp)}</b>", ver_txt, _esc(purpose),
                           f"<a href='{_esc(repo)}'>{_esc(repo)}</a>", doi_txt])
-    p.append("<section><h2>Araçlar, Sürümler & Bilimsel Referanslar</h2>"
+    p.append(f"<section><h2>{L('Araçlar, Sürümler & Bilimsel Referanslar')}</h2>"
              + table("Kullanılan araçlar (sürümler runtime'da tespit edildi; DOI'ler yayın kaynağıdır — uydurma yok)",
                      ["Araç", "Sürüm", "Amaç", "Depo", "DOI"], tool_rows)
              + "<p class='note'>Her sonuç tool + veritabanı sürümü ve parametreleriyle yeniden üretilebilir "

@@ -54,3 +54,33 @@ def test_report_has_utf8_charset():
     assert "<!DOCTYPE html>" in h
     assert 'charset="utf-8"' in h.lower() or "charset='utf-8'" in h.lower()
     assert "<head" in h and "</head>" in h and "<body" in h
+
+
+def test_render_html_lang_attr_reflects_lang():
+    # <html lang> gerçek dili yansıtmalı (erişilebilirlik + doğru dil bildirimi)
+    from virusforge.report.render import render_html
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": []}
+    assert "<html lang='en'>" in render_html(rep, lang="en")
+    assert "<html lang='tr'>" in render_html(rep, lang="tr")
+
+
+def test_render_html_language_switch_link():
+    # Dil-geçiş linki: TR raporundan report_en.html'e, EN raporundan report.html'e
+    from virusforge.report.render import render_html
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": []}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    assert "report_en.html" in tr and "English" in tr
+    assert "report.html" in en and "Türkçe" in en
+
+
+def test_render_html_english_na_and_tools():
+    # na-mesajları + Araçlar bölümü başlığı da İngilizce'ye çevrilmeli (ham TR sızmasın)
+    from virusforge.report.render import render_html
+    en = render_html({"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": []}, lang="en")
+    assert "Bacteriophage characterization not performed." in en
+    assert "AMR screening not performed." in en
+    assert "BLAST identification not performed" in en
+    assert "Tools, Versions & Scientific References" in en
+    # ham Türkçe sızmamalı
+    assert "uygulanmadı" not in en and "Araçlar, Sürümler" not in en
