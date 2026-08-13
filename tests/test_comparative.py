@@ -41,3 +41,22 @@ def test_parse_blast_hits_dedup_species_topn(tmp_path):
     hits = parse_blast_hits(p, n=5)
     assert [h["species"] for h in hits] == ["Escherichia virus T7", "Enterobacteria phage 13a", "Phage X"]
     assert hits[0]["accession"] == "V01146" and hits[0]["identity"] == "99.9"
+
+
+# --------------------------------------------------------------------------- #
+# parse_iqtree + parse_taxmyphage
+# --------------------------------------------------------------------------- #
+def test_parse_iqtree_newick(tmp_path):
+    from virusforge.modules.v09_comparative import parse_iqtree
+    t = tmp_path / "x.treefile"
+    t.write_text("(sample:0.001,(V01146:0.002,EU734174:0.04)95:0.01);\n")
+    m = parse_iqtree(t)
+    assert m["newick"].startswith("(") and "V01146" in m["newick"]
+
+
+def test_parse_taxmyphage(tmp_path):
+    from virusforge.modules.v09_comparative import parse_taxmyphage
+    (tmp_path / "Summary_taxonomy.tsv").write_text(
+        "Genome\tGenus\tSpecies\nsample\tTeseptimavirus\tEscherichia virus T7\n")
+    m = parse_taxmyphage(tmp_path)
+    assert m["genus"] == "Teseptimavirus" and m["species"] == "Escherichia virus T7"

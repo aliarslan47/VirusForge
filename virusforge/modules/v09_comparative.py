@@ -34,3 +34,33 @@ def parse_blast_hits(tsv_path, n=5) -> list[dict]:
     for h in ranked:
         h.pop("_bit", None)
     return ranked
+
+
+def parse_iqtree(treefile) -> dict:
+    """IQ-TREE2 .treefile (Newick). Ağacı olduğu gibi taşır (görsel render.py'de)."""
+    nwk = Path(treefile).read_text().strip()
+    return {"newick": nwk, "nearest_sibling": None, "bootstrap": None}
+
+
+def _first_data_row(path, sep="\t"):
+    lines = [ln for ln in Path(path).read_text().splitlines() if ln.strip()]
+    if len(lines) < 2:
+        return None, None
+    return lines[0].split(sep), lines[1].split(sep)
+
+
+def parse_taxmyphage(out_dir) -> dict:
+    """taxmyPHAGE özet tablosu: Genus/Species sütunları (tolerant kolon eşleme)."""
+    d = Path(out_dir)
+    hit = next((p for p in d.rglob("*axonomy*.tsv")), None) or next((p for p in d.rglob("*.tsv")), None)
+    if not hit:
+        return {}
+    header, row = _first_data_row(hit)
+    if not header:
+        return {}
+    idx = {h.strip().lower(): i for i, h in enumerate(header)}
+
+    def g(name):
+        return row[idx[name]].strip() if name in idx and idx[name] < len(row) else None
+
+    return {"genus": g("genus"), "species": g("species"), "method": "taxmyPHAGE"}
