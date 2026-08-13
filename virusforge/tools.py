@@ -135,8 +135,9 @@ def efetch_cmd(accession, out_fasta):
 
 
 def mafft_cmd(in_fasta, out_aln):
-    """MAFFT tüm-genom hizalama (stdout→out_aln, run_redirect ile)."""
-    return ["mafft", "--auto", str(in_fasta)]
+    """MAFFT tüm-genom hizalama (stdout→out_aln). --adjustdirection: ters-tümleyen
+    genomları otomatik çevir (aksi halde farklı yönelim → sahte uzun dal)."""
+    return ["mafft", "--auto", "--adjustdirection", str(in_fasta)]
 
 
 def iqtree_cmd(aln, prefix, threads=8, binary="iqtree"):
