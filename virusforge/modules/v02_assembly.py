@@ -28,6 +28,16 @@ def _read_fasta(path) -> dict:
     return recs
 
 
+def sanitize_contig_names(fasta_in, fasta_out) -> None:
+    """Salt-sayısal contig header'larını 'contig_<n>' yap. Unicycler '>1' adları PhaBOX'ı
+    çökertiyor (pandas int64/object merge). Sayısal-olmayan adlar (NODE_1, contig_3) korunur."""
+    recs = _read_fasta(fasta_in)
+    with open(fasta_out, "w") as fh:
+        for name, seq in recs.items():
+            safe = f"contig_{name}" if name.isdigit() else name
+            fh.write(f">{safe}\n{seq}\n")
+
+
 def filter_contigs_by_coverage(assembly_info_path, fasta_in, fasta_out, min_frac=0.1):
     """Flye assembly_info.txt'ten kapsamları oku; max_cov*min_frac altındaki junk contig'leri at.
     Kalan contig'leri fasta_out'a yaz, tutulan isimleri döndür (uzunluğa göre sıralı).
@@ -142,7 +152,7 @@ class V02Assembly(Module):
             min_frac = get(ctx.cfg, "tools.flye.min_cov_fraction", 0.1)
             kept = filter_contigs_by_coverage(info, contig, draft, min_frac)
         if not kept or not draft.exists() or draft.stat().st_size == 0:
-            shutil.copy(contig, draft)          # filtre yoksa/boşsa ham çıktı
+            sanitize_contig_names(contig, draft)   # filtre yoksa: sayısal header'ları temizle (Unicycler '>1')
         else:
             m["kept_contigs"] = kept
             m["dropped_low_coverage"] = True

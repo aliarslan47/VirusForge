@@ -71,9 +71,10 @@ class V03PolishQC(Module):
         genome_src = Path(draft)
         problems: list[str] = []
 
-        # long ise Medaka cila
+        # yalnız saf LONG_READ'de Medaka cila. HYBRID'de Unicycler zaten short-okumayla
+        # düzeltir; R9/Q10 ONT medaka'sı temiz hibrit assembly'ye hata GERİ sokar (T7'de CDS 76→55).
         long_reads = ctx.artifacts.get("V01", {}).get("clean_long")
-        if ctx.mode in ("LONG_READ", "HYBRID") and long_reads:
+        if ctx.mode == "LONG_READ" and long_reads:
             mout = dirs["02_work"] / "medaka"
             model = get(ctx.cfg, "tools.medaka.model", "auto")
             if model == "auto":
