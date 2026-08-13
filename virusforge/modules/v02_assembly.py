@@ -144,7 +144,9 @@ class V02Assembly(Module):
             return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
 
         draft = dirs["04_standardized"] / "draft_viral_genome.fasta"
-        m = {"assembler": cmd[0]}
+        # gerçek assembler adı (conda-sarmalı komutta cmd[0]=conda olur)
+        _names = {"SHORT_READ": "SPAdes", "LONG_READ": "Flye", "HYBRID": "Unicycler"}
+        m = {"assembler": _names.get(ctx.mode, cmd[0])}
         # Flye (long) çıktısında düşük-kapsamlı junk contig'leri ele (host/kimera → downstream kirlenmesi)
         info = Path(work) / "assembly_info.txt"
         kept = None

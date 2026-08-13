@@ -250,7 +250,7 @@ def render_html(report: dict, run_dir=None) -> str:
 
     # V04
     p.append(section("V04", "Viral Dizi Tanıma (geNomad)",
-        table("Viral identification", ["Alan", "Değer"], [
+        table("Viral dizi tanıma özeti", ["Alan", "Değer"], [
             ["Viral mi?", _esc(M["V04"].get("is_viral"))],
             ["Viral dizi sayısı", _esc(M["V04"].get("n_viral"))],
             ["En yüksek virus skoru", _esc(M["V04"].get("top_score"))],

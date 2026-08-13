@@ -26,6 +26,24 @@ def tool(name: str) -> dict:
     return reg[name]
 
 
+import re
+
+_NOISE = ("warning", "usage", "error", "traceback", "note:")
+_VERSION_RE = re.compile(r"v?\d+\.\d+[\w.\-]*")
+
+
+def _parse_version(text: str) -> str | None:
+    """Sürüm çıktısından temiz token çıkar: uyarı/yardım satırlarını atla, sürüm-benzeri
+    (vN.N…) token'ı seç. Sürüm yoksa None (çöp/yardım metni gösterme)."""
+    lines = [ln.strip() for ln in (text or "").splitlines() if ln.strip()]
+    clean = [ln for ln in lines if not ln.lower().startswith(_NOISE)]
+    for ln in (clean or lines):
+        m = _VERSION_RE.search(ln)
+        if m:
+            return m.group(0)
+    return None
+
+
 def detect_version(name: str) -> str | None:
     """Araç kuruluysa sürüm string'i, değilse None (asla uydurma)."""
     meta = tool(name)
@@ -36,5 +54,4 @@ def detect_version(name: str) -> str | None:
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return None
-    out = (proc.stdout or proc.stderr or "").strip()
-    return out.splitlines()[0].strip() if out else None
+    return _parse_version(proc.stdout or proc.stderr or "")
