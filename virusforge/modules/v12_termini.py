@@ -62,7 +62,10 @@ class V12Termini(Module):
 
         work = dirs["02_work"]
         name = Path(ctx.sample_dir).name or "phageterm"
-        err = safe_run(tools.phageterm_cmd(r1, r2, genome, name), dirs["07_logs"] / "phageterm.log")
+        err = safe_run(tools.phageterm_cmd(r1, r2, genome, name,
+                                           conda_env=get(ctx.cfg, "tools.phageterm.conda_env", None),
+                                           conda_bin=get(ctx.cfg, "tools.phageterm.conda_bin", "conda")),
+                       dirs["07_logs"] / "phageterm.log")
         # PhageTerm çıktısını work/ (cwd yoksa) veya native içinde ara
         report = None
         for base in (work, dirs["03_native_outputs"], Path.cwd()):

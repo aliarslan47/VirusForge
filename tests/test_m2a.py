@@ -74,6 +74,24 @@ def test_parse_phold_sums_functions_and_unknown(tmp_path):
 
 
 # --------------------------------------------------------------------------- #
+# conda_env sarmalayıcı (izole env — çalışan virusforge env'i korur)
+# --------------------------------------------------------------------------- #
+def test_tool_cmds_wrap_conda_env():
+    from virusforge import tools
+    for cmd in (tools.amrfinder_cmd("in.faa", "o.tsv", conda_env="vf_amr", conda_bin="conda"),
+                tools.rafah_cmd("g.fa", "pfx", conda_env="vf_rafah", conda_bin="conda"),
+                tools.phageterm_cmd("r1", "r2", "g.fa", conda_env="vf_pt", conda_bin="conda"),
+                tools.phold_cmd("in.gbk", "out", conda_env="vf_phold", conda_bin="conda")):
+        assert cmd[:3] == ["conda", "run", "-n"]
+
+
+def test_tool_cmds_bare_without_env():
+    from virusforge import tools
+    assert tools.amrfinder_cmd("in.faa", "o.tsv")[0] == "amrfinder"
+    assert tools.phold_cmd("in.gbk", "out")[0] == "phold"
+
+
+# --------------------------------------------------------------------------- #
 # is_phage yardımcısı
 # --------------------------------------------------------------------------- #
 def _ctx(tmp_path, **kw):

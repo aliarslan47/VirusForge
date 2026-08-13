@@ -62,18 +62,22 @@ class V09Host(Module):
             return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
 
         method = get(ctx.cfg, "tools.host.method", "rafah").lower()
+        cenv = get(ctx.cfg, "tools.host.conda_env", None)
+        cbin = get(ctx.cfg, "tools.host.conda_bin", "conda")
         native = dirs["03_native_outputs"]
         metrics: dict = {"method": method}
         if method == "iphop":
             out = native / "iphop"
             db = get(ctx.cfg, "tools.host.iphop_db", "databases/iphop")
-            err = safe_run(tools.iphop_cmd(genome, out, db, get(ctx.cfg, "general.threads", 8)),
+            err = safe_run(tools.iphop_cmd(genome, out, db, get(ctx.cfg, "general.threads", 8),
+                                           conda_env=cenv, conda_bin=cbin),
                            dirs["07_logs"] / "iphop.log")
             hit = next(out.glob("Host_prediction_to_genus_*.csv"), None) if out.exists() else None
             parsed = parse_iphop(hit) if (not err and hit) else {}
         else:  # rafah
             prefix = native / "rafah"
-            err = safe_run(tools.rafah_cmd(genome, prefix), dirs["07_logs"] / "rafah.log")
+            err = safe_run(tools.rafah_cmd(genome, prefix, conda_env=cenv, conda_bin=cbin),
+                           dirs["07_logs"] / "rafah.log")
             hit = next(native.glob("*Host_Prediction*.tsv"), None)
             parsed = parse_rafah(hit) if (not err and hit) else {}
 

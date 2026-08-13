@@ -73,7 +73,9 @@ class V11Amr(Module):
         out_tsv = dirs["03_native_outputs"] / "amrfinder.tsv"
         db = get(ctx.cfg, "tools.amrfinder.db", "")
         err = safe_run(tools.amrfinder_cmd(inp, out_tsv, db, is_protein,
-                                           get(ctx.cfg, "general.threads", 8)),
+                                           get(ctx.cfg, "general.threads", 8),
+                                           conda_env=get(ctx.cfg, "tools.amrfinder.conda_env", None),
+                                           conda_bin=get(ctx.cfg, "tools.amrfinder.conda_bin", "conda")),
                        dirs["07_logs"] / "amrfinder.log")
         if not err and out_tsv.exists():
             metrics = parse_amrfinder(out_tsv)

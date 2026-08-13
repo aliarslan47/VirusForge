@@ -58,7 +58,9 @@ class V13Domain(Module):
 
         out = dirs["03_native_outputs"] / "phold"
         db = get(ctx.cfg, "tools.phold.db", "")
-        err = safe_run(tools.phold_cmd(gbk, out, db, get(ctx.cfg, "general.threads", 8)),
+        err = safe_run(tools.phold_cmd(gbk, out, db, get(ctx.cfg, "general.threads", 8),
+                                       conda_env=get(ctx.cfg, "tools.phold.conda_env", None),
+                                       conda_bin=get(ctx.cfg, "tools.phold.conda_bin", "conda")),
                        dirs["07_logs"] / "phold.log")
         cds_fn = next(out.glob("*_all_cds_functions.tsv"), None) if out.exists() else None
         if not err and cds_fn:

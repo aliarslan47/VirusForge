@@ -36,18 +36,26 @@ tools:
     db: databases/phabox
     conda_env: vf_phabox          # phabox izole env (pandas<2 uyumlu)
     conda_bin: /home/ali/miniconda3/bin/conda
-  # --- M2-A faj zenginleştirme ---
+  # --- M2-A faj zenginleştirme (izole env'ler — çalışan virusforge env'i korunur) ---
   host:
     method: rafah                 # rafah (varsayılan) | iphop
     rafah_db: databases/rafah     # RaFAH modeli kendi içinde; gerekirse yol
     iphop_db: databases/iphop     # opsiyonel — dev'de indirilmez (>200GB)
+    conda_env: vf_rafah           # boş bırak = araç ana env'de
+    conda_bin: /home/ali/miniconda3/bin/conda
   amrfinder:
     db: ""                        # boş = AMRFinderPlus varsayılan kurulum DB
     use_abricate: false           # opsiyonel VFDB/CARD hook (varsayılan kapalı)
+    conda_env: vf_amr
+    conda_bin: /home/ali/miniconda3/bin/conda
   phageterm:
     extra_args: ""
+    conda_env: vf_phageterm
+    conda_bin: /home/ali/miniconda3/bin/conda
   phold:
     db: ""                        # boş = phold varsayılan DB
+    conda_env: vf_phold
+    conda_bin: /home/ali/miniconda3/bin/conda
 
 optional:                # default kapalı (tasarım kararı)
   virsorter2: false
