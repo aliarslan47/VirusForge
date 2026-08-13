@@ -30,6 +30,23 @@ def test_svg_synteny_empty_safe():
     assert "na" in _svg_synteny([], [], [], "a", "b")
 
 
+def test_i18n_t():
+    from virusforge.report.i18n import t
+    assert t("Genel Bakış", "en") == "Overview"
+    assert t("Genel Bakış", "tr") == "Genel Bakış"          # varsayılan TR değişmez
+    assert t("bilinmeyen_XYZ", "en") == "bilinmeyen_XYZ"     # over-match yok
+
+
+def test_render_html_english():
+    from virusforge.report.render import render_html
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": []}
+    en = render_html(rep, lang="en")
+    tr = render_html(rep, lang="tr")
+    assert "Overview" in en and "Analysis Report" in en          # İngilizce etiketler
+    assert "Genel Bakış" in tr and "Genel Bakış" not in en       # TR regresyon yok
+    assert 'charset="utf-8"' in en.lower()
+
+
 def test_report_has_utf8_charset():
     # Türkçe harflerin bozulmaması için charset bildirimi ŞART (kalıcı çözüm)
     from virusforge.report.render import render_html

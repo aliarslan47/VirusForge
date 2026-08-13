@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .. import registry
+from .i18n import t
 from .references import PIPELINE_STEPS, TOOL_REFERENCES
 
 _STATUS_COLOR = {
@@ -233,7 +234,9 @@ def _img_b64(path: Path):
     return None
 
 
-def render_html(report: dict, run_dir=None) -> str:
+def render_html(report: dict, run_dir=None, lang="tr") -> str:
+    def L(s):
+        return t(s, lang)
     mods = {m.get("code"): m for m in report.get("modules", [])}
     M = {c: (mods.get(c, {}) or {}).get("metrics", {}) or {} for c, _n, _t in PIPELINE_STEPS}
     try:
@@ -247,17 +250,18 @@ def render_html(report: dict, run_dir=None) -> str:
         counters["t"] += 1
         n = counters["t"]
         if not rows:
-            return (f"<div class='cap'>Tablo {n}. {_esc(caption)}</div>"
-                    f"<p class='na'>Veri yok / analiz uygulanmadı.</p>")
-        head = "".join(f"<th>{_esc(h)}</th>" for h in headers)
-        body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
-        return (f"<div class='cap'>Tablo {n}. {_esc(caption)}</div>"
+            return (f"<div class='cap'>{L('Tablo')} {n}. {_esc(L(caption))}</div>"
+                    f"<p class='na'>{_esc(L('Veri yok / analiz uygulanmadı.'))}</p>")
+        head = "".join(f"<th>{_esc(L(h))}</th>" for h in headers)
+        body = "".join("<tr>" + "".join(f"<td>{L(c) if isinstance(c, str) else c}</td>" for c in r) + "</tr>"
+                       for r in rows)
+        return (f"<div class='cap'>{L('Tablo')} {n}. {_esc(L(caption))}</div>"
                 f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>")
 
     def figure(caption, inner):
         counters["f"] += 1
         n = counters["f"]
-        return f"<figure>{inner}<figcaption>Şekil {n}. {_esc(caption)}</figcaption></figure>"
+        return f"<figure>{inner}<figcaption>{L('Şekil')} {n}. {_esc(L(caption))}</figcaption></figure>"
 
     def figs_for(code, caption):
         """Modülün 06_visualization/ altındaki PNG'leri gömer."""
@@ -277,16 +281,16 @@ def render_html(report: dict, run_dir=None) -> str:
         "<html lang='tr'><head>",
         "<meta charset=\"utf-8\">",
         "<meta name='viewport' content='width=device-width, initial-scale=1'>",
-        "<title>VirusForge — Viral / Faj Genom Analiz Raporu</title>",
+        f"<title>{L('VirusForge — Viral / Faj Genom Analiz Raporu')}</title>",
         f"<style>{_CSS}</style>",
         "</head><body>",
         "<div class='wrap'>",
     ]
 
     # ---------- Header ----------
-    p.append("<header><h1>VirusForge — Viral / Faj Genom Analiz Raporu</h1>"
-             f"<p class='sub'>Örnek: <b>{_esc(report.get('sample',''))}</b> &nbsp;·&nbsp; "
-             f"Sekans tipi: <b>{_esc(report.get('mode',''))}</b> &nbsp;·&nbsp; "
+    p.append(f"<header><h1>{L('VirusForge — Viral / Faj Genom Analiz Raporu')}</h1>"
+             f"<p class='sub'>{L('Örnek')}: <b>{_esc(report.get('sample',''))}</b> &nbsp;·&nbsp; "
+             f"{L('Sekans tipi')}: <b>{_esc(report.get('mode',''))}</b> &nbsp;·&nbsp; "
              f"Run: <span class='mono'>{_esc(report.get('run_id',''))}</span> &nbsp;·&nbsp; {date}</p></header>")
 
     # ---------- Genel Bakış (executive summary) ----------
@@ -297,7 +301,7 @@ def render_html(report: dict, run_dir=None) -> str:
     subfam = lineage.split("subfamily:")[-1].split(";")[0] if "subfamily:" in lineage else ""
 
     def stat(label, val, unit=""):
-        return (f"<div class='stat'><div class='l'>{_esc(label)}</div>"
+        return (f"<div class='stat'><div class='l'>{_esc(L(label))}</div>"
                 f"<div class='v'>{_esc(val)}<span class='u'> {_esc(unit)}</span></div></div>")
 
     cards = [
@@ -318,7 +322,7 @@ def render_html(report: dict, run_dir=None) -> str:
         ["Yaşam tarzı (PhaTYP)", f"{_esc(v8l.get('TYPE','—'))} · skor {_esc(v8l.get('PhaTYPScore','—'))}"],
         ["Genom kalitesi (CheckV)", f"{_esc(cv.get('checkv_quality','—'))} · {_esc(cv.get('completeness','—'))}% tam"],
     ]
-    p.append("<section><h2>Genel Bakış</h2>"
+    p.append(f"<section><h2>{L('Genel Bakış')}</h2>"
              f"<div class='grid'>{''.join(cards)}</div>"
              + table("Analiz özeti — temel bulgular", ["Alan", "Değer"], overview_rows)
              + "</section>")
@@ -340,7 +344,7 @@ def render_html(report: dict, run_dir=None) -> str:
     # ---------- Modül bölümleri (amaca-özel tablolar) ----------
     def section(code, name, body):
         stt = mods.get(code, {}).get("status", "SKIPPED")
-        return (f"<section><h2><span class='mc'>{code}</span> {_esc(name)} {_pill(stt)}</h2>{body}</section>")
+        return (f"<section><h2><span class='mc'>{code}</span> {_esc(L(name))} {_pill(stt)}</h2>{body}</section>")
 
     # V00
     ev = M["V00"].get("evidence", {})
