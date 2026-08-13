@@ -141,6 +141,14 @@ V06.run `metrics.genes` (report.json'a girer) → render V06 bölümü **"Gen an
 tablosu (# · Gen · Başlangıç · Bitiş · Yön · Ürün · PHROG · Kategori); TSV yoksa atlanır. i18n tr+en.
 **109 pytest yeşil** (+2). T7 hibrit: 60 CDS satırı iki raporda da, EN'e ham TR sızmadı. commit a6fe5ad.
 
+## 2026-08-13 — RAPOR: YAŞAM TARZI LİTİK/LİZOJENİK + SOY HATTI TAŞMA DÜZELTMESİ
+Kullanıcı: (1) fajın litik/lizojenik olduğu net yazsın + yorum, (2) Tablo 12 soy hattı hücresi taşıyor.
+- `_lifestyle_label`: PhaTYP `virulent→"virulent — litik"`, `temperate→"temperate — lizojenik (ılıman)"`
+  (EN lytic/lysogenic). Stat kartı + Genel Bakış + Tablo 12'de. V07'ye litik/lizojenik yorum notu.
+- `_break_lineage`: uzun boşluksuz soy hattı `;` sonrası `<wbr>` + `.brk` (overflow-wrap) → hücre taşmaz;
+  `td{overflow-wrap:anywhere}`. Tablo 12 soy hattı + Genel Bakış taksonomi hücrelerine uygulandı.
+- i18n tr+en. **112 pytest yeşil** (+3). 4 T7 raporu yenilendi (virulent—litik, soy hattı temiz). commit fe584fe.
+
 ## Şu an nerede kaldık (özet)
 - **SIRADA (asıl işler):** **M2-B RNA yolu** (rnaviralSPAdes/iVar + VADR + iVar/LoFreq).
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
