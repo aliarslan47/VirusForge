@@ -157,6 +157,18 @@ def makeblastdb_prot_cmd(faa, db_prefix):
     return ["makeblastdb", "-in", str(faa), "-dbtype", "prot", "-out", str(db_prefix)]
 
 
+def makeblastdb_nucl_cmd(fasta, db_prefix):
+    """Yerel nükleotid BLAST DB (çoklu-örnek all-vs-all için)."""
+    return ["makeblastdb", "-in", str(fasta), "-dbtype", "nucl", "-out", str(db_prefix)]
+
+
+def blastn_local_cmd(query_fasta, db_prefix, out_tsv, threads=8):
+    """Yerel all-vs-all blastn (örnekler-arası % kimlik); qseqid sseqid pident length."""
+    return ["blastn", "-query", str(query_fasta), "-db", str(db_prefix),
+            "-num_threads", str(threads), "-max_target_seqs", "1000",
+            "-outfmt", "6 qseqid sseqid pident length", "-out", str(out_tsv)]
+
+
 def blastp_cmd(query_faa, db_prefix, out_tsv, threads=8):
     """Yerel blastp: örnek proteinleri ref proteinlerine karşı (homolog gen çiftleri)."""
     return ["blastp", "-query", str(query_faa), "-db", str(db_prefix),
