@@ -74,6 +74,24 @@ def test_render_html_language_switch_link():
     assert "report.html" in en and "Türkçe" in en
 
 
+def test_render_html_gene_annotation_table():
+    # V06 anotasyon bölümünde her CDS için gen listesi tablosu (tr + en)
+    from virusforge.report.render import render_html
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": [
+        {"code": "V06", "status": "PASS", "metrics": {"cds": 2, "genes": [
+            {"gene": "X_CDS_0001", "start": "891", "stop": "1", "strand": "-",
+             "product": "internal virion protein", "phrog": "1339", "category": "head and packaging"},
+            {"gene": "X_CDS_0002", "start": "4374", "stop": "1990", "strand": "+",
+             "product": "tail protein", "phrog": "457", "category": "tail"}]}}]}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    # locus + ürün + PHROG her iki dilde de görünür (veri çevrilmez)
+    assert "X_CDS_0001" in tr and "internal virion protein" in tr and "1339" in tr
+    assert "Gen anotasyon listesi" in tr
+    assert "X_CDS_0002" in en and "tail protein" in en
+    assert "Gene annotation list" in en and "Gen anotasyon listesi" not in en
+
+
 def test_render_html_english_na_and_tools():
     # na-mesajları + Araçlar bölümü başlığı da İngilizce'ye çevrilmeli (ham TR sızmasın)
     from virusforge.report.render import render_html

@@ -449,6 +449,17 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         ["tRNA", _esc(M["V06"].get("trna"))],
     ])
     v07body += table("Fonksiyonel kategori dağılımı (PHROGs)", ["Kategori", "Gen sayısı"], func_rows)
+    # her CDS için gen anotasyon listesi (locus, koordinat, yön, ürün, PHROG, kategori)
+    genes = M["V06"].get("genes") or []
+    if genes:
+        gene_rows = [[str(i + 1), f"<span class='mono'>{_esc(g.get('gene'))}</span>",
+                      _esc(g.get("start")), _esc(g.get("stop")), _esc(g.get("strand")),
+                      _esc(g.get("product") or "—"),
+                      f"<span class='mono'>{_esc(g.get('phrog') or '—')}</span>",
+                      _esc(g.get("category") or "—")]
+                     for i, g in enumerate(genes)]
+        v07body += table("Gen anotasyon listesi (her CDS)",
+                         ["#", "Gen", "Başlangıç", "Bitiş", "Yön", "Ürün", "PHROG", "Kategori"], gene_rows)
     # circular genom haritası (öne çıkan görsel)
     gmap = figs_for("V06", "Pharokka circular genom haritası — CDS (renk = PHROG fonksiyonel kategorisi), "
                            "tRNA, GC içeriği ve GC-skew.")

@@ -42,6 +42,8 @@ EN = {
     "En yakın referans genomlar (Mash + INPHARED/ICTV)": "Closest reference genomes (Mash + INPHARED/ICTV)",
     "Annotation özeti (Pharokka)": "Annotation summary (Pharokka)",
     "Fonksiyonel kategori dağılımı (PHROGs)": "Functional category distribution (PHROGs)",
+    "Gen anotasyon listesi (her CDS)": "Gene annotation list (per CDS)",
+    "Başlangıç": "Start", "Bitiş": "End", "Yön": "Strand", "Ürün": "Product",
     "Faj yaşam tarzı & taksonomi (PhaBOX)": "Phage lifestyle & taxonomy (PhaBOX)",
     "AMR / virülans / stres gen sayıları": "AMR / virulence / stress gene counts",
     "Saptanan genler (AMRFinderPlus)": "Detected genes (AMRFinderPlus)",

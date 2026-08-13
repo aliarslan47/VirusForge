@@ -72,6 +72,21 @@ def test_parse_pharokka_sums_across_contigs(tmp_path):
     assert m["trna"] == 2 and m["functions"]["tail"] == 5
 
 
+def test_parse_cds_genes_from_merged_tsv(tmp_path):
+    from virusforge.modules.v06_annotate import parse_cds_genes
+    p = tmp_path / "pharokka_cds_final_merged_output.tsv"
+    p.write_text(
+        "gene\tstart\tstop\tstrand\tphrog\tMethod\tannot\tcategory\n"
+        "X_CDS_0001\t891\t1\t-\t1339\tPHANOTATE\tinternal virion protein\thead and packaging\n"
+        "X_CDS_0002\t4374\t1990\t+\t457\tPHANOTATE\ttail protein\ttail\n")
+    genes = parse_cds_genes(p)
+    assert len(genes) == 2
+    assert genes[0] == {"gene": "X_CDS_0001", "start": "891", "stop": "1", "strand": "-",
+                        "product": "internal virion protein", "phrog": "1339",
+                        "category": "head and packaging"}
+    assert genes[1]["product"] == "tail protein" and genes[1]["strand"] == "+"
+
+
 def test_parse_phabox(tmp_path):
     (tmp_path / "phatyp_prediction.tsv").write_text("Accession\tTYPE\tScore\nc1\ttemperate\t0.9\n")
     m = parse_phabox(tmp_path)

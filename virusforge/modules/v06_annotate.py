@@ -31,6 +31,25 @@ def parse_pharokka(cds_functions_tsv) -> dict:
     }
 
 
+def parse_cds_genes(merged_tsv) -> list:
+    """pharokka_cds_final_merged_output.tsv → her CDS için gen kaydı (rapor gen-listesi tablosu).
+    Sütunlar: gene(locus) / start / stop / strand / annot(=product) / phrog / category."""
+    import csv
+    genes = []
+    with open(merged_tsv, newline="") as fh:
+        for row in csv.DictReader(fh, delimiter="\t"):
+            genes.append({
+                "gene": (row.get("gene") or "").strip(),
+                "start": (row.get("start") or "").strip(),
+                "stop": (row.get("stop") or "").strip(),
+                "strand": (row.get("strand") or "").strip(),
+                "product": (row.get("annot") or "").strip(),
+                "phrog": (row.get("phrog") or "").strip(),
+                "category": (row.get("category") or "").strip(),
+            })
+    return genes
+
+
 class V06Annotate(Module):
     name = "Genome Annotation"
     code = "V06"
@@ -74,6 +93,9 @@ class V06Annotate(Module):
         if not err and cds_fn.exists():
             metrics = parse_pharokka(cds_fn)
             metrics["identifier_integrity"] = "locus_tag/gene/product/protein_id ayrı; bilinmeyen product=NULL"
+            merged = out / "pharokka_cds_final_merged_output.tsv"
+            if merged.exists():
+                metrics["genes"] = parse_cds_genes(merged)
             status = Status.PASS
             # circular genom haritası (otomatik — kullanıcı istemeden)
             title = Path(ctx.sample_dir).name
