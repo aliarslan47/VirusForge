@@ -80,6 +80,30 @@ def _lifestyle_label(type_val, lang="tr") -> str:
     return m[lang if lang in ("tr", "en") else "tr"] if m else str(type_val)
 
 
+# PHROG fonksiyonel kategorileri → yapısal (virion) / yapısal olmayan / bilinmeyen.
+_STRUCTURAL_CATS = {"head and packaging", "connector", "tail"}
+_NONSTRUCT_CATS = {"dna, rna and nucleotide metabolism", "integration and excision",
+                   "transcription regulation", "lysis",
+                   "moron, auxiliary metabolic gene and host takeover", "other"}
+# CDS/tRNA/CRISPR/AMR/VFDB gibi sayaç anahtarları kategori DEĞİL → sınıflamaya girmez.
+
+
+def _structural_summary(functions) -> dict:
+    """PHROG kategori sayılarını yapısal / yapısal olmayan / bilinmeyen olarak topla."""
+    s = {"structural": 0, "non_structural": 0, "unknown": 0}
+    for cat, n in (functions or {}).items():
+        if not isinstance(n, int):
+            continue
+        key = str(cat).strip().lower()
+        if key in _STRUCTURAL_CATS:
+            s["structural"] += n
+        elif key in _NONSTRUCT_CATS:
+            s["non_structural"] += n
+        elif key == "unknown function":
+            s["unknown"] += n
+    return s
+
+
 def _break_lineage(lineage) -> str:
     """Uzun (boşluksuz, ';'-ayrık) soy hattını kaydırılabilir yap: her ';' sonrası <wbr>
     kırılma noktası + .brk (overflow-wrap) → tablo hücresi taşmaz."""
@@ -479,6 +503,17 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         ["tRNA", _esc(M["V06"].get("trna"))],
     ])
     v07body += table("Fonksiyonel kategori dağılımı (PHROGs)", ["Kategori", "Gen sayısı"], func_rows)
+    # yapısal (virion) vs yapısal olmayan protein özeti (PHROG kategorilerinden türetilir)
+    svc = _structural_summary(fns)
+    stot = svc["structural"] + svc["non_structural"] + svc["unknown"]
+    if stot > 0:
+        def _pct(n):
+            return f"{n} · {100*n/stot:.1f} %"
+        v07body += table("Yapısal vs yapısal olmayan proteinler (PHROG)", ["Sınıf", "Gen sayısı"], [
+            ["Yapısal (virion: kapsid/kuyruk/portal)", _pct(svc["structural"])],
+            ["Yapısal olmayan (metabolizma/lizis/regülasyon)", _pct(svc["non_structural"])],
+            ["Bilinmeyen işlev", _pct(svc["unknown"])],
+        ])
     # her CDS için gen anotasyon listesi (locus, koordinat, yön, ürün, PHROG, kategori)
     genes = M["V06"].get("genes") or []
     if genes:

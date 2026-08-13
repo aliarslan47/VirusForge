@@ -43,6 +43,11 @@ EN = {
     "Annotation özeti (Pharokka)": "Annotation summary (Pharokka)",
     "Fonksiyonel kategori dağılımı (PHROGs)": "Functional category distribution (PHROGs)",
     "Gen anotasyon listesi (her CDS)": "Gene annotation list (per CDS)",
+    "Yapısal vs yapısal olmayan proteinler (PHROG)": "Structural vs non-structural proteins (PHROG)",
+    "Sınıf": "Class",
+    "Yapısal (virion: kapsid/kuyruk/portal)": "Structural (virion: capsid/tail/portal)",
+    "Yapısal olmayan (metabolizma/lizis/regülasyon)": "Non-structural (metabolism/lysis/regulation)",
+    "Bilinmeyen işlev": "Unknown function",
     "Başlangıç": "Start", "Bitiş": "End", "Yön": "Strand", "Ürün": "Product",
     "Faj yaşam tarzı & taksonomi (PhaBOX)": "Phage lifestyle & taxonomy (PhaBOX)",
     "Litik (virulent) fajlar konağı lizisle öldürür ve genoma entegre olmaz; lizojenik (ılıman/temperate) fajlar konak genomuna entegre olabilir.":

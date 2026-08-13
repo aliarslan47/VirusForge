@@ -74,6 +74,32 @@ def test_render_html_language_switch_link():
     assert "report.html" in en and "Türkçe" in en
 
 
+def test_structural_summary_classifies_phrog():
+    from virusforge.report.render import _structural_summary
+    fns = {"CDS": 60, "head and packaging": 10, "connector": 1, "tail": 3,
+           "DNA, RNA and nucleotide metabolism": 12, "lysis": 3,
+           "moron, auxiliary metabolic gene and host takeover": 4, "other": 3,
+           "integration and excision": 0, "transcription regulation": 0,
+           "unknown function": 24, "tRNAs": 0, "CARD_AMR_Genes": 0}
+    s = _structural_summary(fns)
+    assert s["structural"] == 14        # 10 + 1 + 3 (head&packaging + connector + tail)
+    assert s["non_structural"] == 22    # 12 + 3 + 4 + 3 (+ 0 + 0)
+    assert s["unknown"] == 24           # unknown function; CDS/tRNA/AMR sayaçları HARİÇ
+
+
+def test_render_html_structural_vs_nonstructural_table():
+    from virusforge.report.render import render_html
+    rep = {"sample": "T7", "mode": "HYBRID", "run_id": "r", "modules": [
+        {"code": "V06", "status": "PASS", "metrics": {"cds": 60, "functions": {
+            "head and packaging": 10, "connector": 1, "tail": 3,
+            "DNA, RNA and nucleotide metabolism": 12, "lysis": 3, "other": 3,
+            "moron, auxiliary metabolic gene and host takeover": 4, "unknown function": 24}}}]}
+    tr = render_html(rep, lang="tr")
+    en = render_html(rep, lang="en")
+    assert "Yapısal" in tr and "Yapısal olmayan" in tr and "14" in tr
+    assert "Structural" in en and "Non-structural" in en and "Yapısal olmayan" not in en
+
+
 def test_render_html_v05_mash_tree_figure():
     # V05 (Taksonomi & En Yakın Referanslar) bölümüne Mash-mesafe ağacı figürü (tr+en)
     from virusforge.report.render import render_html
