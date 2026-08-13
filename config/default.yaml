@@ -22,8 +22,10 @@ tools:
   spades:
     careful: true
   flye:
-    # kimya header'dan; override: r9 | r10 | none
+    # kimya kaliteye-göre otomatik (Q<13→r9/--nano-raw); override: r9 | r10
     chemistry: auto
+    # max-kapsamın bu oranı altındaki contig'ler junk sayılır (host/kimera) ve elenir
+    min_cov_fraction: 0.1
   medaka:
     model: auto         # kimyaya göre; override edilebilir
   unicycler:

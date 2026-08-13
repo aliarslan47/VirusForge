@@ -14,6 +14,46 @@ from ..module import Context, Module, ModuleResult, Status, safe_run
 _HQ_QUAL_THRESHOLD = 13.0   # ~ Q13 (<%5 hata) altı → R9 (--nano-raw)
 
 
+def _read_fasta(path) -> dict:
+    recs, name, seq = {}, None, []
+    for line in Path(path).read_text().splitlines():
+        if line.startswith(">"):
+            if name:
+                recs[name] = "".join(seq)
+            name, seq = line[1:].split()[0], []
+        else:
+            seq.append(line.strip())
+    if name:
+        recs[name] = "".join(seq)
+    return recs
+
+
+def filter_contigs_by_coverage(assembly_info_path, fasta_in, fasta_out, min_frac=0.1):
+    """Flye assembly_info.txt'ten kapsamları oku; max_cov*min_frac altındaki junk contig'leri at.
+    Kalan contig'leri fasta_out'a yaz, tutulan isimleri döndür (uzunluğa göre sıralı).
+    Gerçek T7 long doğrulamasında: ana faj 1911x, host/kimera junk 3-22x → downstream kirlenmesi."""
+    covs, lens = {}, {}
+    for line in Path(assembly_info_path).read_text().splitlines():
+        if line.startswith("#") or not line.strip():
+            continue
+        p = line.split("\t")
+        try:
+            covs[p[0]] = float(p[2])
+            lens[p[0]] = int(p[1])
+        except (IndexError, ValueError):
+            continue
+    if not covs:
+        return None
+    thr = max(covs.values()) * min_frac
+    keep = {n for n, c in covs.items() if c >= thr}
+    recs = _read_fasta(fasta_in)
+    with open(fasta_out, "w") as fh:
+        for n in recs:
+            if n in keep:
+                fh.write(f">{n}\n{recs[n]}\n")
+    return sorted(keep, key=lambda n: -lens.get(n, 0))
+
+
 def resolve_chemistry(mean_qual) -> str:
     """NanoPlot ortalama kalitesinden ONT kimyası: düşük kalite→r9, yüksek→r10.
     Bilinmiyorsa modern varsayılan r10 (gerçek T7 doğrulamasında bulundu)."""
@@ -94,8 +134,19 @@ class V02Assembly(Module):
             return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
 
         draft = dirs["04_standardized"] / "draft_viral_genome.fasta"
-        shutil.copy(contig, draft)
+        m = {"assembler": cmd[0]}
+        # Flye (long) çıktısında düşük-kapsamlı junk contig'leri ele (host/kimera → downstream kirlenmesi)
+        info = Path(work) / "assembly_info.txt"
+        kept = None
+        if info.exists():
+            min_frac = get(ctx.cfg, "tools.flye.min_cov_fraction", 0.1)
+            kept = filter_contigs_by_coverage(info, contig, draft, min_frac)
+        if not kept or not draft.exists() or draft.stat().st_size == 0:
+            shutil.copy(contig, draft)          # filtre yoksa/boşsa ham çıktı
+        else:
+            m["kept_contigs"] = kept
+            m["dropped_low_coverage"] = True
+        m["draft"] = str(draft)
         ctx.artifacts[self.code] = {"draft": str(draft)}
-        m = {"assembler": cmd[0], "draft": str(draft)}
         ctx.results[self.code] = m
         return ModuleResult(Status.PASS, self.write_summary(ctx.run_dir, Status.PASS, m), m)
