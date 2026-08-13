@@ -109,7 +109,12 @@ online blastn(-remote) → en yakın 5 tür → efetch → MAFFT+IQ-TREE2 ağaç
   ortak MAFFT+IQ-TREE2 ağaç + yerel all-vs-all blastn benzerlik matrisi + ICTV özet tablosu → charset'li
   `comparison_report.html`. `compare.py` + CLI `compare` alt-komutu. **Doğrulandı:** 4 T7 run %100, EU734174
   (phage13a) %94.4 (farklı tür/aynı cins). **94 pytest yeşil.** Spec: `docs/superpowers/specs/2026-08-13-*compare*`.
-- **SIRADA:** Item 3 (çift-dilli TR+ENG rapor), Item 4 (opsiyonel araçlar virsorter2/vibrant/kraken2).
+- **Item 3 — ÇİFT-DİLLİ RAPOR (WIP, yarın devam):** kullanıcı seçimi = **iki dosya** (`report.html` tr +
+  `report_en.html` en, üstte dil linki). YAPILDI: `report/i18n.py` (EN sözlüğü + `t()`), `render_html(lang=)`
+  choke-point çevirisi (table/section/stat/figure + başlık/Genel Bakış/header). TR varsayılan değişmez. 96 test.
+  **YARIN KALAN:** (1) na-mesajları + Araçlar bölümü çevirisi; (2) dil-geçiş nav linki; (3) **v10_report.py +
+  compare.py DUAL çıktı** (tr+en iki dosya); (4) T7 gerçek doğrulama. Spec: `docs/.../2026-08-13-*bilingual*`.
+- **SIRADA (Item 3 bitince):** Item 4 (opsiyonel araçlar virsorter2/vibrant/kraken2 → modül yok, config'te var).
 
 ## Şu an nerede kaldık
 - **M1 İSKELETİ KURULDU + TEST GEÇTİ (2026-08-12).** `virusforge/` paketi tam: config, util, provenance, Module tabanı + 8 standart klasör + durum kodları, registry (doğrulanmış repo'lar), detect (V00), V01–V08 + V19 modülleri, tools.py (komut kurucular), pipeline (moda göre yönlendirme + resume), CLI (`run`/`info`), HTML rapor motoru.
