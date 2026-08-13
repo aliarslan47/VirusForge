@@ -9,9 +9,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from . import tools, util
+from . import config, tools, util
 from .config import get
 from .module import safe_run
+from .report.render import render_comparison
 
 
 def parse_blastn_identity(tsv_path) -> dict:
@@ -90,3 +91,61 @@ def identity_matrix(labels, pairs) -> list:
                 v = pairs.get((labels[i], labels[j])) or pairs.get((labels[j], labels[i]))
                 m[i][j] = float(v) if v is not None else 0.0
     return m
+
+
+def pairwise_identity_matrix(combined_fasta, work_dir, labels, threads=8):
+    """makeblastdb + all-vs-all blastn → örnekler-arası % kimlik matrisi (yerel, ağsız)."""
+    work = Path(work_dir)
+    dbpfx = work / "cmpdb"
+    if safe_run(tools.makeblastdb_nucl_cmd(combined_fasta, dbpfx), work / "makeblastdb.log"):
+        return None
+    bn = work / "allvall_blastn.tsv"
+    if safe_run(tools.blastn_local_cmd(combined_fasta, dbpfx, bn, threads), work / "blastn.log"):
+        return None
+    if not bn.exists():
+        return None
+    return identity_matrix(labels, parse_blastn_identity(bn))
+
+
+def _write_outputs(out, data):
+    (out / "comparison.json").write_text(json.dumps(data, indent=2, ensure_ascii=False))
+    (out / "comparison_report.html").write_text(render_comparison(data))
+
+
+def run_compare(run_dirs, out_dir, cfg=None):
+    """Çoklu-örnek karşılaştırmayı koştur: ortak ağaç + benzerlik matrisi + rapor. out_dir döndürür."""
+    cfg = cfg or config.load_config()
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    samples = collect_samples(run_dirs)
+    data = {"samples": samples}
+    if len(samples) < 2:
+        data["warning"] = "karşılaştırma için en az 2 geçerli genom gerekir"
+        _write_outputs(out, data)
+        return out
+
+    threads = get(cfg, "general.threads", 8)
+    combined = out / "combined.fasta"
+    build_combined_fasta(samples, combined)
+    labels = [s["name"] for s in samples]
+
+    matrix = pairwise_identity_matrix(combined, out, labels, threads)
+    if matrix:
+        data["matrix_labels"] = labels
+        data["matrix"] = matrix
+
+    aln = out / "aln.fasta"
+    try:
+        util.run_redirect(tools.mafft_cmd(combined, aln), aln, out / "mafft.log")
+    except RuntimeError:
+        pass
+    if aln.exists() and aln.stat().st_size > 0:
+        pfx = out / "iqtree"
+        if not safe_run(tools.iqtree_cmd(aln, pfx, threads, get(cfg, "tools.comparative.iqtree_bin", "iqtree")),
+                        out / "iqtree.log"):
+            tf = Path(str(pfx) + ".treefile")
+            if tf.exists():
+                data["tree_newick"] = tf.read_text().strip()
+
+    _write_outputs(out, data)
+    return out

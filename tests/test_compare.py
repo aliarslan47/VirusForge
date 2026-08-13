@@ -77,3 +77,13 @@ def test_render_comparison_smoke():
     h = render_comparison(data)
     assert "<!DOCTYPE html>" in h and 'charset="utf-8"' in h.lower()
     assert "T7_hybrid" in h and "Teseptimavirus" in h and "99.5" in h
+
+
+def test_run_compare_warns_under_two(tmp_path):
+    from virusforge.compare import run_compare
+    _mkrun(tmp_path, "runA")  # tek örnek
+    out = run_compare([tmp_path / "runA"], tmp_path / "cmp", cfg={"general": {"threads": 1}})
+    rep = out / "comparison_report.html"
+    assert rep.exists() and '<!doctype html>' in rep.read_text().lower()
+    data = json.loads((out / "comparison.json").read_text())
+    assert data.get("warning")  # <2 genom → dürüst uyarı
