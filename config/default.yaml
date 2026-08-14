@@ -81,6 +81,10 @@ tools:
     conda_env: vf_vadr
     conda_bin: /home/ali/miniconda3/bin/conda
   pangolin:                       # SARS-CoV-2 PANGO soy tayini (RNA yolu, izole env)
+    # OPSİYONEL/KAPALI: pangolin'in usher/gofasta bağımlılıkları bu ortamda conda-solve
+    # edilemedi (30dk+ takıldı). Nextclade zaten PANGO soyunu (Nextclade_pango) veriyor →
+    # pangolin gereksiz. Ağ/env erişimi olan yerde `enabled: true` ile açılabilir.
+    enabled: false
     conda_env: vf_pangolin
     conda_bin: /home/ali/miniconda3/bin/conda
     threads: 4

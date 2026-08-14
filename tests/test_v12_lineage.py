@@ -32,13 +32,14 @@ from virusforge.modules.v12_lineage import V12Lineage
 from virusforge.module import Status
 
 
-def _ctx(tmp_path, molecule="rna", draft=True):
+def _ctx(tmp_path, molecule="rna", draft=True, pangolin_enabled=False):
     """Minimal sahte Context: run_dir + cfg + artifacts + results."""
     cons = tmp_path / "cons.fa"
     if draft:
         cons.write_text(">sample\n" + "ACGT" * 50 + "\n")
     cfg = {"general": {"molecule": molecule},
-           "tools": {"pangolin": {"conda_env": "vf_pangolin"},
+           "tools": {"pangolin": {"conda_env": "vf_pangolin",
+                                  "enabled": pangolin_enabled},
                      "nextclade": {"conda_env": "vf_nextclade",
                                    "dataset_dir": str(tmp_path / "db")}}}
     return types.SimpleNamespace(
@@ -58,13 +59,8 @@ def test_v12_not_applicable_no_consensus(tmp_path):
     assert res.status == Status.NOT_APPLICABLE
 
 
-def test_v12_runs_both_tools(tmp_path, monkeypatch):
-    from virusforge.modules import v12_lineage as mod
-
-    calls = []
-    (tmp_path / "db").mkdir()  # nextclade dataset dizini var olmalı
-
-    def fake_safe_run(cmd, log_path):
+def _fake_safe_run(calls):
+    def _run(cmd, log_path):
         calls.append(cmd)
         if "pangolin" in cmd:
             out = [c for c in cmd if str(c).endswith(".csv")][0]
@@ -74,13 +70,33 @@ def test_v12_runs_both_tools(tmp_path, monkeypatch):
             Path(cmd[idx + 1]).write_text(
                 "index\tseqName\tclade\tNextclade_pango\tqc.overallStatus\n0\ts\t23I\tBA.2.86\tgood\n")
         return None
+    return _run
 
-    monkeypatch.setattr(mod, "safe_run", fake_safe_run)
-    res = V12Lineage().run(_ctx(tmp_path, molecule="rna"))
+
+def test_v12_runs_both_tools_when_pangolin_enabled(tmp_path, monkeypatch):
+    from virusforge.modules import v12_lineage as mod
+    calls = []
+    (tmp_path / "db").mkdir()  # nextclade dataset dizini var olmalı
+    monkeypatch.setattr(mod, "safe_run", _fake_safe_run(calls))
+    res = V12Lineage().run(_ctx(tmp_path, molecule="rna", pangolin_enabled=True))
     assert res.status == Status.PASS
     assert res.metrics["pangolin"]["lineage"] == "BA.2.86"
     assert res.metrics["nextclade"]["clade"] == "23I"
-    assert len(calls) == 2
+    assert len(calls) == 2      # iki araç da çağrıldı
+
+
+def test_v12_nextclade_only_when_pangolin_disabled(tmp_path, monkeypatch):
+    """Varsayılan: pangolin kapalı → yalnız Nextclade çağrılır, temiz PASS (problem yok)."""
+    from virusforge.modules import v12_lineage as mod
+    calls = []
+    (tmp_path / "db").mkdir()
+    monkeypatch.setattr(mod, "safe_run", _fake_safe_run(calls))
+    res = V12Lineage().run(_ctx(tmp_path, molecule="rna", pangolin_enabled=False))
+    assert res.status == Status.PASS
+    assert "pangolin" not in res.metrics          # kapalı → hiç çalışmadı
+    assert res.metrics["nextclade"]["clade"] == "23I"
+    assert "problems" not in res.metrics          # kapalı araç ≠ hata
+    assert len(calls) == 1      # yalnız nextclade
 
 
 def test_v12_in_default_pipeline_order():

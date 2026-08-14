@@ -84,20 +84,23 @@ class V12Lineage(Module):
         problems: list[str] = []
         native = dirs["03_native_outputs"]
 
-        # Pangolin (izole vf_pangolin env)
-        pcsv = native / "lineage_report.csv"
-        err = safe_run(tools.pangolin_cmd(cons, pcsv,
-                                          get(ctx.cfg, "tools.pangolin.threads", 4),
-                                          get(ctx.cfg, "tools.pangolin.conda_env", None),
-                                          get(ctx.cfg, "tools.pangolin.conda_bin", "conda")),
-                       dirs["07_logs"] / "pangolin.log")
-        pang = parse_pangolin(pcsv)
-        if pang:
-            metrics["pangolin"] = pang
-        elif err:
-            problems.append(f"Pangolin: {err[:120]}")
-        else:
-            problems.append("Pangolin: soy atanmadı")
+        # Pangolin (izole vf_pangolin env) — OPSİYONEL; varsayılan kapalı.
+        # Nextclade zaten PANGO soyunu (Nextclade_pango) veriyor; pangolin'in usher/gofasta
+        # bağımlılıkları ağır (conda-solve bu ortamda takıldı) → bilinçli kapalı = hata değil.
+        if get(ctx.cfg, "tools.pangolin.enabled", False):
+            pcsv = native / "lineage_report.csv"
+            err = safe_run(tools.pangolin_cmd(cons, pcsv,
+                                              get(ctx.cfg, "tools.pangolin.threads", 4),
+                                              get(ctx.cfg, "tools.pangolin.conda_env", None),
+                                              get(ctx.cfg, "tools.pangolin.conda_bin", "conda")),
+                           dirs["07_logs"] / "pangolin.log")
+            pang = parse_pangolin(pcsv)
+            if pang:
+                metrics["pangolin"] = pang
+            elif err:
+                problems.append(f"Pangolin: {err[:120]}")
+            else:
+                problems.append("Pangolin: soy atanmadı")
 
         # Nextclade (izole vf_nextclade env)
         dataset_dir = get(ctx.cfg, "tools.nextclade.dataset_dir", "")
