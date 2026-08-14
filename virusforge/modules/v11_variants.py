@@ -14,6 +14,44 @@ from ..config import get
 from ..module import Context, Module, ModuleResult, Status, is_rna, safe_run
 
 
+def parse_gene_intervals(gff_path) -> list:
+    """GFF → [(gen_adı, start, end)]. Ad: gene_name= / Name= / gene= / ID= / product=.
+    Varyantı hangi CDS/gene düştüğünü pozisyonla eşlemek için (çeviri gerektirmez)."""
+    out = []
+    try:
+        with open(gff_path) as fh:
+            for line in fh:
+                if line.startswith("#") or not line.strip():
+                    continue
+                cols = line.rstrip("\n").split("\t")
+                if len(cols) < 9 or cols[2].lower() not in ("gene", "cds", "mature_protein_region_of_cds"):
+                    continue
+                try:
+                    start, end = int(cols[3]), int(cols[4])
+                except ValueError:
+                    continue
+                name = ""
+                for key in ("gene_name=", "Name=", "gene=", "product=", "ID="):
+                    if key in cols[8]:
+                        name = cols[8].split(key)[1].split(";")[0].strip()
+                        break
+                if name:
+                    out.append((name, min(start, end), max(start, end)))
+    except (OSError, TypeError):
+        pass
+    return out
+
+
+def gene_at(pos, intervals) -> str:
+    """pos hangi gen(ler)e düşüyor? Örtüşen gen adları ('/' ile birleşik); yoksa ''."""
+    try:
+        pos = int(pos)
+    except (TypeError, ValueError):
+        return ""
+    hits = [name for (name, s, e) in intervals if s <= pos <= e]
+    return "/".join(dict.fromkeys(hits)) if hits else ""
+
+
 def fasta_first_id(path) -> str:
     """Referans FASTA'nın ilk header id'si (accession) — varyant koordinat sistemi.
     Dosya yok/başlıksız → yolun dosya-kök adı (yine de dürüst bir tanımlayıcı)."""
@@ -138,6 +176,22 @@ class V11VariantCall(Module):
             metrics["lofreq_variants"] = parse_lofreq_vcf(vcf)
         elif err:
             problems.append(f"LoFreq: {err[:120]}")
+
+        # Gen/CDS anotasyonu: her varyant hangi gene düşüyor (pozisyon→gen; çeviri gerektirmez).
+        # Gen GFF'i config'ten; yoksa nextclade dataset'inin genome_annotation.gff3'ünden (aynı virüs).
+        gene_gff = get(ctx.cfg, "tools.rna.gene_gff", "") or ""
+        if not gene_gff:
+            ds = get(ctx.cfg, "tools.nextclade.dataset_dir", "")
+            if ds:
+                cand = Path(ds) / "genome_annotation.gff3"
+                if cand.exists():
+                    gene_gff = str(cand)
+        intervals = parse_gene_intervals(gene_gff) if gene_gff else []
+        if intervals:
+            for key in ("ivar_variants", "lofreq_variants"):
+                for v in metrics.get(key, []) or []:
+                    v["gene"] = gene_at(v.get("pos"), intervals)
+            metrics["gene_annotated"] = True
 
         if "ivar_variants" not in metrics and "lofreq_variants" not in metrics:
             metrics["error"] = "; ".join(problems) or "varyant üretilmedi"

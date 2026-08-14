@@ -83,3 +83,43 @@ def test_render_v11_shows_reference():
     assert "NC_045512" in tr                       # referans görünür
     assert "LoFreq varyantları (düşük-frekans/quasispecies)" not in tr  # LoFreq tam tablosu kaldırıldı
     assert "LoFreq" in tr                           # ama LoFreq sayacı korunur
+
+
+def test_parse_gene_intervals_and_gene_at(tmp_path):
+    from virusforge.modules.v11_variants import parse_gene_intervals, gene_at
+    gff = tmp_path / "genes.gff3"
+    gff.write_text(
+        "##gff-version 3\n"
+        ".\t.\tgene\t266\t13468\t.\t+\t.\tgene_name=ORF1a\n"
+        ".\t.\tgene\t21563\t25384\t.\t+\t.\tgene_name=S\n"
+        ".\t.\tgene\t28274\t29533\t.\t+\t.\tgene_name=N\n")
+    iv = parse_gene_intervals(gff)
+    assert ("S", 21563, 25384) in iv
+    assert gene_at(23403, iv) == "S"       # S geni içinde
+    assert gene_at(300, iv) == "ORF1a"
+    assert gene_at(50, iv) == ""           # hiçbir gende değil (intergenik)
+
+
+def test_gene_at_bad_pos_is_safe():
+    from virusforge.modules.v11_variants import gene_at
+    assert gene_at(None, [("S", 1, 10)]) == ""
+
+
+def test_report_no_warning_badge():
+    """WARNING statülü modül raporda 'WARNING' badge'i göstermez (PASS gösterilir)."""
+    from virusforge.report.render import render_html
+    rep = {"sample": "x", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V06", "status": "WARNING", "metrics": {"note": "iyi-huylu alert"}}]}
+    html = render_html(rep, lang="tr")
+    assert "WARNING" not in html            # ne badge ne legend ne caption
+
+
+def test_report_variant_gene_column():
+    from virusforge.report.render import render_html
+    rep = {"sample": "x", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V11", "status": "PASS", "metrics": {
+            "reference": "NC_045512", "n_total": 1, "n_consensus": 1, "n_minor": 0,
+            "ivar_variants": [{"pos": 23403, "gene": "S", "ref": "A", "alt": "G",
+                               "freq": 0.99, "depth": 900, "aa": ""}]}}]}
+    tr = render_html(rep, lang="tr")
+    assert "Gen/CDS" in tr and ">S<" in tr    # gen kolonu + değeri

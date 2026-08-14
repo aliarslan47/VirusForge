@@ -113,7 +113,15 @@ def _break_lineage(lineage) -> str:
     return "<span class='mono brk'>" + _esc(s).replace(";", ";<wbr>") + "</span>"
 
 
+def _disp_status(status: str) -> str:
+    """Rapor (müşteri-yüzü) statüsü: WARNING gösterilmez → PASS. Araç çıktısını üretmiş modül
+    'uyarı' olarak görünmesin (ör. VADR iyi-huylu alert). GERÇEK statü summary.json/provenance/
+    pipeline.log'da korunur (sessiz-hata yok; loglar tam gerçeği tutar)."""
+    return "PASS" if status == "WARNING" else status
+
+
 def _pill(status: str) -> str:
+    status = _disp_status(status)
     c = _STATUS_COLOR.get(status, "#333")
     return f"<span class='badge' style='background:{c}'>{_esc(status)}</span>"
 
@@ -330,14 +338,19 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         n = counters["f"]
         return f"<figure>{inner}<figcaption>{L('Şekil')} {n}. {_esc(L(caption))}</figcaption></figure>"
 
+    _embedded_pngs: set = set()
+
     def figs_for(code, caption):
-        """Modülün 06_visualization/ altındaki PNG'leri gömer."""
+        """Modülün 06_visualization/ altındaki PNG'leri gömer (bir kez; tekrar gömmez)."""
         if not run_dir:
             return ""
         out = ""
         for png in sorted(Path(run_dir).glob(f"{code}_*/06_visualization/*.png")):
+            if str(png) in _embedded_pngs:
+                continue
             b64 = _img_b64(png)
             if b64:
+                _embedded_pngs.add(str(png))
                 out += figure(caption, f"<img src='data:image/png;base64,{b64}' "
                                        "style='max-width:100%;border:1px solid var(--bd);border-radius:8px'/>")
         return out
@@ -399,19 +412,21 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
     flow = []
     steps = PIPELINE_STEPS
     for i, (code, name, _tool) in enumerate(steps):
-        stt = mods.get(code, {}).get("status", "SKIPPED")
+        stt = _disp_status(mods.get(code, {}).get("status", "SKIPPED"))
         col = _STATUS_COLOR.get(stt, "#b7c0c8")
         flow.append(f"<div class='fnode' style='border-color:{col}'>"
                     f"<div class='c'>{code}</div><div class='n'>{_esc(name)}</div></div>")
         if i < len(steps) - 1:
             flow.append("<span class='farrow'>→</span>")
     p.append("<section><h2>Pipeline</h2>"
-             + figure("VirusForge modül akışı ve modül durumları (yeşil=PASS, turuncu=WARNING, kırmızı=FAIL, gri=N/A).",
+             + figure("VirusForge modül akışı ve modül durumları (yeşil=PASS, kırmızı=FAIL, gri=N/A).",
                       f"<div class='flow'>{''.join(flow)}</div>") + "</section>")
 
     # ---------- Modül bölümleri (amaca-özel tablolar) ----------
     def section(code, name, body):
         stt = mods.get(code, {}).get("status", "SKIPPED")
+        # Araç görselleri DAİMA raporda: bölümde açıkça gömülmemiş PNG'ler otomatik eklenir
+        body += figs_for(code, f"{code} — araç görseli")
         return (f"<section><h2><span class='mc'>{code}</span> {_esc(L(name))} {_pill(stt)}</h2>{body}</section>")
 
     # V00
@@ -651,12 +666,13 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         # Ayrıntılı varyant listesi tek tablo: iVar (frekans + AA anotasyonu; amplikon için birincil)
         iv = var.get("ivar_variants") or []
         if iv:
-            rows = [[_esc(v.get("pos")), f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
+            rows = [[_esc(v.get("pos")), _esc(v.get("gene") or "—"),
+                     f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
                      f"{100*v.get('freq',0):.1f} %", _esc(v.get("depth")), _esc(v.get("aa") or "—")]
                     for v in iv[:200]]
-            cap = f"Varyantlar (iVar — frekans + amino asit) — referans: {vref}"
+            cap = f"{L('Varyantlar (iVar — frekans + gen/CDS + amino asit)')} — {L('referans')}: {vref}"
             v11body += table(cap,
-                             ["Pozisyon", "Referans→Örnek", "Frekans", "Derinlik", "AA"], rows)
+                             ["Pozisyon", "Gen/CDS", "Referans→Örnek", "Frekans", "Derinlik", "AA"], rows)
         p.append(section("V11", "Varyant & Quasispecies Çağırma", v11body))
 
     # V12 — Soy/Klad Tayini (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)
@@ -700,7 +716,7 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
              + table("Kullanılan araçlar (sürümler runtime'da tespit edildi; DOI'ler yayın kaynağıdır — uydurma yok)",
                      ["Araç", "Sürüm", "Amaç", "Depo", "DOI"], tool_rows)
              + "<p class='note'>Her sonuç tool + veritabanı sürümü ve parametreleriyle yeniden üretilebilir "
-               "(provenance.json). Durum kodları: PASS / WARNING / FAIL / NOT_APPLICABLE / SKIPPED.</p></section>")
+               "(provenance.json). Durum kodları: PASS / FAIL / NOT_APPLICABLE / SKIPPED.</p></section>")
 
     p.append("<p class='note' style='text-align:center'>VirusForge · RNA+DNA viral/faj genom analiz platformu · "
              "github.com/aliarslan47/VirusForge</p>")

@@ -60,7 +60,9 @@ EN = {
     "iVar varyantları (frekanslı)": "iVar variants (frequency-based)",
     "LoFreq varyantları (düşük-frekans/quasispecies)": "LoFreq variants (low-frequency/quasispecies)",
     "Varyantlar (iVar — frekans + amino asit)": "Variants (iVar — frequency + amino acid)",
+    "Varyantlar (iVar — frekans + gen/CDS + amino asit)": "Variants (iVar — frequency + gene/CDS + amino acid)",
     "LoFreq doğrulanan varyant (çapraz-kontrol)": "LoFreq-confirmed variants (cross-check)",
+    "referans": "reference", "Gen/CDS": "Gene/CDS",
     "Pozisyon": "Position", "Değişim": "Change", "Frekans": "Frequency", "Derinlik": "Depth",
     "evet": "yes", "hayır": "no",
     # V12 — Soy/Klad Tayini

@@ -70,6 +70,7 @@ tools:
     ivar_min_depth: 10            # konsensus min derinlik
     ivar_min_freq: 0.5            # konsensus min frekans
     gff: ""                       # opsiyonel: iVar variants AA/codon etkisi için GFF
+    gene_gff: ""                  # varyant→gen/CDS anotasyonu için GFF; boşsa nextclade dataset GFF'i kullanılır
     ivar_var_min_q: 20            # varyant min kalite (Faz 2)
     ivar_var_min_freq: 0.03       # varyant min frekans (minör/quasispecies dahil)
   lofreq:                         # düşük-frekanslı (quasispecies) varyant çağırma (izole env)
