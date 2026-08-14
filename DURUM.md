@@ -210,11 +210,37 @@ varyant/quasispecies (lineage sonra).
   mutasyonu); V11 rapor bölümü TR+EN. **vf_lofreq (LoFreq 2.1.3.1) kuruldu.**
   Spec: `docs/.../2026-08-14-virusforge-m2b-rna-phase2-design.md`. commit b30ef53.
 
+## 2026-08-14 — M2-B RNA FAZ 3: V12 SOY/KLAD TAYİNİ (Nextclade) + RAPOR/KLASÖR İYİLEŞTİRMELERİ
+Brainstorm→spec→plan→TDD (inline, bağımlı task'lar). **Yeni V12 modülü** (soy tayininin DNA karşılığı yok →
+kendi modülü, DNA/faj'da N/A). Sıra V11→**V12**→V10.
+- **v12_lineage.py (V12Lineage):** RNA konsensüs (V02 `draft`)→soy/klad. **Nextclade** (izole `vf_nextclade`,
+  v3.22 + sars-cov-2 dataset) klad+`Nextclade_pango`(PANGO soyu)+QC+mutasyon. **Pangolin OPSİYONEL/VARSAYILAN
+  KAPALI** (`tools.pangolin.enabled: false`): usher/gofasta bağımlılıkları conda-solve edilemedi (30dk+ takıldı,
+  2 deneme) + **Nextclade zaten PANGO soyunu veriyor → pangolin gereksiz**. Kapalı araç ≠ hata (temiz PASS).
+  parse_pangolin/parse_nextclade; tools pangolin_cmd/nextclade_run_cmd; registry pangolin+nextclade;
+  config tools.pangolin/nextclade; render V12 bölümü + i18n tr/en; TOOL_REFERENCES+PIPELINE_STEPS.
+- **Gerçek doğrulama** (SARS-CoV-2 `ERR11728561` konsensüs 29859bp, `--resume`): **klad 23A, XBB.1.5.52,
+  QC good, 95 subst / 304 N (amplikon dropout %1) / 66 AA**; V12 PASS; rapor TR+EN. **Gerçek-veri bug'ı:**
+  V12'de `dirname` set edilmemiş → `Vxx_MODULE/` dizini; `dirname="V12_LINEAGE"` düzeltildi (+test).
+  **Resume bug'ı:** V10 raporu resume'da atlanıyordu (summary var) → V12'siz kalıyordu; V10 dizini silip yeniden koştur.
+- **Rapor iyileştirmeleri (kullanıcı istekleri):**
+  1. **V11 çift tablo birleştirildi:** iVar + LoFreq neredeyse aynı varyantları basıyordu → **iVar tek ayrıntılı
+     tablo** (frekans+AA), LoFreq özet tabloda tek **doğrulama sayacı** (çapraz-kontrol).
+  2. **Varyant koordinat referansı eklendi:** varyant tablosu artık **hangi referansa göre** olduğunu gösteriyor
+     (`fasta_first_id`→`metrics.reference`=NC_045512); özet satır + "Referans→Örnek" kolonu. (Referanssız pos/ref→alt
+     belirsizdi.)
+- **Run klasörleme:** run'lar artık **organizmaya göre iç klasör**: `runs/<organizma>/<ts>_<mode>` (aynı mod farklı
+  organizma karışmasın — T7 vs SARS-CoV-2 ikisi de `short_read`'ti). `pipeline.organism_label` (config
+  `general.organism` / `--organism` CLI / örnek-adı türetme + fs-safe). Mevcut 5 run taşındı: `runs/T7/` (4) +
+  `runs/SARS-CoV-2/` (1). (T7_compare linkleri eskidi → kullanılırsa yeniden üret.)
+- **175 pytest yeşil** (154→175). **Env:** `vf_nextclade` (v3.22) + dataset. `vf_pangolin` KURULMADI (bilinçli).
+  Spec/plan: `docs/superpowers/{specs,plans}/2026-08-14-virusforge-rna-lineage*`.
+
 ## Şu an nerede kaldık (özet)
-- **M2-B RNA yolu TAMAM: Faz 1 (yönlendirme+konsensus+VADR) + Faz 2 (V11 varyant/quasispecies)** — ikisi de
-  SARS-CoV-2 gerçek doğrulandı.
-- **SIRADA (opsiyonel/sonraki):** lineage (Pangolin/Nextclade); RNA de novo (rnaviralSPAdes referanssız)
-  gerçek doğrulama; iVar variants GFF→AA etkisi; Item 4 (virsorter2/vibrant/kraken2). M3 kalan fazlar.
+- **M2-B RNA yolu TAMAM: Faz 1 (yönlendirme+konsensus+VADR) + Faz 2 (V11 varyant) + Faz 3 (V12 soy/klad)** —
+  hepsi SARS-CoV-2 gerçek doğrulandı. Rapor V11 sadeleşti + varyant referansı gösteriliyor. Run'lar organizma-klasörlü.
+- **SIRADA (opsiyonel/sonraki):** RNA de novo (rnaviralSPAdes referanssız) gerçek doğrulama; iVar variants GFF→AA
+  etkisi; Item 4 (virsorter2/vibrant/kraken2); M3 kalan fazlar. (Pangolin: ağ/env erişimli ortamda `enabled: true`.)
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
   (virsorter2/vibrant/kraken2) → config'te var, modül yok. (NOT: "short/long/hybrid" ayrı bir eksen = M1
   platform kapsamı, çoktan TAMAM; Item numaraları rapor-cilalama fazına aittir, okuma tipiyle ilgisiz.)
