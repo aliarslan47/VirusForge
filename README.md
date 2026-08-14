@@ -10,6 +10,8 @@
 [![Milestone](https://img.shields.io/badge/M1·M2·M3-DNA%20%2B%20RNA%20doğrulandı%20✓-0d6b8f)](docs/)
 [![Forge Family](https://img.shields.io/badge/Forge%20ailesi-BacForge%20·%20Vaxforge-6b7682)](#)
 
+**Türkçe** · [English](README.en.md)
+
 </div>
 
 ---
