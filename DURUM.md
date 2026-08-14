@@ -251,10 +251,33 @@ Kullanıcı istekleri, hepsi gerçek-veri doğrulandı (SARS-CoV-2 + T7), **179 
 - **NOT (resume kırılganlığı):** V11'i silip resume edersen `tools.rna.reference` config'te olmalı (yoksa BAM'e
   rağmen N/A). SARS-CoV-2 için `databases/sarscov2_ref.fa` — kalıcı config'e koymak gerekir. Tüm 5 rapor yenilendi.
 
+## 2026-08-14 — V-KOD RENUMBER + POOL TEMİZLİĞİ + RAPOR TAMLIĞI + RNA GENOM GÖRSELİ (plan modu)
+Kullanıcı 4 istek; plan modu→onay→uygulama, **178 pytest yeşil**, SARS-CoV-2+T7 gerçek doğrulandı. commit 91a66f0.
+1. **V-KOD RENUMBER (sıralı):** varyant V11→**V10**, soy/klad V12→**V11**, rapor V10→**V12**. Yürütme sırası =
+   numara sırası: `V00…V09→V10(varyant)→V11(soy)→V12(rapor)`. Dosya+class+dirname+kod-string+import+test hepsi
+   (token-script, döngüsel çakışma benzersiz ara-token'la önlendi). Dizinler: `V10_VARIANT_CALLING`,
+   `V11_LINEAGE`, `V12_REPORT_EXPORT`. `v10_variants.py`/`v11_lineage.py`/`v12_report.py`.
+2. **PANGOLIN TAMAMEN KALDIRILDI** (kullanılmayan tool): Nextclade `Nextclade_pango` PANGO soyunu zaten veriyor +
+   usher/gofasta conda-solve edilemiyordu. tools/registry/config/references/render/i18n/modül/testlerden silindi;
+   ölü `optional:` config bloğu (virsorter2/vibrant/sourmash/kraken2 placeholder'ları) da kaldırıldı.
+3. **RAPOR TAMLIĞI (her tool çıktısı görünür, boş/çizgi yok):** `table()` boş satırda "" döndürür (Veri yok
+   placeholder'ı kalktı, numara sayacı yalnız dolu tablolarda artar); `section()` bölüm tümüyle boşsa çevrili
+   **"Bu analiz bu örnek/yol için uygulanmaz"** sebebini yazar (bölüm-özel çevrili N/A mesajları korunur; modül
+   notu TR olduğu için rapora sızdırılmaz). **V10 varyant + V11 soy bölümleri DAİMA render** (DNA'da eskiden hiç
+   görünmüyordu → artık N/A sebebiyle görünür).
+4. **RNA GENOM GÖRSELİ:** `v03_polish_qc.plot_coverage` (matplotlib 3.11 Agg) → `depth.tsv`'den genom-boyu
+   kapsama derinliği PNG'si (`06_visualization/coverage.png`, min-derinlik eşiği çizgili); `figs_for("V03")` düzgün
+   başlıkla gömer. DNA'da pharokka genom haritası zaten vardı. matplotlib yok/veri yok → sessizce atla (log'a yaz).
+- **Gerçek doğrulama:** SARS-CoV-2 → yeni dizinler, WARNING 0, **kapsama görseli var**, N/A bölümler net sebep
+  (Veri yok kalmadı), Pangolin izi yok, XBB.1.5.52, Gen/CDS kolonu. T7 → pipeline V10→V11→V12 sıralı, genom
+  haritası 2 PNG, V10/V11 DNA'da N/A sebebiyle görünür. **NOT:** eski run'ları yeniden üretirken eski-adlı
+  orphan modül dizinlerini (V11_VARIANT_CALLING vb.) silmek gerekti (V12Report tüm summary'leri okur → kod çakışması).
+
 ## Şu an nerede kaldık (özet)
-- **M2-B RNA yolu TAMAM: Faz 1 (yönlendirme+konsensus+VADR) + Faz 2 (V11 varyant+gen anotasyonu) + Faz 3 (V12 soy/klad)** —
-  hepsi SARS-CoV-2 gerçek doğrulandı. Rapor: WARNING'siz, araç görselleri garantili, V11 sadeleşti + varyant
-  referansı+gen/CDS gösteriliyor. Run'lar organizma-klasörlü (`runs/T7/`, `runs/SARS-CoV-2/`).
+- **M2-B RNA yolu TAMAM: Faz 1 (konsensus/VADR) + Faz 2 (V10 varyant+gen anotasyonu) + Faz 3 (V11 soy/klad)** —
+  hepsi SARS-CoV-2 gerçek doğrulandı. Rapor: WARNING'siz, araç görselleri+tablolar daima görünür, N/A bölümler
+  net sebep, RNA genom kapsama görseli. **Numaralar sıralı (rapor=V12 son).** Pangolin kaldırıldı. Run'lar
+  organizma-klasörlü. **178 pytest.**
 - **SIRADA (opsiyonel/sonraki):** RNA de novo (rnaviralSPAdes referanssız) gerçek doğrulama; iVar variants GFF→AA
   etkisi; Item 4 (virsorter2/vibrant/kraken2); M3 kalan fazlar. (Pangolin: ağ/env erişimli ortamda `enabled: true`.)
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
