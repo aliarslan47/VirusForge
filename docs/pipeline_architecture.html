@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VirusForge Pipeline DAG</title>
+<style>
+  :root{
+    --bg:#eef1f4; --card:#ffffff; --node:#ffffff; --bd:#dfe4e9; --ink:#161b21; --mut:#69737d;
+    --grid:#dbe1e7;
+    --dna:#0d6b8f; --rna:#c07211; --shared:#3f8a7d; --dec:#8a5cd0;
+    --dna-bg:#e7f0f5; --rna-bg:#f7ecdb; --shared-bg:#e6f0ed; --na-bd:#c3cad0; --na-bg:#eef0f2; --na-tx:#96a0a9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c1014; --card:#141920; --node:#1b2129; --bd:#28303a; --ink:#e7ebef; --mut:#8a95a0;
+      --grid:#20272f;
+      --dna:#4bb3d6; --rna:#e0a24e; --shared:#63b6a7; --dec:#b28cf0;
+      --dna-bg:#12303c; --rna-bg:#3a2c16; --shared-bg:#173029; --na-bd:#39424c; --na-bg:#191e24; --na-tx:#5c6771;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1014; --card:#141920; --node:#1b2129; --bd:#28303a; --ink:#e7ebef; --mut:#8a95a0;
+    --grid:#20272f;
+    --dna:#4bb3d6; --rna:#e0a24e; --shared:#63b6a7; --dec:#b28cf0;
+    --dna-bg:#12303c; --rna-bg:#3a2c16; --shared-bg:#173029; --na-bd:#39424c; --na-bg:#191e24; --na-tx:#5c6771;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55;padding:30px 22px 38px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .toggle{display:flex;justify-content:flex-end;margin-bottom:14px}
+  .toggle .grp{display:inline-flex;border:1px solid var(--bd);border-radius:999px;overflow:hidden;background:var(--card)}
+  .langbtn{border:0;background:transparent;color:var(--mut);font:600 12.5px system-ui;
+    padding:6px 16px;cursor:pointer;letter-spacing:.3px}
+  .langbtn.on{background:var(--dna);color:#fff}
+  .langbtn:focus-visible{outline:2px solid var(--dna);outline-offset:2px}
+  header{margin-bottom:22px}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:-.4px;text-wrap:balance}
+  .sub{color:var(--mut);font-size:13.5px;margin:0;max-width:64ch}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace}
+  h2{font-size:15.5px;margin:32px 0 12px;letter-spacing:-.2px}
+  .page[hidden]{display:none}
+
+  .canvas{position:relative;background:var(--card);border:1px solid var(--bd);border-radius:14px;
+    box-shadow:0 1px 3px rgba(0,0,0,.05);overflow:auto;max-height:82vh}
+  .bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;
+    padding:9px 14px;background:var(--card);border-bottom:1px solid var(--bd)}
+  .bar .fn{font-family:ui-monospace,monospace;font-size:12px;color:var(--mut)}
+  .bar .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .bar .sp{flex:1}
+  .chips{display:flex;gap:12px;font-size:11.5px}
+  .chips span{display:inline-flex;align-items:center;gap:6px;color:var(--mut)}
+  .chips i{width:11px;height:11px;border-radius:3px;display:inline-block;border:1.4px solid}
+  .i-dna{background:var(--dna-bg);border-color:var(--dna)}
+  .i-rna{background:var(--rna-bg);border-color:var(--rna)}
+  .i-sh{background:var(--shared-bg);border-color:var(--shared)}
+  svg.dag{display:block;min-width:860px}
+  .node{fill:var(--node)}
+  .n-dna{stroke:var(--dna);stroke-width:1.6}
+  .n-rna{stroke:var(--rna);stroke-width:1.6}
+  .n-sh{stroke:var(--shared);stroke-width:1.6}
+  .chip-dna{fill:var(--dna)} .chip-rna{fill:var(--rna)} .chip-sh{fill:var(--shared)}
+  .chip-t{fill:#fff;font-family:ui-monospace,monospace;font-weight:700;font-size:11.5px}
+  .nname{fill:var(--ink);font-size:12.5px;font-weight:600}
+  .ntool{fill:var(--mut);font-size:10px;font-family:ui-monospace,monospace}
+  .port-dna{fill:var(--dna);stroke:var(--node);stroke-width:1.5}
+  .port-rna{fill:var(--rna);stroke:var(--node);stroke-width:1.5}
+  .port-sh{fill:var(--shared);stroke:var(--node);stroke-width:1.5}
+  .edge{fill:none;stroke-width:1.9}
+  .e-dna{stroke:var(--dna)} .e-rna{stroke:var(--rna)} .e-sh{stroke:var(--shared)}
+  .decision{fill:var(--node);stroke:var(--dec);stroke-width:1.6}
+  .dec-t{fill:var(--dec);font-size:10.5px;font-weight:700;font-family:ui-monospace,monospace}
+  .dec-s{fill:var(--mut);font-size:9.5px}
+
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--bd);border-radius:12px;background:var(--card);margin-top:12px}
+  table{width:100%;border-collapse:collapse;min-width:640px}
+  th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--bd);font-size:13px;vertical-align:top}
+  thead th{background:var(--dna-bg);color:var(--dna);font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+  th.rna{background:var(--rna-bg);color:var(--rna)}
+  tbody tr:last-child td{border-bottom:none}
+  td.code{font-family:ui-monospace,monospace;font-weight:700;color:var(--dna);white-space:nowrap}
+  td.mod{font-weight:600;white-space:nowrap}
+  .na{color:var(--na-tx);font-style:italic}
+  .tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:6px;
+    background:var(--shared-bg);color:var(--shared)}
+  .envs{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .env{font-family:ui-monospace,monospace;font-size:12px;background:var(--card);border:1px solid var(--bd);
+    border-radius:7px;padding:4px 10px}
+  .env b{color:var(--dna)}
+  footer{margin-top:28px;padding-top:15px;border-top:1px solid var(--bd);color:var(--mut);font-size:12px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="toggle">
+    <div class="grp" role="group" aria-label="Language / Dil">
+      <button class="langbtn on" data-lang="tr" aria-pressed="true">Türkçe</button>
+      <button class="langbtn" data-lang="en" aria-pressed="false">English</button>
+    </div>
+  </div>
+
+  <!-- ==================== TÜRKÇE ==================== -->
+  <div class="page" data-lang="tr">
+    <header>
+      <h1>VirusForge Pipeline DAG</h1>
+      <p class="sub">DNA/faj ve RNA virüs yolları tek grafta. <span class="mono">V00</span>–<span class="mono">V01</span>
+        ortak trunk; molekül kararından sonra (<span class="mono">--molecule</span> / geNomad Riboviria) iki dal ayrılır ve
+        <span class="mono">V12</span> raporunda birleşir. Okuma tipi (short/long/hybrid/assembly) buna dik ayrı bir eksendir.</p>
+    </header>
+
+    <div class="canvas">
+      <div class="bar">
+        <span class="dot" style="background:#e0605a"></span>
+        <span class="dot" style="background:#e0b64e"></span>
+        <span class="dot" style="background:#5bb87a"></span>
+        <span class="fn">virusforge · pipeline.dag</span>
+        <span class="sp"></span>
+        <span class="chips">
+          <span><i class="i-dna"></i> DNA / faj</span>
+          <span><i class="i-rna"></i> RNA virüs</span>
+          <span><i class="i-sh"></i> ortak</span>
+        </span>
+      </div>
+      <svg class="dag" viewBox="0 0 900 1090" role="img" aria-label="VirusForge pipeline DAG. Ortak trunk V00, V01. Molekül karar düğümü DNA ve RNA dallarına ayrılır; iki dal V12 raporda birleşir.">
+        <defs>
+          <pattern id="grid-tr" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="var(--grid)"/></pattern>
+          <marker id="ah-tr" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto"><polygon points="0 0, 6 3, 0 6" fill="context-stroke"/></marker>
+        </defs>
+        <rect x="0" y="0" width="900" height="1090" fill="url(#grid-tr)"/>
+        <path class="edge e-sh" marker-end="url(#ah-tr)" d="M450 90 C450 100 450 106 450 116"/>
+        <path class="edge e-sh" marker-end="url(#ah-tr)" d="M450 176 C450 182 450 184 450 188"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M426 200 C320 220 230 236 230 280"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M474 200 C580 220 670 236 670 280"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 340 C230 356 230 358 230 366"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 426 C230 442 230 444 230 452"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 512 C230 528 230 530 230 538"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 598 C230 614 230 616 230 624"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 684 C230 700 230 702 230 710"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 770 C230 786 230 788 230 796"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 856 C230 872 230 874 230 882"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M670 340 C670 356 670 358 670 366"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M670 426 C670 442 670 444 670 452"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M670 512 C670 528 670 530 670 538"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M670 598 C670 614 670 616 670 624"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M670 684 C670 700 670 702 670 710"/>
+        <path class="edge e-dna" marker-end="url(#ah-tr)" d="M230 942 C230 972 450 958 450 986"/>
+        <path class="edge e-rna" marker-end="url(#ah-tr)" d="M670 770 C670 900 450 892 450 986"/>
+        <g><rect class="node n-sh" x="350" y="30" width="200" height="60" rx="11"/><rect class="chip-sh" x="360" y="40" width="40" height="18" rx="5"/><text class="chip-t" x="380" y="53" text-anchor="middle">V00</text><text class="nname" x="408" y="54">Girdi &amp; Tespit</text><text class="ntool" x="360" y="78">okuma tipi + molekül</text><circle class="port-sh" cx="450" cy="90" r="4"/></g>
+        <g><rect class="node n-sh" x="350" y="116" width="200" height="60" rx="11"/><rect class="chip-sh" x="360" y="126" width="40" height="18" rx="5"/><text class="chip-t" x="380" y="139" text-anchor="middle">V01</text><text class="nname" x="408" y="140">Okuma QC</text><text class="ntool" x="360" y="164">fastp · NanoPlot · filtlong</text><circle class="port-sh" cx="450" cy="116" r="4"/><circle class="port-sh" cx="450" cy="176" r="4"/></g>
+        <g><path class="decision" d="M450 168 L492 196 L450 224 L408 196 Z"/><text class="dec-t" x="450" y="193" text-anchor="middle">molekül?</text><text class="dec-s" x="450" y="206" text-anchor="middle">DNA · RNA</text></g>
+        <g><rect class="node n-dna" x="130" y="280" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="290" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="303" text-anchor="middle">V02</text><text class="nname" x="188" y="304">Assembly</text><text class="ntool" x="140" y="328">SPAdes·Flye·Unicycler</text><circle class="port-dna" cx="230" cy="280" r="4"/><circle class="port-dna" cx="230" cy="340" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="366" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="376" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="389" text-anchor="middle">V03</text><text class="nname" x="188" y="390">Cilalama &amp; QC</text><text class="ntool" x="140" y="414">Medaka·QUAST·CheckV</text><circle class="port-dna" cx="230" cy="366" r="4"/><circle class="port-dna" cx="230" cy="426" r="4"/></g>
+        <g><rect class="node n-sh" x="130" y="452" width="200" height="60" rx="11"/><rect class="chip-sh" x="140" y="462" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="475" text-anchor="middle">V04</text><text class="nname" x="188" y="476">Viral Tanıma</text><text class="ntool" x="140" y="500">geNomad</text><circle class="port-sh" cx="230" cy="452" r="4"/><circle class="port-sh" cx="230" cy="512" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="538" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="548" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="561" text-anchor="middle">V05</text><text class="nname" x="188" y="562">Taksonomi</text><text class="ntool" x="140" y="586">Mash + INPHARED</text><circle class="port-dna" cx="230" cy="538" r="4"/><circle class="port-dna" cx="230" cy="598" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="624" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="634" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="647" text-anchor="middle">V06</text><text class="nname" x="188" y="648">Anotasyon</text><text class="ntool" x="140" y="672">Pharokka + harita</text><circle class="port-dna" cx="230" cy="624" r="4"/><circle class="port-dna" cx="230" cy="684" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="710" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="720" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="733" text-anchor="middle">V07</text><text class="nname" x="188" y="734">Faj Karakter.</text><text class="ntool" x="140" y="758">PhaBOX</text><circle class="port-dna" cx="230" cy="710" r="4"/><circle class="port-dna" cx="230" cy="770" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="796" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="806" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="819" text-anchor="middle">V08</text><text class="nname" x="188" y="820">AMR &amp; Virülans</text><text class="ntool" x="140" y="844">AMRFinderPlus</text><circle class="port-dna" cx="230" cy="796" r="4"/><circle class="port-dna" cx="230" cy="856" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="882" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="892" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="905" text-anchor="middle">V09</text><text class="nname" x="188" y="906">Karşılaştırmalı</text><text class="ntool" x="140" y="930">BLAST·IQ-TREE2·taxmyPHAGE</text><circle class="port-dna" cx="230" cy="882" r="4"/><circle class="port-dna" cx="230" cy="942" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="280" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="290" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="303" text-anchor="middle">V02</text><text class="nname" x="628" y="304">Konsensüs</text><text class="ntool" x="580" y="328">iVar · rnaviralSPAdes</text><circle class="port-rna" cx="670" cy="280" r="4"/><circle class="port-rna" cx="670" cy="340" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="366" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="376" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="389" text-anchor="middle">V03</text><text class="nname" x="628" y="390">Kalite &amp; Kapsama</text><text class="ntool" x="580" y="414">QUAST · samtools depth</text><circle class="port-rna" cx="670" cy="366" r="4"/><circle class="port-rna" cx="670" cy="426" r="4"/></g>
+        <g><rect class="node n-sh" x="570" y="452" width="200" height="60" rx="11"/><rect class="chip-sh" x="580" y="462" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="475" text-anchor="middle">V04</text><text class="nname" x="628" y="476">Viral Tanıma</text><text class="ntool" x="580" y="500">geNomad → Riboviria</text><circle class="port-sh" cx="670" cy="452" r="4"/><circle class="port-sh" cx="670" cy="512" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="538" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="548" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="561" text-anchor="middle">V06</text><text class="nname" x="628" y="562">Anotasyon</text><text class="ntool" x="580" y="586">VADR + gen haritası</text><circle class="port-rna" cx="670" cy="538" r="4"/><circle class="port-rna" cx="670" cy="598" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="624" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="634" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="647" text-anchor="middle">V10</text><text class="nname" x="628" y="648">Varyant</text><text class="ntool" x="580" y="672">iVar + LoFreq</text><circle class="port-rna" cx="670" cy="624" r="4"/><circle class="port-rna" cx="670" cy="684" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="710" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="720" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="733" text-anchor="middle">V11</text><text class="nname" x="628" y="734">Soy / Klad</text><text class="ntool" x="580" y="758">Nextclade</text><circle class="port-rna" cx="670" cy="710" r="4"/><circle class="port-rna" cx="670" cy="770" r="4"/></g>
+        <g><rect class="node n-sh" x="350" y="986" width="200" height="60" rx="11"/><rect class="chip-sh" x="360" y="996" width="40" height="18" rx="5"/><text class="chip-t" x="380" y="1009" text-anchor="middle">V12</text><text class="nname" x="408" y="1010">Rapor &amp; Export</text><text class="ntool" x="360" y="1034">TR+EN HTML · provenance</text><circle class="port-sh" cx="450" cy="986" r="4"/></g>
+      </svg>
+    </div>
+
+    <h2>Modül matrisi — araçlar</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th style="width:50px">Kod</th><th style="width:180px">Modül</th><th>DNA / Faj yolu</th><th class="rna">RNA virüs yolu</th></tr></thead>
+      <tbody>
+        <tr><td class="code">V00</td><td class="mod">Girdi &amp; Tespit <span class="tag">ORTAK</span></td><td colspan="2">Okuma tipi + molekül tespiti — geNomad Riboviria veya <span class="mono">--molecule</span></td></tr>
+        <tr><td class="code">V01</td><td class="mod">Okuma QC <span class="tag">ORTAK</span></td><td colspan="2">fastp · FastQC (short) · NanoPlot + filtlong (long) · MultiQC</td></tr>
+        <tr><td class="code">V02</td><td class="mod">Assembly / Konsensüs</td><td>SPAdes · Flye · Unicycler <span class="na">(de novo)</span></td><td>iVar konsensüs (referans, minimap2→mpileup) · rnaviralSPAdes</td></tr>
+        <tr><td class="code">V03</td><td class="mod">Cilalama &amp; Kalite</td><td>Medaka (long) · QUAST · CheckV</td><td>QUAST · kapsama (samtools depth → breadth/derinlik)</td></tr>
+        <tr><td class="code">V04</td><td class="mod">Viral Tanıma <span class="tag">ORTAK</span></td><td colspan="2">geNomad — viral doğrulama + taksonomi (Riboviria realm → RNA yoluna yönlendirir)</td></tr>
+        <tr><td class="code">V05</td><td class="mod">Taksonomi &amp; Referans</td><td>Mash + INPHARED (faj ref DB) · NJ mesafe ağacı</td><td class="na">N/A — INPHARED faj-özel</td></tr>
+        <tr><td class="code">V06</td><td class="mod">Genom Anotasyon</td><td>Pharokka (PHANOTATE/Prodigal-gv, PHROG) + circular harita</td><td>VADR (NCBI RNA modelleri) + gen haritası</td></tr>
+        <tr><td class="code">V07</td><td class="mod">Faj Karakterizasyonu</td><td>PhaBOX — PhaMer / PhaGCN / PhaTYP</td><td class="na">N/A — faj-özel</td></tr>
+        <tr><td class="code">V08</td><td class="mod">AMR &amp; Virülans</td><td>AMRFinderPlus</td><td class="na">N/A — faj değil</td></tr>
+        <tr><td class="code">V09</td><td class="mod">Karşılaştırmalı &amp; Filogeni</td><td>BLAST · MAFFT · IQ-TREE2 · taxmyPHAGE · VIRIDIC · synteny</td><td class="na">N/A</td></tr>
+        <tr><td class="code">V10</td><td class="mod">Varyant &amp; Quasispecies</td><td class="na">N/A — RNA'ya özel</td><td>iVar variants + LoFreq · değişim türü + etki + gen/CDS</td></tr>
+        <tr><td class="code">V11</td><td class="mod">Soy / Klad Tayini</td><td class="na">N/A — RNA'ya özel</td><td>Nextclade — klad + PANGO soyu + QC</td></tr>
+        <tr><td class="code">V12</td><td class="mod">Rapor &amp; Export <span class="tag">ORTAK</span></td><td colspan="2">Çift-dilli (TR+EN) HTML rapor · tablolar + figürler + provenance</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>İzole conda ortamları</h2>
+    <div class="envs">
+      <span class="env"><b>virusforge</b> · ana</span><span class="env"><b>vf_phabox</b></span><span class="env"><b>vf_amr</b></span>
+      <span class="env"><b>vf_long</b></span><span class="env"><b>vf_rna</b></span><span class="env"><b>vf_vadr</b></span>
+      <span class="env"><b>vf_lofreq</b></span><span class="env"><b>vf_nextclade</b></span>
+    </div>
+    <footer>VirusForge · RNA + DNA viral / faj genom analiz platformu · github.com/aliarslan47/VirusForge<br>
+      Değişmez: her modül molekül tipine göre kendi içinde dallanır; N/A dürüstçe gösterilir; okuma tipi ⟂ molekül.</footer>
+  </div>
+
+  <!-- ==================== ENGLISH ==================== -->
+  <div class="page" data-lang="en" hidden>
+    <header>
+      <h1>VirusForge Pipeline DAG</h1>
+      <p class="sub">DNA/phage and RNA virus paths in one graph. <span class="mono">V00</span>–<span class="mono">V01</span>
+        form the shared trunk; after the molecule decision (<span class="mono">--molecule</span> / geNomad Riboviria) two branches
+        split and rejoin at the <span class="mono">V12</span> report. Read type (short/long/hybrid/assembly) is a separate, orthogonal axis.</p>
+    </header>
+
+    <div class="canvas">
+      <div class="bar">
+        <span class="dot" style="background:#e0605a"></span>
+        <span class="dot" style="background:#e0b64e"></span>
+        <span class="dot" style="background:#5bb87a"></span>
+        <span class="fn">virusforge · pipeline.dag</span>
+        <span class="sp"></span>
+        <span class="chips">
+          <span><i class="i-dna"></i> DNA / phage</span>
+          <span><i class="i-rna"></i> RNA virus</span>
+          <span><i class="i-sh"></i> shared</span>
+        </span>
+      </div>
+      <svg class="dag" viewBox="0 0 900 1090" role="img" aria-label="VirusForge pipeline DAG. Shared trunk V00, V01. A molecule decision node splits into DNA and RNA branches; both rejoin at the V12 report.">
+        <defs>
+          <pattern id="grid-en" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="var(--grid)"/></pattern>
+          <marker id="ah-en" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto"><polygon points="0 0, 6 3, 0 6" fill="context-stroke"/></marker>
+        </defs>
+        <rect x="0" y="0" width="900" height="1090" fill="url(#grid-en)"/>
+        <path class="edge e-sh" marker-end="url(#ah-en)" d="M450 90 C450 100 450 106 450 116"/>
+        <path class="edge e-sh" marker-end="url(#ah-en)" d="M450 176 C450 182 450 184 450 188"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M426 200 C320 220 230 236 230 280"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M474 200 C580 220 670 236 670 280"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 340 C230 356 230 358 230 366"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 426 C230 442 230 444 230 452"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 512 C230 528 230 530 230 538"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 598 C230 614 230 616 230 624"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 684 C230 700 230 702 230 710"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 770 C230 786 230 788 230 796"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 856 C230 872 230 874 230 882"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M670 340 C670 356 670 358 670 366"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M670 426 C670 442 670 444 670 452"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M670 512 C670 528 670 530 670 538"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M670 598 C670 614 670 616 670 624"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M670 684 C670 700 670 702 670 710"/>
+        <path class="edge e-dna" marker-end="url(#ah-en)" d="M230 942 C230 972 450 958 450 986"/>
+        <path class="edge e-rna" marker-end="url(#ah-en)" d="M670 770 C670 900 450 892 450 986"/>
+        <g><rect class="node n-sh" x="350" y="30" width="200" height="60" rx="11"/><rect class="chip-sh" x="360" y="40" width="40" height="18" rx="5"/><text class="chip-t" x="380" y="53" text-anchor="middle">V00</text><text class="nname" x="408" y="54">Input &amp; Detect</text><text class="ntool" x="360" y="78">read type + molecule</text><circle class="port-sh" cx="450" cy="90" r="4"/></g>
+        <g><rect class="node n-sh" x="350" y="116" width="200" height="60" rx="11"/><rect class="chip-sh" x="360" y="126" width="40" height="18" rx="5"/><text class="chip-t" x="380" y="139" text-anchor="middle">V01</text><text class="nname" x="408" y="140">Read QC</text><text class="ntool" x="360" y="164">fastp · NanoPlot · filtlong</text><circle class="port-sh" cx="450" cy="116" r="4"/><circle class="port-sh" cx="450" cy="176" r="4"/></g>
+        <g><path class="decision" d="M450 168 L492 196 L450 224 L408 196 Z"/><text class="dec-t" x="450" y="193" text-anchor="middle">molecule?</text><text class="dec-s" x="450" y="206" text-anchor="middle">DNA · RNA</text></g>
+        <g><rect class="node n-dna" x="130" y="280" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="290" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="303" text-anchor="middle">V02</text><text class="nname" x="188" y="304">Assembly</text><text class="ntool" x="140" y="328">SPAdes·Flye·Unicycler</text><circle class="port-dna" cx="230" cy="280" r="4"/><circle class="port-dna" cx="230" cy="340" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="366" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="376" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="389" text-anchor="middle">V03</text><text class="nname" x="188" y="390">Polish &amp; QC</text><text class="ntool" x="140" y="414">Medaka·QUAST·CheckV</text><circle class="port-dna" cx="230" cy="366" r="4"/><circle class="port-dna" cx="230" cy="426" r="4"/></g>
+        <g><rect class="node n-sh" x="130" y="452" width="200" height="60" rx="11"/><rect class="chip-sh" x="140" y="462" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="475" text-anchor="middle">V04</text><text class="nname" x="188" y="476">Viral ID</text><text class="ntool" x="140" y="500">geNomad</text><circle class="port-sh" cx="230" cy="452" r="4"/><circle class="port-sh" cx="230" cy="512" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="538" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="548" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="561" text-anchor="middle">V05</text><text class="nname" x="188" y="562">Taxonomy</text><text class="ntool" x="140" y="586">Mash + INPHARED</text><circle class="port-dna" cx="230" cy="538" r="4"/><circle class="port-dna" cx="230" cy="598" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="624" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="634" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="647" text-anchor="middle">V06</text><text class="nname" x="188" y="648">Annotation</text><text class="ntool" x="140" y="672">Pharokka + map</text><circle class="port-dna" cx="230" cy="624" r="4"/><circle class="port-dna" cx="230" cy="684" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="710" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="720" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="733" text-anchor="middle">V07</text><text class="nname" x="188" y="734">Phage Charact.</text><text class="ntool" x="140" y="758">PhaBOX</text><circle class="port-dna" cx="230" cy="710" r="4"/><circle class="port-dna" cx="230" cy="770" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="796" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="806" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="819" text-anchor="middle">V08</text><text class="nname" x="188" y="820">AMR &amp; Virulence</text><text class="ntool" x="140" y="844">AMRFinderPlus</text><circle class="port-dna" cx="230" cy="796" r="4"/><circle class="port-dna" cx="230" cy="856" r="4"/></g>
+        <g><rect class="node n-dna" x="130" y="882" width="200" height="60" rx="11"/><rect class="chip-dna" x="140" y="892" width="40" height="18" rx="5"/><text class="chip-t" x="160" y="905" text-anchor="middle">V09</text><text class="nname" x="188" y="906">Comparative</text><text class="ntool" x="140" y="930">BLAST·IQ-TREE2·taxmyPHAGE</text><circle class="port-dna" cx="230" cy="882" r="4"/><circle class="port-dna" cx="230" cy="942" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="280" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="290" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="303" text-anchor="middle">V02</text><text class="nname" x="628" y="304">Consensus</text><text class="ntool" x="580" y="328">iVar · rnaviralSPAdes</text><circle class="port-rna" cx="670" cy="280" r="4"/><circle class="port-rna" cx="670" cy="340" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="366" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="376" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="389" text-anchor="middle">V03</text><text class="nname" x="628" y="390">Quality &amp; Coverage</text><text class="ntool" x="580" y="414">QUAST · samtools depth</text><circle class="port-rna" cx="670" cy="366" r="4"/><circle class="port-rna" cx="670" cy="426" r="4"/></g>
+        <g><rect class="node n-sh" x="570" y="452" width="200" height="60" rx="11"/><rect class="chip-sh" x="580" y="462" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="475" text-anchor="middle">V04</text><text class="nname" x="628" y="476">Viral ID</text><text class="ntool" x="580" y="500">geNomad → Riboviria</text><circle class="port-sh" cx="670" cy="452" r="4"/><circle class="port-sh" cx="670" cy="512" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="538" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="548" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="561" text-anchor="middle">V06</text><text class="nname" x="628" y="562">Annotation</text><text class="ntool" x="580" y="586">VADR + gene map</text><circle class="port-rna" cx="670" cy="538" r="4"/><circle class="port-rna" cx="670" cy="598" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="624" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="634" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="647" text-anchor="middle">V10</text><text class="nname" x="628" y="648">Variants</text><text class="ntool" x="580" y="672">iVar + LoFreq</text><circle class="port-rna" cx="670" cy="624" r="4"/><circle class="port-rna" cx="670" cy="684" r="4"/></g>
+        <g><rect class="node n-rna" x="570" y="710" width="200" height="60" rx="11"/><rect class="chip-rna" x="580" y="720" width="40" height="18" rx="5"/><text class="chip-t" x="600" y="733" text-anchor="middle">V11</text><text class="nname" x="628" y="734">Lineage / Clade</text><text class="ntool" x="580" y="758">Nextclade</text><circle class="port-rna" cx="670" cy="710" r="4"/><circle class="port-rna" cx="670" cy="770" r="4"/></g>
+        <g><rect class="node n-sh" x="350" y="986" width="200" height="60" rx="11"/><rect class="chip-sh" x="360" y="996" width="40" height="18" rx="5"/><text class="chip-t" x="380" y="1009" text-anchor="middle">V12</text><text class="nname" x="408" y="1010">Report &amp; Export</text><text class="ntool" x="360" y="1034">TR+EN HTML · provenance</text><circle class="port-sh" cx="450" cy="986" r="4"/></g>
+      </svg>
+    </div>
+
+    <h2>Module matrix — tools</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th style="width:50px">Code</th><th style="width:180px">Module</th><th>DNA / Phage path</th><th class="rna">RNA virus path</th></tr></thead>
+      <tbody>
+        <tr><td class="code">V00</td><td class="mod">Input &amp; Detect <span class="tag">SHARED</span></td><td colspan="2">Read type + molecule detection — geNomad Riboviria or <span class="mono">--molecule</span></td></tr>
+        <tr><td class="code">V01</td><td class="mod">Read QC <span class="tag">SHARED</span></td><td colspan="2">fastp · FastQC (short) · NanoPlot + filtlong (long) · MultiQC</td></tr>
+        <tr><td class="code">V02</td><td class="mod">Assembly / Consensus</td><td>SPAdes · Flye · Unicycler <span class="na">(de novo)</span></td><td>iVar consensus (reference, minimap2→mpileup) · rnaviralSPAdes</td></tr>
+        <tr><td class="code">V03</td><td class="mod">Polishing &amp; Quality</td><td>Medaka (long) · QUAST · CheckV</td><td>QUAST · coverage (samtools depth → breadth/depth)</td></tr>
+        <tr><td class="code">V04</td><td class="mod">Viral ID <span class="tag">SHARED</span></td><td colspan="2">geNomad — viral confirmation + taxonomy (Riboviria realm → routes to RNA path)</td></tr>
+        <tr><td class="code">V05</td><td class="mod">Taxonomy &amp; References</td><td>Mash + INPHARED (phage ref DB) · NJ distance tree</td><td class="na">N/A — INPHARED is phage-specific</td></tr>
+        <tr><td class="code">V06</td><td class="mod">Genome Annotation</td><td>Pharokka (PHANOTATE/Prodigal-gv, PHROG) + circular map</td><td>VADR (NCBI RNA models) + gene map</td></tr>
+        <tr><td class="code">V07</td><td class="mod">Phage Characterization</td><td>PhaBOX — PhaMer / PhaGCN / PhaTYP</td><td class="na">N/A — phage-specific</td></tr>
+        <tr><td class="code">V08</td><td class="mod">AMR &amp; Virulence</td><td>AMRFinderPlus</td><td class="na">N/A — not a phage</td></tr>
+        <tr><td class="code">V09</td><td class="mod">Comparative &amp; Phylogeny</td><td>BLAST · MAFFT · IQ-TREE2 · taxmyPHAGE · VIRIDIC · synteny</td><td class="na">N/A</td></tr>
+        <tr><td class="code">V10</td><td class="mod">Variants &amp; Quasispecies</td><td class="na">N/A — RNA-specific</td><td>iVar variants + LoFreq · change type + effect + gene/CDS</td></tr>
+        <tr><td class="code">V11</td><td class="mod">Lineage / Clade</td><td class="na">N/A — RNA-specific</td><td>Nextclade — clade + PANGO lineage + QC</td></tr>
+        <tr><td class="code">V12</td><td class="mod">Report &amp; Export <span class="tag">SHARED</span></td><td colspan="2">Bilingual (TR+EN) HTML report · tables + figures + provenance</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Isolated conda environments</h2>
+    <div class="envs">
+      <span class="env"><b>virusforge</b> · main</span><span class="env"><b>vf_phabox</b></span><span class="env"><b>vf_amr</b></span>
+      <span class="env"><b>vf_long</b></span><span class="env"><b>vf_rna</b></span><span class="env"><b>vf_vadr</b></span>
+      <span class="env"><b>vf_lofreq</b></span><span class="env"><b>vf_nextclade</b></span>
+    </div>
+    <footer>VirusForge · RNA + DNA viral / phage genome analysis platform · github.com/aliarslan47/VirusForge<br>
+      Invariant: every module branches internally on molecule type; N/A is shown honestly; read type ⟂ molecule.</footer>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var btns = document.querySelectorAll('.langbtn');
+    var pages = document.querySelectorAll('.page');
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        var l = b.getAttribute('data-lang');
+        btns.forEach(function(x){
+          var on = x.getAttribute('data-lang') === l;
+          x.classList.toggle('on', on);
+          x.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        pages.forEach(function(p){ p.hidden = (p.getAttribute('data-lang') !== l); });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
