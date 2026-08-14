@@ -80,6 +80,15 @@ tools:
     model: sarscov2               # v-annotate.pl --mkey
     conda_env: vf_vadr
     conda_bin: /home/ali/miniconda3/bin/conda
+  pangolin:                       # SARS-CoV-2 PANGO soy tayini (RNA yolu, izole env)
+    conda_env: vf_pangolin
+    conda_bin: /home/ali/miniconda3/bin/conda
+    threads: 4
+  nextclade:                      # klad/mutasyon/QC (çok-patojen; şimdilik SARS-CoV-2, izole env)
+    conda_env: vf_nextclade
+    conda_bin: /home/ali/miniconda3/bin/conda
+    dataset: sars-cov-2
+    dataset_dir: databases/nextclade/sars-cov-2
 
 optional:                # default kapalı (tasarım kararı)
   virsorter2: false

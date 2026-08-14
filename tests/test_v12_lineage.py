@@ -83,6 +83,13 @@ def test_v12_runs_both_tools(tmp_path, monkeypatch):
     assert len(calls) == 2
 
 
+def test_v12_in_default_pipeline_order():
+    from virusforge.pipeline import DEFAULT_MODULES
+    names = [m.__name__ if isinstance(m, type) else type(m).__name__ for m in DEFAULT_MODULES]
+    assert "V12Lineage" in names
+    assert names.index("V11VariantCall") < names.index("V12Lineage") < names.index("V10Report")
+
+
 def test_parse_pangolin(tmp_path):
     csv = tmp_path / "lineage_report.csv"
     csv.write_text(
