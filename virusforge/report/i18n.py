@@ -66,6 +66,10 @@ EN = {
     "Varyantlar (iVar — frekans + gen/CDS + amino asit)": "Variants (iVar — frequency + gene/CDS + amino acid)",
     "LoFreq doğrulanan varyant (çapraz-kontrol)": "LoFreq-confirmed variants (cross-check)",
     "referans": "reference", "Gen/CDS": "Gene/CDS",
+    "Değişim türü": "Change type", "Etki": "Effect",
+    "substitüsyon": "substitution", "insersiyon": "insertion", "delesyon": "deletion",
+    "sinonim": "synonymous", "missense": "missense", "nonsense (stop)": "nonsense (stop)",
+    "frameshift": "frameshift", "çerçeve-içi indel": "in-frame indel",
     "Pozisyon": "Position", "Değişim": "Change", "Frekans": "Frequency", "Derinlik": "Depth",
     "evet": "yes", "hayır": "no",
     # V11 — Soy/Klad Tayini

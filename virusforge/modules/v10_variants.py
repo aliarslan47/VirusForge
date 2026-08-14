@@ -65,8 +65,35 @@ def fasta_first_id(path) -> str:
     return Path(str(path)).stem if path else ""
 
 
+def classify_variant(alt: str) -> str:
+    """iVar ALT kodlaması → değişim türü. `+XXX`=insersiyon, `-XXX`=delesyon, düz baz=substitüsyon."""
+    alt = (alt or "").strip()
+    if alt.startswith("+"):
+        return "insersiyon"
+    if alt.startswith("-"):
+        return "delesyon"
+    return "substitüsyon"
+
+
+def variant_effect(vtype: str, ref_aa: str, alt_aa: str, alt: str) -> str:
+    """Varyantın protein etkisi. SNP: sinonim/missense/nonsense (AA'dan). İndel: frameshift
+    (uzunluk 3'ün katı değil) ya da çerçeve-içi indel. AA yoksa boş."""
+    ref_aa, alt_aa = (ref_aa or "").strip(), (alt_aa or "").strip()
+    if vtype == "substitüsyon" and ref_aa and alt_aa:
+        if ref_aa == alt_aa:
+            return "sinonim"
+        if alt_aa == "*":
+            return "nonsense (stop)"
+        return "missense"
+    if vtype in ("insersiyon", "delesyon"):
+        indel_len = len((alt or "")) - 1                 # +/- işareti hariç baz sayısı
+        return "frameshift" if indel_len % 3 else "çerçeve-içi indel"
+    return ""
+
+
 def parse_ivar_variants(tsv_path) -> list:
-    """iVar variants TSV → [{pos,ref,alt,freq,depth,aa}]. aa = REF_AA→ALT_AA (varsa)."""
+    """iVar variants TSV → [{pos,ref,alt,type,effect,freq,depth,aa}]. type=substitüsyon/insersiyon/
+    delesyon; effect=sinonim/missense/nonsense/frameshift; aa=REF_AA→ALT_AA (varsa)."""
     import csv
     out = []
     with open(tsv_path, newline="") as fh:
@@ -77,6 +104,9 @@ def parse_ivar_variants(tsv_path) -> list:
                 continue
             ref_aa, alt_aa = (r.get("REF_AA") or "").strip(), (r.get("ALT_AA") or "").strip()
             aa = f"{ref_aa}→{alt_aa}" if ref_aa and alt_aa else ""
+            alt = (r.get("ALT") or "").strip()
+            vtype = classify_variant(alt)
+            effect = variant_effect(vtype, ref_aa, alt_aa, alt)
             try:
                 freq = float(r.get("ALT_FREQ"))
             except (TypeError, ValueError):
@@ -85,8 +115,8 @@ def parse_ivar_variants(tsv_path) -> list:
                 depth = int(r.get("TOTAL_DP"))
             except (TypeError, ValueError):
                 depth = 0
-            out.append({"pos": pos, "ref": (r.get("REF") or "").strip(),
-                        "alt": (r.get("ALT") or "").strip(), "freq": freq, "depth": depth, "aa": aa})
+            out.append({"pos": pos, "ref": (r.get("REF") or "").strip(), "alt": alt,
+                        "type": vtype, "effect": effect, "freq": freq, "depth": depth, "aa": aa})
     return out
 
 

@@ -130,8 +130,10 @@ def test_parse_ivar_variants(tmp_path):
         "NC\t3037\tC\tT\t900\t100\t0.10\t1000\tTRUE\t\t\n")
     v = parse_ivar_variants(p)
     assert len(v) == 3
-    assert v[0] == {"pos": 241, "ref": "C", "alt": "T", "freq": 0.998, "depth": 1000, "aa": ""}
+    assert v[0] == {"pos": 241, "ref": "C", "alt": "T", "type": "substitüsyon", "effect": "",
+                    "freq": 0.998, "depth": 1000, "aa": ""}
     assert v[1]["aa"] == "D→G" and v[1]["freq"] == 0.60
+    assert v[1]["type"] == "substitüsyon" and v[1]["effect"] == "missense"
 
 
 def test_parse_lofreq_vcf(tmp_path):

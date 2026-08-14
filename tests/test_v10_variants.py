@@ -123,3 +123,32 @@ def test_report_variant_gene_column():
                                "freq": 0.99, "depth": 900, "aa": ""}]}}]}
     tr = render_html(rep, lang="tr")
     assert "Gen/CDS" in tr and ">S<" in tr    # gen kolonu + değeri
+
+
+def test_classify_variant():
+    from virusforge.modules.v10_variants import classify_variant
+    assert classify_variant("T") == "substitüsyon"
+    assert classify_variant("+AC") == "insersiyon"
+    assert classify_variant("-TCTGGTTTT") == "delesyon"
+
+
+def test_variant_effect():
+    from virusforge.modules.v10_variants import variant_effect
+    assert variant_effect("substitüsyon", "L", "L", "T") == "sinonim"
+    assert variant_effect("substitüsyon", "D", "G", "G") == "missense"
+    assert variant_effect("substitüsyon", "Q", "*", "T") == "nonsense (stop)"
+    assert variant_effect("delesyon", "", "", "-TCT") == "çerçeve-içi indel"  # 3 baz → çerçeve-içi
+    assert variant_effect("delesyon", "", "", "-T") == "frameshift"          # 1 baz → frameshift
+    assert variant_effect("delesyon", "", "", "-TCTGGT") == "çerçeve-içi indel"  # 6 baz → çerçeve-içi
+
+
+def test_parse_ivar_variants_has_type_effect(tmp_path):
+    from virusforge.modules.v10_variants import parse_ivar_variants
+    tsv = tmp_path / "iv.tsv"
+    tsv.write_text(
+        "REGION\tPOS\tREF\tALT\tREF_DP\tREF_RV\tREF_QUAL\tALT_DP\tALT_RV\tALT_QUAL\tALT_FREQ\tTOTAL_DP\tPVAL\tPASS\tREF_AA\tALT_AA\n"
+        "NC\t23403\tA\tG\t5\t0\t30\t900\t0\t35\t0.99\t905\t0\tTRUE\tD\tG\n"
+        "NC\t11074\tC\t-T\t3\t0\t30\t100\t0\t35\t0.4\t103\t0\tTRUE\t\t\n")
+    iv = parse_ivar_variants(tsv)
+    assert iv[0]["type"] == "substitüsyon" and iv[0]["effect"] == "missense"
+    assert iv[1]["type"] == "delesyon" and iv[1]["effect"] == "frameshift"

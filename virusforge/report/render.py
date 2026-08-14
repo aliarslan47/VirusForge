@@ -676,12 +676,15 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
         iv = var.get("ivar_variants") or []
         if iv:
             rows = [[_esc(v.get("pos")), _esc(v.get("gene") or "—"),
+                     L(v.get("type") or "—"),
                      f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
+                     L(v.get("effect") or "—"),
                      f"{100*v.get('freq',0):.1f} %", _esc(v.get("depth")), _esc(v.get("aa") or "—")]
                     for v in iv[:200]]
             cap = f"{L('Varyantlar (iVar — frekans + gen/CDS + amino asit)')} — {L('referans')}: {vref}"
             v11body += table(cap,
-                             ["Pozisyon", "Gen/CDS", "Referans→Örnek", "Frekans", "Derinlik", "AA"], rows)
+                             ["Pozisyon", "Gen/CDS", "Değişim türü", "Referans→Örnek", "Etki",
+                              "Frekans", "Derinlik", "AA"], rows)
     p.append(section("V10", "Varyant & Quasispecies Çağırma", v11body))
 
     # V11 — Soy/Klad Tayini (RNA yolu). DAİMA render; DNA'da body boş → section() net sebep.
