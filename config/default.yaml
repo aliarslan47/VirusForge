@@ -82,22 +82,8 @@ tools:
     model: sarscov2               # v-annotate.pl --mkey
     conda_env: vf_vadr
     conda_bin: /home/ali/miniconda3/bin/conda
-  pangolin:                       # SARS-CoV-2 PANGO soy tayini (RNA yolu, izole env)
-    # OPSİYONEL/KAPALI: pangolin'in usher/gofasta bağımlılıkları bu ortamda conda-solve
-    # edilemedi (30dk+ takıldı). Nextclade zaten PANGO soyunu (Nextclade_pango) veriyor →
-    # pangolin gereksiz. Ağ/env erişimi olan yerde `enabled: true` ile açılabilir.
-    enabled: false
-    conda_env: vf_pangolin
-    conda_bin: /home/ali/miniconda3/bin/conda
-    threads: 4
-  nextclade:                      # klad/mutasyon/QC (çok-patojen; şimdilik SARS-CoV-2, izole env)
+  nextclade:                      # klad + PANGO soyu / mutasyon / QC (çok-patojen; şimdilik SARS-CoV-2, izole env)
     conda_env: vf_nextclade
     conda_bin: /home/ali/miniconda3/bin/conda
     dataset: sars-cov-2
     dataset_dir: databases/nextclade/sars-cov-2
-
-optional:                # default kapalı (tasarım kararı)
-  virsorter2: false
-  vibrant: false
-  sourmash: false
-  kraken2: false

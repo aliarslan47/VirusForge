@@ -1,4 +1,4 @@
-"""V10 — Final Report & Export."""
+"""V12 — Final Report & Export."""
 from __future__ import annotations
 
 import json
@@ -8,13 +8,13 @@ from ..module import Context, Module, ModuleResult, Status
 from ..report.render import render_html
 
 # Rapor sırası (M1 çekirdek + M2-A faj zenginleştirme: V08 AMR)
-_ORDER = ["V00", "V01", "V02", "V03", "V04", "V05", "V06", "V07", "V08", "V09", "V11", "V12"]
+_ORDER = ["V00", "V01", "V02", "V03", "V04", "V05", "V06", "V07", "V08", "V09", "V10", "V11"]
 
 
-class V10Report(Module):
+class V12Report(Module):
     name = "Final Report & Export"
-    code = "V10"
-    dirname = "V10_REPORT_EXPORT"
+    code = "V12"
+    dirname = "V12_REPORT_EXPORT"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
@@ -41,8 +41,8 @@ class V10Report(Module):
             modules.append(data)
             provenance.extend(data.get("provenance", []))
 
-        # V10 kendini de PASS olarak ekle (rapor kendi summary'sinden önce üretiliyor)
-        modules.append({"code": "V10", "module": self.name, "status": "PASS",
+        # V12 kendini de PASS olarak ekle (rapor kendi summary'sinden önce üretiliyor)
+        modules.append({"code": "V12", "module": self.name, "status": "PASS",
                         "metrics": {"note": "rapor + provenance üretildi"}})
         report = {
             "sample": Path(ctx.sample_dir).name,

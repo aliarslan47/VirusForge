@@ -322,11 +322,12 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
     counters = {"t": 0, "f": 0}
 
     def table(caption, headers, rows):
+        # Boş tablo: "Veri yok" placeholder'ı yerine hiç üretme (sonuçsuz/çizgi görünmesin).
+        # Bölüm tümüyle boş kalırsa section() net "uygulanmaz" sebebini yazar.
+        if not rows:
+            return ""
         counters["t"] += 1
         n = counters["t"]
-        if not rows:
-            return (f"<div class='cap'>{L('Tablo')} {n}. {_esc(L(caption))}</div>"
-                    f"<p class='na'>{_esc(L('Veri yok / analiz uygulanmadı.'))}</p>")
         head = "".join(f"<th>{_esc(L(h))}</th>" for h in headers)
         body = "".join("<tr>" + "".join(f"<td>{L(c) if isinstance(c, str) else c}</td>" for c in r) + "</tr>"
                        for r in rows)
@@ -426,8 +427,13 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
     def section(code, name, body):
         stt = mods.get(code, {}).get("status", "SKIPPED")
         # Araç görselleri DAİMA raporda: bölümde açıkça gömülmemiş PNG'ler otomatik eklenir
-        body += figs_for(code, f"{code} — araç görseli")
-        return (f"<section><h2><span class='mc'>{code}</span> {_esc(L(name))} {_pill(stt)}</h2>{body}</section>")
+        figs = figs_for(code, f"{code} — araç görseli")
+        # Bölümün hiç içeriği yoksa (boş tablo → "" + görsel yok): boş/çizgi bırakma, net sebep yaz.
+        # (Bölüm-özel çevrili N/A mesajı olanlar korunur; not TR olabileceği için rapora sızdırılmaz.)
+        if not body.strip() and not figs.strip():
+            body = f"<p class='na'>{L('Bu analiz bu örnek/yol için uygulanmaz')}</p>"
+        return (f"<section><h2><span class='mc'>{code}</span> {_esc(L(name))} "
+                f"{_pill(stt)}</h2>{body}{figs}</section>")
 
     # V00
     ev = M["V00"].get("evidence", {})
@@ -481,6 +487,10 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
             ["Ortalama derinlik", f"{_esc(cov.get('mean_depth'))}×"],
             ["Kapsanan pozisyon", f"{_esc(cov.get('covered_bases'))} / {_esc(cov.get('positions'))}"],
         ])
+        # Genom-boyu kapsama derinliği görseli (RNA genom görseli) — düzgün başlıkla açıkça göster
+        cov_fig = figs_for("V03", "Genom-boyu okuma derinliği (kapsama) — kırmızı çizgi min derinlik eşiği.")
+        if cov_fig:
+            v04body += cov_fig
     else:
         v04body += table("Viral genom tamlık & kontaminasyon (CheckV)", ["Metrik", "Değer"], [
             ["Tamlık", f"{_esc(cv.get('completeness'))} %"],
@@ -647,8 +657,9 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
                                        "örnek", syn.get("ref", "referans")))
     p.append(section("V09", "Karşılaştırmalı Tanımlama & Filogeni", v09body))
 
-    # V11 — Varyant & Quasispecies (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)
-    var = M.get("V11", {}) or {}
+    # V10 — Varyant & Quasispecies (RNA yolu). DAİMA render; DNA'da body boş → section() net sebep.
+    var = M.get("V10", {}) or {}
+    v11body = ""
     if var.get("ivar_variants") is not None or var.get("lofreq_variants") is not None:
         lf = var.get("lofreq_variants") or []
         vref = var.get("reference") or "—"
@@ -673,33 +684,22 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
             cap = f"{L('Varyantlar (iVar — frekans + gen/CDS + amino asit)')} — {L('referans')}: {vref}"
             v11body += table(cap,
                              ["Pozisyon", "Gen/CDS", "Referans→Örnek", "Frekans", "Derinlik", "AA"], rows)
-        p.append(section("V11", "Varyant & Quasispecies Çağırma", v11body))
+    p.append(section("V10", "Varyant & Quasispecies Çağırma", v11body))
 
-    # V12 — Soy/Klad Tayini (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)
-    lin = M.get("V12", {}) or {}
-    if lin.get("pangolin") or lin.get("nextclade"):
-        v12body = ""
-        pg = lin.get("pangolin") or {}
-        if pg:
-            v12body += table("Pangolin — PANGO soy hattı", ["Metrik", "Değer"], [
-                ["Soy hattı", _esc(pg.get("lineage") or "—")],
-                ["Scorpio", _esc(pg.get("scorpio_call") or "—")],
-                ["Conflict", _esc(pg.get("conflict") or "—")],
-                ["QC", _esc(pg.get("qc_status") or "—")],
-                ["Not", _esc(pg.get("note") or "—")],
-                ["Sürüm", _esc(pg.get("pango_version") or "—")],
-            ])
-        nc = lin.get("nextclade") or {}
-        if nc:
-            v12body += table("Nextclade — klad & mutasyon", ["Metrik", "Değer"], [
-                ["Klad", _esc(nc.get("clade") or "—")],
-                ["Nextclade PANGO", _esc(nc.get("nextclade_pango") or "—")],
-                ["QC", _esc(nc.get("qc_overall") or "—")],
-                ["Toplam substitüsyon", _esc(nc.get("total_substitutions"))],
-                ["Eksik (N)", _esc(nc.get("total_missing"))],
-                ["AA substitüsyon", _esc(nc.get("total_aa_substitutions"))],
-            ])
-        p.append(section("V12", "Soy/Klad Tayini", v12body))
+    # V11 — Soy/Klad Tayini (RNA yolu). DAİMA render; DNA'da body boş → section() net sebep.
+    lin = M.get("V11", {}) or {}
+    v12body = ""
+    nc = lin.get("nextclade") or {}
+    if nc:
+        v12body += table("Nextclade — klad & mutasyon", ["Metrik", "Değer"], [
+            ["Klad", _esc(nc.get("clade") or "—")],
+            ["Nextclade PANGO", _esc(nc.get("nextclade_pango") or "—")],
+            ["QC", _esc(nc.get("qc_overall") or "—")],
+            ["Toplam substitüsyon", _esc(nc.get("total_substitutions"))],
+            ["Eksik (N)", _esc(nc.get("total_missing"))],
+            ["AA substitüsyon", _esc(nc.get("total_aa_substitutions"))],
+        ])
+    p.append(section("V11", "Soy/Klad Tayini", v12body))
 
     # ---------- Araçlar & referanslar ----------
     tool_rows = []

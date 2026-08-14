@@ -103,10 +103,6 @@ lofreq:
   repo: https://github.com/CSB5/lofreq
   version_cmd: ["lofreq", "version"]
   doi: "10.1093/nar/gks918"
-pangolin:
-  repo: https://github.com/cov-lineages/pangolin
-  version_cmd: ["pangolin", "--version"]
-  doi: "10.1038/s41564-020-0770-5"
 nextclade:
   repo: https://github.com/nextstrain/nextclade
   version_cmd: ["nextclade", "--version"]

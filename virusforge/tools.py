@@ -271,12 +271,6 @@ def blastp_cmd(query_faa, db_prefix, out_tsv, threads=8):
             "-outfmt", "6 qseqid sseqid pident bitscore", "-out", str(out_tsv)]
 
 
-def pangolin_cmd(consensus, out_csv, threads=4, conda_env=None, conda_bin="conda"):
-    """Pangolin PANGO soy tayini: pangolin <consensus.fa> --outfile <out.csv>."""
-    return _conda_wrap(["pangolin", str(consensus), "--outfile", str(out_csv),
-                        "-t", str(threads)], conda_env, conda_bin)
-
-
 def nextclade_run_cmd(consensus, dataset_dir, out_tsv, conda_env=None, conda_bin="conda"):
     """Nextclade klad/mutasyon/QC: nextclade run -D <dataset_dir> --output-tsv <tsv> <consensus>."""
     return _conda_wrap(["nextclade", "run", "-D", str(dataset_dir),

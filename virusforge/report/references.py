@@ -23,8 +23,7 @@ TOOL_REFERENCES = [
     ("mafft", "MAFFT", "Çoklu dizi hizalama", "https://mafft.cbrc.jp/alignment/software/", "10.1093/molbev/mst010"),
     ("iqtree2", "IQ-TREE2", "Maksimum-olabilirlik filogeni", "https://github.com/iqtree/iqtree2", "10.1093/molbev/msaa015"),
     ("taxmyphage", "taxmyPHAGE", "ICTV cins/tür (VIRIDIC + VMR)", "https://github.com/millardlab/taxmyphage", "10.1099/mgen.0.001344"),
-    ("pangolin", "Pangolin", "SARS-CoV-2 PANGO soy tayini", "https://github.com/cov-lineages/pangolin", "10.1038/s41564-020-0770-5"),
-    ("nextclade", "Nextclade", "Klad/mutasyon/QC (çok-patojen)", "https://github.com/nextstrain/nextclade", "10.21105/joss.03773"),
+    ("nextclade", "Nextclade", "Klad + PANGO soyu / mutasyon / QC (çok-patojen)", "https://github.com/nextstrain/nextclade", "10.21105/joss.03773"),
 ]
 
 # Rapor bölüm sırası ve modül adları
@@ -39,7 +38,7 @@ PIPELINE_STEPS = [
     ("V07", "Phage Characterization", "PhaBOX"),
     ("V08", "AMR & Virulence", "AMRFinderPlus"),
     ("V09", "Comparative Identification & Phylogeny", "BLAST + IQ-TREE2 + taxmyPHAGE"),
-    ("V11", "Variant & Quasispecies Calling", "iVar variants + LoFreq"),
-    ("V12", "Lineage / Clade Assignment", "Pangolin + Nextclade"),
-    ("V10", "Final Report & Export", "VirusForge"),
+    ("V10", "Variant & Quasispecies Calling", "iVar variants + LoFreq"),
+    ("V11", "Lineage / Clade Assignment", "Nextclade"),
+    ("V12", "Final Report & Export", "VirusForge"),
 ]

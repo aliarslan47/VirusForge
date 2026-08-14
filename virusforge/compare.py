@@ -1,7 +1,7 @@
 """Çoklu-örnek karşılaştırma: birden çok tamamlanmış koşuyu birlikte karşılaştır
 (ortak filogenetik ağaç + örnekler-arası benzerlik matrisi + ICTV özet).
 
-Per-örnek V-modülleri (V00–V10) dokunulmaz; bu ayrı bir komuttur (CLI `compare`).
+Per-örnek V-modülleri (V00–V12) dokunulmaz; bu ayrı bir komuttur (CLI `compare`).
 Ağ gerektirmez (yerel MAFFT/IQ-TREE2/blastn).
 """
 from __future__ import annotations

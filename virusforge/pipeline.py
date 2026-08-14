@@ -17,15 +17,15 @@ from .modules.v06_annotate import V06Annotate
 from .modules.v07_phage_char import V07PhageChar
 from .modules.v08_amr import V08Amr
 from .modules.v09_comparative import V09Comparative
-from .modules.v11_variants import V11VariantCall
-from .modules.v12_lineage import V12Lineage
-from .modules.v10_report import V10Report
+from .modules.v10_variants import V10VariantCall
+from .modules.v11_lineage import V11Lineage
+from .modules.v12_report import V12Report
 
 # M1 çekirdek + M2-A faj zenginleştirme + M3 karşılaştırma (mode/faj/viral'e göre kendi içinde dallanır)
 DEFAULT_MODULES = [
     V00Input, V01ReadQC, V02Assembly, V03PolishQC,
     V04Identify, V05Taxonomy, V06Annotate, V07PhageChar,
-    V08Amr, V09Comparative, V11VariantCall, V12Lineage, V10Report,
+    V08Amr, V09Comparative, V10VariantCall, V11Lineage, V12Report,
 ]
 
 

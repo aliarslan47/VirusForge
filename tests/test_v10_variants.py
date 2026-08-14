@@ -1,8 +1,8 @@
-"""V11 varyant çağırma: RNA+BAM → varyantlar; DNA veya BAM-yok → NOT_APPLICABLE."""
+"""V10 varyant çağırma: RNA+BAM → varyantlar; DNA veya BAM-yok → NOT_APPLICABLE."""
 from pathlib import Path
 
 from virusforge.module import Context, Status
-from virusforge.modules.v11_variants import V11VariantCall
+from virusforge.modules.v10_variants import V10VariantCall
 from virusforge import util
 
 
@@ -22,17 +22,17 @@ def _ctx(tmp_path, molecule="rna", with_bam=True):
     return ctx
 
 
-def test_v11_na_on_dna(tmp_path):
-    res = V11VariantCall().run(_ctx(tmp_path, molecule="dna"))
+def test_v10_na_on_dna(tmp_path):
+    res = V10VariantCall().run(_ctx(tmp_path, molecule="dna"))
     assert res.status == Status.NOT_APPLICABLE
 
 
-def test_v11_na_when_no_bam(tmp_path):
-    res = V11VariantCall().run(_ctx(tmp_path, with_bam=False))
+def test_v10_na_when_no_bam(tmp_path):
+    res = V10VariantCall().run(_ctx(tmp_path, with_bam=False))
     assert res.status == Status.NOT_APPLICABLE
 
 
-def test_v11_calls_variants_on_rna(tmp_path, monkeypatch):
+def test_v10_calls_variants_on_rna(tmp_path, monkeypatch):
     ctx = _ctx(tmp_path)
 
     def fake_pipe(c1, c2, out_path, log_path=None):
@@ -49,32 +49,32 @@ def test_v11_calls_variants_on_rna(tmp_path, monkeypatch):
                              "NC\t241\t.\tC\tT\t5000\tPASS\tDP=1000;AF=0.99\n")
         return None
     monkeypatch.setattr(util, "run_pipe", fake_pipe)
-    monkeypatch.setattr("virusforge.modules.v11_variants.safe_run", fake_safe_run)
+    monkeypatch.setattr("virusforge.modules.v10_variants.safe_run", fake_safe_run)
 
-    res = V11VariantCall().run(ctx)
-    m = ctx.results["V11"]
+    res = V10VariantCall().run(ctx)
+    m = ctx.results["V10"]
     assert res.status == Status.PASS
     assert m["n_total"] == 2 and m["n_consensus"] == 1 and m["n_minor"] == 1 and m["quasispecies"] is True
     assert len(m["lofreq_variants"]) == 1
 
 
 def test_fasta_first_id_reads_accession(tmp_path):
-    from virusforge.modules.v11_variants import fasta_first_id
+    from virusforge.modules.v10_variants import fasta_first_id
     f = tmp_path / "ref.fa"
     f.write_text(">NC_045512.2 Severe acute respiratory syndrome\nACGT\n")
     assert fasta_first_id(f) == "NC_045512.2"
 
 
 def test_fasta_first_id_missing_file_falls_back(tmp_path):
-    from virusforge.modules.v11_variants import fasta_first_id
+    from virusforge.modules.v10_variants import fasta_first_id
     assert fasta_first_id(tmp_path / "yok.fa") == "yok"
 
 
-def test_render_v11_shows_reference():
+def test_render_v10_shows_reference():
     """Varyant bölümü koordinat sistemini (referans accession) göstermeli."""
     from virusforge.report.render import render_html
     rep = {"sample": "CoV2", "mode": "SHORT_READ", "run_id": "r", "modules": [
-        {"code": "V11", "status": "PASS", "metrics": {
+        {"code": "V10", "status": "PASS", "metrics": {
             "reference": "NC_045512", "n_total": 3, "n_consensus": 2, "n_minor": 1,
             "quasispecies": True,
             "ivar_variants": [{"pos": 241, "ref": "C", "alt": "T", "freq": 0.99, "depth": 900, "aa": ""}],
@@ -86,7 +86,7 @@ def test_render_v11_shows_reference():
 
 
 def test_parse_gene_intervals_and_gene_at(tmp_path):
-    from virusforge.modules.v11_variants import parse_gene_intervals, gene_at
+    from virusforge.modules.v10_variants import parse_gene_intervals, gene_at
     gff = tmp_path / "genes.gff3"
     gff.write_text(
         "##gff-version 3\n"
@@ -101,7 +101,7 @@ def test_parse_gene_intervals_and_gene_at(tmp_path):
 
 
 def test_gene_at_bad_pos_is_safe():
-    from virusforge.modules.v11_variants import gene_at
+    from virusforge.modules.v10_variants import gene_at
     assert gene_at(None, [("S", 1, 10)]) == ""
 
 
@@ -117,7 +117,7 @@ def test_report_no_warning_badge():
 def test_report_variant_gene_column():
     from virusforge.report.render import render_html
     rep = {"sample": "x", "mode": "SHORT_READ", "run_id": "r", "modules": [
-        {"code": "V11", "status": "PASS", "metrics": {
+        {"code": "V10", "status": "PASS", "metrics": {
             "reference": "NC_045512", "n_total": 1, "n_consensus": 1, "n_minor": 0,
             "ivar_variants": [{"pos": 23403, "gene": "S", "ref": "A", "alt": "G",
                                "freq": 0.99, "depth": 900, "aa": ""}]}}]}

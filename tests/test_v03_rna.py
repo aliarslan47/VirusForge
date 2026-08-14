@@ -28,3 +28,36 @@ def test_v03_rna_computes_coverage_not_checkv(tmp_path, monkeypatch):
     m = ctx.results["V03"]
     assert "coverage" in m and m["coverage"]["breadth_pct"] == 80.0
     assert "checkv" not in m                              # RNA'da CheckV (faj-odaklı) çalışmaz
+
+
+def test_plot_coverage_creates_png(tmp_path):
+    """samtools depth TSV → coverage.png (matplotlib). Gerçek dosya üretilmeli."""
+    from virusforge.modules.v03_polish_qc import plot_coverage
+    depth = tmp_path / "depth.tsv"
+    depth.write_text("\n".join(f"NC\t{i}\t{50 + (i % 20)}" for i in range(1, 300)) + "\n")
+    out = tmp_path / "coverage.png"
+    ok = plot_coverage(depth, out, min_depth=10, log_path=tmp_path / "log")
+    assert ok is True
+    assert out.exists() and out.stat().st_size > 0
+
+
+def test_plot_coverage_empty_is_false(tmp_path):
+    from virusforge.modules.v03_polish_qc import plot_coverage
+    depth = tmp_path / "empty.tsv"
+    depth.write_text("")
+    out = tmp_path / "cov.png"
+    assert plot_coverage(depth, out, log_path=tmp_path / "log") is False
+    assert not out.exists()
+
+
+def test_render_na_section_shows_reason():
+    """N/A modül (içerik yok) boş tablo/'Veri yok' yerine net sebep gösterir; EN'e TR sızmaz."""
+    from virusforge.report.render import render_html
+    rep = {"sample": "x", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V05", "status": "NOT_APPLICABLE", "metrics": {"note": "RNA yolu — Mash faj-özel"}}]}
+    tr = render_html(rep, lang="tr")
+    assert "uygulanmaz" in tr
+    assert "Veri yok" not in tr                    # boş placeholder kalmadı
+    en = render_html(rep, lang="en")
+    assert "does not apply" in en
+    assert "uygulanmaz" not in en                  # ham TR sızmasın (not TR olduğu için gösterilmez)

@@ -7,6 +7,7 @@ EN = {
     "VirusForge — Viral / Faj Genom Analiz Raporu": "VirusForge — Viral / Phage Genome Analysis Report",
     "Genel Bakış": "Overview", "Tablo": "Table", "Şekil": "Figure",
     "Veri yok / analiz uygulanmadı.": "No data / analysis not performed.",
+    "Bu analiz bu örnek/yol için uygulanmaz": "This analysis does not apply to this sample/pathway",
     "Örnek": "Sample", "Sekans tipi": "Sequencing type",
     "Alan": "Field", "Değer": "Value", "Metrik": "Metric", "Kategori": "Category",
     "Gen sayısı": "Gene count", "Düzey": "Level", "Sınıf": "Class", "Kimlik": "Identity",
@@ -46,6 +47,8 @@ EN = {
     "Referans kapsama (RNA)": "Reference coverage (RNA)",
     "Kapsama genişliği": "Coverage breadth", "Ortalama derinlik": "Mean depth",
     "Kapsanan pozisyon": "Covered positions",
+    "Genom-boyu okuma derinliği (kapsama) — kırmızı çizgi min derinlik eşiği.":
+        "Genome-wide read depth (coverage) — red line marks the minimum-depth threshold.",
     "Genom Annotation (VADR)": "Genome Annotation (VADR)",
     "VADR doğrulama (RNA anotasyon)": "VADR validation (RNA annotation)",
     "Model": "Model", "Sonuç": "Result", "Geçen dizi": "Passing sequences",
@@ -65,9 +68,8 @@ EN = {
     "referans": "reference", "Gen/CDS": "Gene/CDS",
     "Pozisyon": "Position", "Değişim": "Change", "Frekans": "Frequency", "Derinlik": "Depth",
     "evet": "yes", "hayır": "no",
-    # V12 — Soy/Klad Tayini
+    # V11 — Soy/Klad Tayini
     "Soy/Klad Tayini": "Lineage / Clade Assignment",
-    "Pangolin — PANGO soy hattı": "Pangolin — PANGO lineage",
     "Nextclade — klad & mutasyon": "Nextclade — clade & mutations",
     "Not": "Note", "Klad": "Clade", "Nextclade PANGO": "Nextclade PANGO",
     "Toplam substitüsyon": "Total substitutions", "Eksik (N)": "Missing (N)",

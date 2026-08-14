@@ -1,8 +1,8 @@
-"""V12 — Soy/Klad Tayini (RNA yolu, Faz 3).
+"""V11 — Soy/Klad Tayini (RNA yolu, Faz 3).
 
-RNA virüs konsensüs genomundan soy hattı (Pangolin PANGO) + klad (Nextclade) tayini.
-V02'nin ürettiği konsensüs FASTA (`ctx.artifacts["V02"]["draft"]`) üzerinden. İki araç bağımsız
-çalışır (biri düşse diğeri devam, sessiz-hata yok). DNA/faj yolunda veya konsensüs yoksa N/A.
+RNA virüs konsensüs genomundan klad + PANGO soyu (Nextclade) tayini. V02'nin ürettiği konsensüs
+FASTA (`ctx.artifacts["V02"]["draft"]`) üzerinden. DNA/faj yolunda veya konsensüs yoksa N/A.
+Not: Nextclade `Nextclade_pango` alanı PANGO soyunu zaten verdiği için ayrı Pangolin kullanılmaz.
 """
 from __future__ import annotations
 
@@ -20,27 +20,6 @@ def _int(v):
         return int(float(v))
     except (TypeError, ValueError):
         return None
-
-
-def parse_pangolin(csv_path) -> dict:
-    """Pangolin lineage_report.csv → tek örnek satırı özeti. Boş/başlıksız → {}."""
-    p = Path(csv_path)
-    if not p.exists():
-        return {}
-    with open(p, newline="") as fh:
-        rows = list(csv.DictReader(fh))
-    if not rows:
-        return {}
-    r = rows[0]
-    return {
-        "lineage": (r.get("lineage") or "").strip(),
-        "conflict": (r.get("conflict") or "").strip(),
-        "scorpio_call": (r.get("scorpio_call") or "").strip(),
-        "qc_status": (r.get("qc_status") or "").strip(),
-        "note": (r.get("note") or "").strip(),
-        "version": (r.get("version") or "").strip(),
-        "pango_version": (r.get("pangolin_version") or "").strip(),
-    }
 
 
 def parse_nextclade(tsv_path) -> dict:
@@ -63,10 +42,10 @@ def parse_nextclade(tsv_path) -> dict:
     }
 
 
-class V12Lineage(Module):
-    code = "V12"
+class V11Lineage(Module):
+    code = "V11"
     name = "Soy/Klad Tayini"
-    dirname = "V12_LINEAGE"
+    dirname = "V11_LINEAGE"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
@@ -85,25 +64,7 @@ class V12Lineage(Module):
         problems: list[str] = []
         native = dirs["03_native_outputs"]
 
-        # Pangolin (izole vf_pangolin env) — OPSİYONEL; varsayılan kapalı.
-        # Nextclade zaten PANGO soyunu (Nextclade_pango) veriyor; pangolin'in usher/gofasta
-        # bağımlılıkları ağır (conda-solve bu ortamda takıldı) → bilinçli kapalı = hata değil.
-        if get(ctx.cfg, "tools.pangolin.enabled", False):
-            pcsv = native / "lineage_report.csv"
-            err = safe_run(tools.pangolin_cmd(cons, pcsv,
-                                              get(ctx.cfg, "tools.pangolin.threads", 4),
-                                              get(ctx.cfg, "tools.pangolin.conda_env", None),
-                                              get(ctx.cfg, "tools.pangolin.conda_bin", "conda")),
-                           dirs["07_logs"] / "pangolin.log")
-            pang = parse_pangolin(pcsv)
-            if pang:
-                metrics["pangolin"] = pang
-            elif err:
-                problems.append(f"Pangolin: {err[:120]}")
-            else:
-                problems.append("Pangolin: soy atanmadı")
-
-        # Nextclade (izole vf_nextclade env)
+        # Nextclade (izole vf_nextclade env) — klad + PANGO soyu + QC + mutasyon
         dataset_dir = get(ctx.cfg, "tools.nextclade.dataset_dir", "")
         if not dataset_dir or not Path(dataset_dir).exists():
             problems.append(f"Nextclade: dataset dizini yok ({dataset_dir}); "
@@ -122,7 +83,7 @@ class V12Lineage(Module):
             else:
                 problems.append("Nextclade: klad atanmadı")
 
-        if "pangolin" not in metrics and "nextclade" not in metrics:
+        if "nextclade" not in metrics:
             metrics["error"] = "; ".join(problems) or "soy/klad üretilmedi"
             return ModuleResult(Status.WARNING,
                                 self.write_summary(ctx.run_dir, Status.WARNING, metrics), metrics)

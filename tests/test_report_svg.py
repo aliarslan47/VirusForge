@@ -100,10 +100,10 @@ def test_render_html_structural_vs_nonstructural_table():
     assert "Structural" in en and "Non-structural" in en and "Yapısal olmayan" not in en
 
 
-def test_render_html_v11_variants():
+def test_render_html_v10_variants():
     from virusforge.report.render import render_html
     rep = {"sample": "CoV2", "mode": "SHORT_READ", "run_id": "r", "modules": [
-        {"code": "V11", "status": "PASS", "metrics": {
+        {"code": "V10", "status": "PASS", "metrics": {
             "n_total": 12, "n_consensus": 9, "n_minor": 3, "quasispecies": True,
             "ivar_variants": [{"pos": 23403, "ref": "A", "alt": "G", "freq": 0.99, "depth": 1000, "aa": "D→G"},
                               {"pos": 3037, "ref": "C", "alt": "T", "freq": 0.12, "depth": 900, "aa": ""}],

@@ -121,7 +121,7 @@ def test_parse_vadr_fail_when_fail_list_nonempty(tmp_path):
 
 
 def test_parse_ivar_variants(tmp_path):
-    from virusforge.modules.v11_variants import parse_ivar_variants
+    from virusforge.modules.v10_variants import parse_ivar_variants
     p = tmp_path / "var.tsv"
     p.write_text(
         "REGION\tPOS\tREF\tALT\tREF_DP\tALT_DP\tALT_FREQ\tTOTAL_DP\tPASS\tREF_AA\tALT_AA\n"
@@ -135,7 +135,7 @@ def test_parse_ivar_variants(tmp_path):
 
 
 def test_parse_lofreq_vcf(tmp_path):
-    from virusforge.modules.v11_variants import parse_lofreq_vcf
+    from virusforge.modules.v10_variants import parse_lofreq_vcf
     p = tmp_path / "lf.vcf"
     p.write_text(
         "##fileformat=VCFv4.0\n"
@@ -149,7 +149,7 @@ def test_parse_lofreq_vcf(tmp_path):
 
 
 def test_variant_summary_counts():
-    from virusforge.modules.v11_variants import variant_summary
+    from virusforge.modules.v10_variants import variant_summary
     variants = [{"freq": 0.998}, {"freq": 0.60}, {"freq": 0.10}]
     s = variant_summary(variants)
     assert s["n_total"] == 3 and s["n_consensus"] == 2 and s["n_minor"] == 1

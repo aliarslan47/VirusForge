@@ -1,4 +1,4 @@
-"""V11 — Variant & Quasispecies Calling (RNA yolu, Faz 2).
+"""V10 — Variant & Quasispecies Calling (RNA yolu, Faz 2).
 
 RNA virüslerinde konsensus-seviyesi + düşük-frekanslı (intra-host / quasispecies) varyantlar.
 iVar variants (frekanslı tablo, amplikon-uyumlu) + LoFreq (duyarlı düşük-frekans). Faz 1'in ürettiği
@@ -121,10 +121,10 @@ def variant_summary(variants, key="freq") -> dict:
             "quasispecies": n_minor > 0}
 
 
-class V11VariantCall(Module):
+class V10VariantCall(Module):
     name = "Variant & Quasispecies Calling"
-    code = "V11"
-    dirname = "V11_VARIANT_CALLING"
+    code = "V10"
+    dirname = "V10_VARIANT_CALLING"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)
