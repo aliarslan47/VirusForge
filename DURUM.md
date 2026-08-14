@@ -278,6 +278,16 @@ Kullanıcı 4 istek; plan modu→onay→uygulama, **178 pytest yeşil**, SARS-Co
   haritası 2 PNG, V10/V11 DNA'da N/A sebebiyle görünür. **NOT:** eski run'ları yeniden üretirken eski-adlı
   orphan modül dizinlerini (V11_VARIANT_CALLING vb.) silmek gerekti (V12Report tüm summary'leri okur → kod çakışması).
 
+## 2026-08-14 — VARYANT TABLOSU: DEĞİŞİM TÜRÜ + ETKİ KOLONLARI
+Kullanıcı: varyantların hangi dönüşüm olduğu (delesyon/insersiyon/substitüsyon) + "başka şeyler" (protein etkisi)
+yazsın. `v10_variants`: **classify_variant** (iVar ALT kodlaması: `+`=insersiyon, `-`=delesyon, düz baz=substitüsyon)
++ **variant_effect** (SNP: AA'dan sinonim/missense/nonsense; indel: uzunluk 3'ün katı değilse frameshift, katıysa
+çerçeve-içi indel). parse_ivar_variants artık `type`+`effect` üretir; render varyant tablosuna "Değişim türü" +
+"Etki" kolonları (i18n tr+en; "Tür" taksonomide "Species" olduğundan çakışmayı önlemek için "Değişim türü").
+**SARS gerçek:** 100 substitüsyon + 8 delesyon + 1 insersiyon; 3 frameshift + 6 çerçeve-içi indel. **181 pytest.**
+NOT: SNP AA-etkisi (missense/sinonim) yalnız iVar GFF ile REF_AA/ALT_AA gelirse dolar; GFF'siz koşuda SNP etki
+boş ("—"), indel etkisi (frameshift/çerçeve-içi) her zaman hesaplanır. commit 369911b.
+
 ## Şu an nerede kaldık (özet)
 - **M2-B RNA yolu TAMAM: Faz 1 (konsensus/VADR) + Faz 2 (V10 varyant+gen anotasyonu) + Faz 3 (V11 soy/klad)** —
   hepsi SARS-CoV-2 gerçek doğrulandı. Rapor: WARNING'siz, araç görselleri+tablolar daima görünür, N/A bölümler
