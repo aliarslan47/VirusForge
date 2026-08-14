@@ -47,8 +47,8 @@ EN = {
     "Referans kapsama (RNA)": "Reference coverage (RNA)",
     "Kapsama genişliği": "Coverage breadth", "Ortalama derinlik": "Mean depth",
     "Kapsanan pozisyon": "Covered positions",
-    "Genom-boyu okuma derinliği (kapsama) — kırmızı çizgi min derinlik eşiği.":
-        "Genome-wide read depth (coverage) — red line marks the minimum-depth threshold.",
+    "Genom haritası — genler genom üzerinde (renk = ayrı gen/ORF).":
+        "Genome map — genes along the genome (color = distinct gene/ORF).",
     "Genom Annotation (VADR)": "Genome Annotation (VADR)",
     "VADR doğrulama (RNA anotasyon)": "VADR validation (RNA annotation)",
     "Model": "Model", "Sonuç": "Result", "Geçen dizi": "Passing sequences",

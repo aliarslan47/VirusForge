@@ -9,52 +9,6 @@ from ..config import get
 from ..module import Context, Module, ModuleResult, Status, is_rna, safe_run
 
 
-def plot_coverage(depth_path, out_png, min_depth=10, log_path=None) -> bool:
-    """`samtools depth -a` (ref<TAB>pos<TAB>depth) → genom-boyu kapsama derinliği PNG'si.
-    matplotlib (Agg, başsız). Başarı→True; veri yok/matplotlib yok/hata→False (sessizce atla ama
-    log'a yaz — sessiz-hata değil). RNA yolunda 'genom görseli' rolü (DNA'da pharokka haritası var)."""
-    try:
-        import matplotlib
-        matplotlib.use("Agg")
-        import matplotlib.pyplot as plt
-    except Exception as exc:                              # matplotlib yoksa dürüstçe atla
-        if log_path:
-            Path(log_path).write_text(f"coverage plot atlandı (matplotlib yok): {exc}\n")
-        return False
-    xs, ys = [], []
-    for line in Path(depth_path).read_text().splitlines():
-        parts = line.split("\t")
-        if len(parts) >= 3:
-            try:
-                xs.append(int(parts[1]))
-                ys.append(int(parts[2]))
-            except ValueError:
-                continue
-    if not xs:
-        if log_path:
-            Path(log_path).write_text("coverage plot atlandı: derinlik verisi boş\n")
-        return False
-    try:
-        fig, ax = plt.subplots(figsize=(10, 3.2))
-        ax.fill_between(xs, ys, step="pre", color="#0d6b8f", alpha=0.85, linewidth=0)
-        ax.axhline(min_depth, color="#c62828", ls="--", lw=1,
-                   label=f"min derinlik ({min_depth}×)")
-        ax.set_xlabel("Genom pozisyonu (bp)")
-        ax.set_ylabel("Okuma derinliği (×)")
-        ax.set_xlim(min(xs), max(xs))
-        ax.set_ylim(bottom=0)
-        ax.legend(loc="upper right", fontsize=8, frameon=False)
-        ax.margins(x=0)
-        fig.tight_layout()
-        fig.savefig(out_png, dpi=110)
-        plt.close(fig)
-        return True
-    except Exception as exc:
-        if log_path:
-            Path(log_path).write_text(f"coverage plot hata: {exc}\n")
-        return False
-
-
 def parse_samtools_depth(depth_path, min_depth=1) -> dict:
     """`samtools depth -a` çıktısı (ref<TAB>pos<TAB>depth) → kapsama özeti (RNA referans-tabanlı QC).
     breadth_pct = derinlik≥min_depth pozisyon oranı; mean_depth = ortalama derinlik."""
@@ -188,11 +142,6 @@ class V03PolishQC(Module):
                     metrics["coverage"] = cov
                     if cov["breadth_pct"] < 90.0:
                         problems.append(f"düşük kapsama genişliği: {cov['breadth_pct']}% (@depth≥{min_d})")
-                    # Genom-boyu kapsama derinliği görseli (RNA genom görseli; her tool çıktısı raporda)
-                    cov_png = dirs["06_visualization"] / "coverage.png"
-                    if plot_coverage(depth_tsv, cov_png, min_d,
-                                     (dirs["07_logs"] / "coverage_plot.log")):
-                        metrics["coverage_plot"] = "06_visualization/coverage.png"
                 except RuntimeError:
                     problems.append("kapsama hesaplanamadı")
             # de novo RNA (BAM yok): CheckV atlanır, QUAST uzunluk/N50 yeterli

@@ -487,10 +487,6 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
             ["Ortalama derinlik", f"{_esc(cov.get('mean_depth'))}×"],
             ["Kapsanan pozisyon", f"{_esc(cov.get('covered_bases'))} / {_esc(cov.get('positions'))}"],
         ])
-        # Genom-boyu kapsama derinliği görseli (RNA genom görseli) — düzgün başlıkla açıkça göster
-        cov_fig = figs_for("V03", "Genom-boyu okuma derinliği (kapsama) — kırmızı çizgi min derinlik eşiği.")
-        if cov_fig:
-            v04body += cov_fig
     else:
         v04body += table("Viral genom tamlık & kontaminasyon (CheckV)", ["Metrik", "Değer"], [
             ["Tamlık", f"{_esc(cv.get('completeness'))} %"],
@@ -542,6 +538,8 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
             v07body += table("Saptanan alert'ler (VADR)", ["#", "Alert"],
                              [[str(i + 1), f"<span class='mono'>{_esc(a)}</span>"]
                               for i, a in enumerate(alerts[:50])])
+        # Genom haritası (RNA): genler genom üzerinde — DNA'daki Pharokka haritasının karşılığı
+        v07body += figs_for("V06", "Genom haritası — genler genom üzerinde (renk = ayrı gen/ORF).")
         p.append(section("V06", "Genom Annotation (VADR)", v07body))
         # V06 sonrası akış (V07 vd.) aynı — RNA'da faj modülleri N/A döner
     else:

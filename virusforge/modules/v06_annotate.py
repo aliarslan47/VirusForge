@@ -8,6 +8,74 @@ from pathlib import Path
 from .. import tools
 from ..config import get
 from ..module import Context, Module, ModuleResult, Status, is_rna, latest_genome, safe_run
+from .v10_variants import parse_gene_intervals
+
+
+def _fasta_len(path) -> int:
+    """FASTA'daki toplam sekans uzunluğu (genom uzunluğu)."""
+    try:
+        n = 0
+        for line in Path(path).read_text().splitlines():
+            if line and not line.startswith(">"):
+                n += len(line.strip())
+        return n
+    except (OSError, TypeError):
+        return 0
+
+
+def plot_genome_map(genes, genome_len, out_png, title="", log_path=None) -> bool:
+    """Linear genom haritası: genom ekseni + genler renkli kutu+etiket (RNA'da Pharokka
+    haritasının karşılığı; VADR görsel üretmediği için kendimiz çizeriz). matplotlib (Agg).
+    matplotlib yok / gen yok → False (log'a yaz, sessiz-hata değil)."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception as exc:
+        if log_path:
+            Path(log_path).write_text(f"genom haritası atlandı (matplotlib yok): {exc}\n")
+        return False
+    if not genes or not genome_len:
+        if log_path:
+            Path(log_path).write_text("genom haritası atlandı: gen/uzunluk yok\n")
+        return False
+    try:
+        import matplotlib.patches as mpatches
+        cmap = plt.get_cmap("tab20")
+        fig, ax = plt.subplots(figsize=(11, 2.8))
+        ax.hlines(0, 0, genome_len, color="#c7ced4", lw=9, zorder=1)     # genom ekseni
+        wide_thr = 0.06 * genome_len                                    # geniş gen eşiği (etiket sığar)
+        legend_handles = []
+        for i, (name, s, e) in enumerate(sorted(genes, key=lambda g: g[1])):
+            col = cmap(i % 20)
+            ax.add_patch(plt.Rectangle((s, -0.4), max(e - s, 1), 0.8,
+                                       color=col, zorder=2, ec="white", lw=0.6))
+            if (e - s) >= wide_thr:                                     # geniş gen: kutu içinde yatay etiket
+                ax.text((s + e) / 2, 0, name, ha="center", va="center",
+                        fontsize=9, color="white", fontweight="bold", zorder=3)
+            else:                                                       # dar/sıkışık gen: lejanta al (örtüşme yok)
+                legend_handles.append(mpatches.Patch(color=col, label=name))
+        ax.set_xlim(0, genome_len)
+        ax.set_ylim(-1, 1)
+        ax.set_yticks([])
+        ax.set_xlabel("Genom pozisyonu (bp)")
+        if title:
+            ax.set_title(title, fontsize=10)
+        for sp in ("left", "right", "top"):
+            ax.spines[sp].set_visible(False)
+        if legend_handles:                                              # küçük genler renk lejantında (eksenin altında)
+            ax.legend(handles=legend_handles, loc="upper center",
+                      bbox_to_anchor=(0.5, -0.42), ncol=min(len(legend_handles), 9),
+                      fontsize=8, frameon=False, handlelength=1.2, columnspacing=1.1,
+                      title="Küçük genler / ORF'ler", title_fontsize=8)
+        fig.tight_layout()
+        fig.savefig(out_png, dpi=120, bbox_inches="tight")
+        plt.close(fig)
+        return True
+    except Exception as exc:
+        if log_path:
+            Path(log_path).write_text(f"genom haritası hata: {exc}\n")
+        return False
 
 
 def parse_pharokka(cds_functions_tsv) -> dict:
@@ -111,6 +179,21 @@ class V06Annotate(Module):
             return ModuleResult(Status.WARNING, self.write_summary(ctx.run_dir, Status.WARNING, m), m)
         metrics = {"annotation": "VADR", "model": get(ctx.cfg, "tools.vadr.model", "sarscov2"),
                    **parse_vadr(out)}
+        # Genom haritası (RNA): VADR görsel üretmez → gen koordinatlarından kendimiz çizeriz
+        # (DNA'da Pharokka'nın circular haritasının RNA karşılığı).
+        gene_gff = get(ctx.cfg, "tools.rna.gene_gff", "") or ""
+        if not gene_gff:
+            ds = get(ctx.cfg, "tools.nextclade.dataset_dir", "")
+            cand = Path(ds) / "genome_annotation.gff3" if ds else None
+            if cand and cand.exists():
+                gene_gff = str(cand)
+        genes = parse_gene_intervals(gene_gff) if gene_gff else []
+        glen = _fasta_len(genome)
+        if genes and glen:
+            gmap = dirs["06_visualization"] / "genome_map.png"
+            if plot_genome_map(genes, glen, gmap, Path(ctx.sample_dir).name,
+                               dirs["07_logs"] / "genome_map.log"):
+                metrics["genome_map"] = "06_visualization/genome_map.png"
         (dirs["04_standardized"] / "annotation_summary.json").write_text(
             json.dumps(metrics, indent=2, ensure_ascii=False))
         ctx.results[self.code] = metrics
