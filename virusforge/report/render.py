@@ -656,6 +656,32 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
                              ["Pozisyon", "Değişim", "Frekans", "Derinlik"], rows)
         p.append(section("V11", "Varyant & Quasispecies Çağırma", v11body))
 
+    # V12 — Soy/Klad Tayini (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)
+    lin = M.get("V12", {}) or {}
+    if lin.get("pangolin") or lin.get("nextclade"):
+        v12body = ""
+        pg = lin.get("pangolin") or {}
+        if pg:
+            v12body += table("Pangolin — PANGO soy hattı", ["Metrik", "Değer"], [
+                ["Soy hattı", _esc(pg.get("lineage") or "—")],
+                ["Scorpio", _esc(pg.get("scorpio_call") or "—")],
+                ["Conflict", _esc(pg.get("conflict") or "—")],
+                ["QC", _esc(pg.get("qc_status") or "—")],
+                ["Not", _esc(pg.get("note") or "—")],
+                ["Sürüm", _esc(pg.get("pango_version") or "—")],
+            ])
+        nc = lin.get("nextclade") or {}
+        if nc:
+            v12body += table("Nextclade — klad & mutasyon", ["Metrik", "Değer"], [
+                ["Klad", _esc(nc.get("clade") or "—")],
+                ["Nextclade PANGO", _esc(nc.get("nextclade_pango") or "—")],
+                ["QC", _esc(nc.get("qc_overall") or "—")],
+                ["Toplam substitüsyon", _esc(nc.get("total_substitutions"))],
+                ["Eksik (N)", _esc(nc.get("total_missing"))],
+                ["AA substitüsyon", _esc(nc.get("total_aa_substitutions"))],
+            ])
+        p.append(section("V12", "Soy/Klad Tayini", v12body))
+
     # ---------- Araçlar & referanslar ----------
     tool_rows = []
     for key, disp, purpose, repo, doi in TOOL_REFERENCES:

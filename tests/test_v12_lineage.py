@@ -90,6 +90,33 @@ def test_v12_in_default_pipeline_order():
     assert names.index("V11VariantCall") < names.index("V12Lineage") < names.index("V10Report")
 
 
+from virusforge.report.render import render_html
+
+
+def _report_with_v12():
+    return {"sample": "CoV2", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V12", "status": "PASS", "metrics": {
+            "pangolin": {"lineage": "BA.2.86", "qc_status": "pass", "scorpio_call": "",
+                         "conflict": "0.0", "note": "", "pango_version": "4.3.1"},
+            "nextclade": {"clade": "23I", "nextclade_pango": "BA.2.86", "qc_overall": "good",
+                          "total_substitutions": 72, "total_missing": 305,
+                          "total_aa_substitutions": 45}}}]}
+
+
+def test_render_v12_tr():
+    html = render_html(_report_with_v12(), lang="tr")
+    assert "Soy/Klad" in html or "Soy Hattı" in html
+    assert "BA.2.86" in html      # bilimsel terim korunur
+    assert "23I" in html
+
+
+def test_render_v12_en_no_raw_tr():
+    html = render_html(_report_with_v12(), lang="en")
+    assert "BA.2.86" in html
+    assert "Soy/Klad Tayini" not in html       # EN raporda ham TR başlık sızmamalı
+    assert "Lineage" in html or "Clade" in html
+
+
 def test_parse_pangolin(tmp_path):
     csv = tmp_path / "lineage_report.csv"
     csv.write_text(

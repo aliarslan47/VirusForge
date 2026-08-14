@@ -61,6 +61,13 @@ EN = {
     "LoFreq varyantları (düşük-frekans/quasispecies)": "LoFreq variants (low-frequency/quasispecies)",
     "Pozisyon": "Position", "Değişim": "Change", "Frekans": "Frequency", "Derinlik": "Depth",
     "evet": "yes", "hayır": "no",
+    # V12 — Soy/Klad Tayini
+    "Soy/Klad Tayini": "Lineage / Clade Assignment",
+    "Pangolin — PANGO soy hattı": "Pangolin — PANGO lineage",
+    "Nextclade — klad & mutasyon": "Nextclade — clade & mutations",
+    "Not": "Note", "Klad": "Clade", "Nextclade PANGO": "Nextclade PANGO",
+    "Toplam substitüsyon": "Total substitutions", "Eksik (N)": "Missing (N)",
+    "AA substitüsyon": "Amino-acid substitutions",
     "Fonksiyonel kategori dağılımı (PHROGs)": "Functional category distribution (PHROGs)",
     "Gen anotasyon listesi (her CDS)": "Gene annotation list (per CDS)",
     "Yapısal vs yapısal olmayan proteinler (PHROG)": "Structural vs non-structural proteins (PHROG)",
