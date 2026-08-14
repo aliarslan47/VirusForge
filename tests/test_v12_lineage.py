@@ -49,6 +49,12 @@ def _ctx(tmp_path, molecule="rna", draft=True, pangolin_enabled=False):
     )
 
 
+def test_v12_dirname_is_set():
+    """dirname 'Vxx_MODULE' default'ta kalmamalı (gerçek-veri bug'ı)."""
+    assert V12Lineage().dirname == "V12_LINEAGE"
+    assert V12Lineage().code == "V12"
+
+
 def test_v12_not_applicable_dna(tmp_path):
     res = V12Lineage().run(_ctx(tmp_path, molecule="dna"))
     assert res.status == Status.NOT_APPLICABLE

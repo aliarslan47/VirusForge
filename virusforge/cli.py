@@ -16,6 +16,8 @@ def cmd_run(args) -> int:
         cfg.setdefault("general", {})["mode"] = args.mode
     if args.molecule:
         cfg.setdefault("general", {})["molecule"] = args.molecule
+    if args.organism:
+        cfg.setdefault("general", {})["organism"] = args.organism
     run_dir = pipeline.run(args.sample, args.out, cfg, run_dir=args.resume)
     print(f"Bitti. Run dizini: {run_dir}")
     print(f"Rapor: {run_dir / 'report.html'}")
@@ -59,6 +61,8 @@ def main(argv=None) -> int:
     pr.add_argument("--mode", default=None, choices=["auto", "short", "long", "hybrid", "assembly"])
     pr.add_argument("--molecule", default=None, choices=["auto", "dna", "rna"],
                     help="DNA/faj vs RNA virüs yolu (RNA yolu için 'rna')")
+    pr.add_argument("--organism", default=None,
+                    help="organizma etiketi (runs/<organizma>/ klasörü); verilmezse örnek adından türetilir")
     pr.add_argument("--resume", default=None, help="mevcut run dizinine devam et (yolu ver)")
     pr.set_defaults(func=cmd_run)
 

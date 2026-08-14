@@ -66,6 +66,7 @@ def parse_nextclade(tsv_path) -> dict:
 class V12Lineage(Module):
     code = "V12"
     name = "Soy/Klad Tayini"
+    dirname = "V12_LINEAGE"
 
     def run(self, ctx: Context) -> ModuleResult:
         dirs = self.make_dirs(ctx.run_dir)

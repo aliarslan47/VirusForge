@@ -14,6 +14,19 @@ from ..config import get
 from ..module import Context, Module, ModuleResult, Status, is_rna, safe_run
 
 
+def fasta_first_id(path) -> str:
+    """Referans FASTA'nın ilk header id'si (accession) — varyant koordinat sistemi.
+    Dosya yok/başlıksız → yolun dosya-kök adı (yine de dürüst bir tanımlayıcı)."""
+    try:
+        with open(path) as fh:
+            for line in fh:
+                if line.startswith(">"):
+                    return line[1:].split()[0].strip()
+    except (OSError, TypeError):
+        pass
+    return Path(str(path)).stem if path else ""
+
+
 def parse_ivar_variants(tsv_path) -> list:
     """iVar variants TSV → [{pos,ref,alt,freq,depth,aa}]. aa = REF_AA→ALT_AA (varsa)."""
     import csv
@@ -93,6 +106,8 @@ class V11VariantCall(Module):
         rbin = get(ctx.cfg, "tools.rna.conda_bin", "conda")
         metrics: dict = {}
         problems: list[str] = []
+        # Varyant koordinat sistemi = kullanılan referans; accession olmadan pos/ref→alt belirsizdir
+        metrics["reference"] = fasta_first_id(ref)
 
         # iVar variants (mpileup | ivar variants — konsensustaki pipe deseni)
         prefix = dirs["03_native_outputs"] / "ivar_variants"

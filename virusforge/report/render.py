@@ -635,25 +635,28 @@ def render_html(report: dict, run_dir=None, lang="tr") -> str:
     # V11 — Varyant & Quasispecies (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)
     var = M.get("V11", {}) or {}
     if var.get("ivar_variants") is not None or var.get("lofreq_variants") is not None:
-        v11body = table("Varyant & quasispecies özeti", ["Metrik", "Değer"], [
+        lf = var.get("lofreq_variants") or []
+        vref = var.get("reference") or "—"
+        summary_rows = [
+            ["Referans (varyant koordinat sistemi)", _esc(vref)],
             ["Toplam varyant", _esc(var.get("n_total", "—"))],
             ["Konsensus varyant (≥%50)", _esc(var.get("n_consensus", "—"))],
             ["Minör (intra-host) varyant (<%50)", _esc(var.get("n_minor", "—"))],
             ["Quasispecies", "evet" if var.get("quasispecies") else "hayır"],
-        ])
+        ]
+        # LoFreq: ayrı tam tablo yerine tek doğrulama sayacı (iVar tablosuyla çift-basımı önle)
+        if var.get("lofreq_variants") is not None:
+            summary_rows.append(["LoFreq doğrulanan varyant (çapraz-kontrol)", _esc(len(lf))])
+        v11body = table("Varyant & quasispecies özeti", ["Metrik", "Değer"], summary_rows)
+        # Ayrıntılı varyant listesi tek tablo: iVar (frekans + AA anotasyonu; amplikon için birincil)
         iv = var.get("ivar_variants") or []
         if iv:
             rows = [[_esc(v.get("pos")), f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
                      f"{100*v.get('freq',0):.1f} %", _esc(v.get("depth")), _esc(v.get("aa") or "—")]
                     for v in iv[:200]]
-            v11body += table("iVar varyantları (frekanslı)",
-                             ["Pozisyon", "Değişim", "Frekans", "Derinlik", "AA"], rows)
-        lf = var.get("lofreq_variants") or []
-        if lf:
-            rows = [[_esc(v.get("pos")), f"{_esc(v.get('ref'))}→{_esc(v.get('alt'))}",
-                     f"{100*v.get('af',0):.1f} %", _esc(v.get("dp"))] for v in lf[:200]]
-            v11body += table("LoFreq varyantları (düşük-frekans/quasispecies)",
-                             ["Pozisyon", "Değişim", "Frekans", "Derinlik"], rows)
+            cap = f"Varyantlar (iVar — frekans + amino asit) — referans: {vref}"
+            v11body += table(cap,
+                             ["Pozisyon", "Referans→Örnek", "Frekans", "Derinlik", "AA"], rows)
         p.append(section("V11", "Varyant & Quasispecies Çağırma", v11body))
 
     # V12 — Soy/Klad Tayini (RNA yolu; DNA'da NOT_APPLICABLE → gri pill otomatik)

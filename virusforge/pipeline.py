@@ -29,6 +29,20 @@ DEFAULT_MODULES = [
 ]
 
 
+def organism_label(sample_dir, cfg=None) -> str:
+    """Run'ları organizmaya göre klasörlemek için etiket. Öncelik: config `general.organism`;
+    yoksa örnek dizini adının ilk '_' öncesi (T7_short→T7, CoV2_ERR11728561→CoV2). Dosya-sistemi
+    güvenli hale getirilir (boşluk/slash → alt çizgi)."""
+    label = ""
+    if cfg:
+        label = str((cfg.get("general") or {}).get("organism") or "").strip()
+    if not label:
+        name = Path(str(sample_dir)).name
+        label = name.split("_")[0] if name else "unknown"
+    safe = "".join(c if (c.isalnum() or c in "-.") else "_" for c in label)
+    return safe or "unknown"
+
+
 def _log(run_dir: Path, msg: str) -> None:
     ts = datetime.now().strftime("%H:%M:%S")
     with open(run_dir / "pipeline.log", "a") as fh:
@@ -46,7 +60,8 @@ def run(sample_dir, out_root, cfg=None, modules=None, clock=None, resume=True,
         run_dir = Path(run_dir)                       # mevcut koşuya devam (resume)
     else:
         ts = clock() if clock else datetime.now().strftime("%Y%m%d_%H%M%S")
-        run_dir = Path(out_root) / f"{ts}_{mode.lower()}"
+        # organizmaya göre iç klasör: runs/<organizma>/<ts>_<mode> — mod aynı olsa da karışmaz
+        run_dir = Path(out_root) / organism_label(sample_dir, cfg) / f"{ts}_{mode.lower()}"
     run_dir.mkdir(parents=True, exist_ok=True)
 
     ctx = Context(sample_dir=Path(sample_dir), run_dir=run_dir, cfg=cfg, mode=mode)

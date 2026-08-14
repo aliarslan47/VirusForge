@@ -4,6 +4,7 @@ general:
   memory_gb: 32
   mode: auto            # auto | short | long | hybrid | assembly  (override, okuma-tipi ekseni)
   molecule: auto        # auto | dna | rna  (DNA/faj vs RNA virüs yolu; read-tipine DİK eksen)
+  organism: ""          # run klasörleme etiketi (runs/<organism>/); boşsa örnek adından türetilir
   keep_native: true
 
 detect:

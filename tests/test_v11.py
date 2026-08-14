@@ -56,3 +56,30 @@ def test_v11_calls_variants_on_rna(tmp_path, monkeypatch):
     assert res.status == Status.PASS
     assert m["n_total"] == 2 and m["n_consensus"] == 1 and m["n_minor"] == 1 and m["quasispecies"] is True
     assert len(m["lofreq_variants"]) == 1
+
+
+def test_fasta_first_id_reads_accession(tmp_path):
+    from virusforge.modules.v11_variants import fasta_first_id
+    f = tmp_path / "ref.fa"
+    f.write_text(">NC_045512.2 Severe acute respiratory syndrome\nACGT\n")
+    assert fasta_first_id(f) == "NC_045512.2"
+
+
+def test_fasta_first_id_missing_file_falls_back(tmp_path):
+    from virusforge.modules.v11_variants import fasta_first_id
+    assert fasta_first_id(tmp_path / "yok.fa") == "yok"
+
+
+def test_render_v11_shows_reference():
+    """Varyant bölümü koordinat sistemini (referans accession) göstermeli."""
+    from virusforge.report.render import render_html
+    rep = {"sample": "CoV2", "mode": "SHORT_READ", "run_id": "r", "modules": [
+        {"code": "V11", "status": "PASS", "metrics": {
+            "reference": "NC_045512", "n_total": 3, "n_consensus": 2, "n_minor": 1,
+            "quasispecies": True,
+            "ivar_variants": [{"pos": 241, "ref": "C", "alt": "T", "freq": 0.99, "depth": 900, "aa": ""}],
+            "lofreq_variants": [{"pos": 241, "ref": "C", "alt": "T", "af": 0.98, "dp": 900}]}}]}
+    tr = render_html(rep, lang="tr")
+    assert "NC_045512" in tr                       # referans görünür
+    assert "LoFreq varyantları (düşük-frekans/quasispecies)" not in tr  # LoFreq tam tablosu kaldırıldı
+    assert "LoFreq" in tr                           # ama LoFreq sayacı korunur
