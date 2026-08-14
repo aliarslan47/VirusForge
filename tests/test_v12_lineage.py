@@ -1,6 +1,29 @@
 from pathlib import Path
 
+from virusforge import tools, registry
 from virusforge.modules.v12_lineage import parse_pangolin, parse_nextclade
+
+
+def test_pangolin_cmd():
+    cmd = tools.pangolin_cmd("cons.fa", "out.csv", threads=4, conda_env="vf_pangolin")
+    assert cmd[:4] == ["conda", "run", "-n", "vf_pangolin"]
+    assert "pangolin" in cmd
+    assert "cons.fa" in cmd
+    assert "--outfile" in cmd and "out.csv" in cmd
+
+
+def test_nextclade_run_cmd():
+    cmd = tools.nextclade_run_cmd("cons.fa", "db/sc2", "nc.tsv", conda_env="vf_nextclade")
+    assert cmd[:4] == ["conda", "run", "-n", "vf_nextclade"]
+    assert "nextclade" in cmd and "run" in cmd
+    assert "-D" in cmd and "db/sc2" in cmd
+    assert "--output-tsv" in cmd and "nc.tsv" in cmd
+    assert "cons.fa" in cmd
+
+
+def test_registry_has_lineage_tools():
+    assert registry.tool("pangolin")["repo"]
+    assert registry.tool("nextclade")["repo"]
 
 
 def test_parse_pangolin(tmp_path):
