@@ -1,38 +1,30 @@
-<div align="center">
+# VirusForge
 
-# 🧬 VirusForge
-
-**A modular, end-to-end analysis platform for whole-genome bioinformatics of RNA & DNA viruses and bacteriophages**
+A modular, end-to-end pipeline for whole-genome analysis of RNA and DNA viruses and bacteriophages.
 
 [![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-2e9e6b)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-181%20passing-brightgreen)](tests/)
-[![Milestone](https://img.shields.io/badge/M1·M2·M3-DNA%20%2B%20RNA%20validated%20✓-0d6b8f)](docs/)
-[![Forge Family](https://img.shields.io/badge/Forge%20family-BacForge%20·%20Vaxforge-6b7682)](#)
 
-[Türkçe](README.md) · **English**
-
-</div>
+[Türkçe](README.md) · English
 
 ---
 
-VirusForge **auto-detects** short-read, long-read, hybrid and pre-assembled inputs and processes them from quality control to the final report with a single command. When a **bacteriophage / DNA virus** is detected, phage-specific modules (Pharokka, PhaBOX, AMR, comparative/phylogeny) engage; for **RNA viruses**, the reference-based consensus + VADR annotation + variant/quasispecies + lineage/clade (Nextclade) path **runs and has been validated on SARS-CoV-2** (M2-B complete).
+VirusForge auto-detects short-read, long-read, hybrid and pre-assembled inputs and processes them from
+quality control to a final report with a single command. It branches by molecule type: for bacteriophages
+and DNA viruses it runs Pharokka, PhaBOX, AMR and comparative/phylogenetic modules; for RNA viruses it runs
+reference-based consensus, VADR annotation, variant/quasispecies calling, and Nextclade lineage/clade
+assignment. The RNA path has been validated on SARS-CoV-2 data.
 
-A sibling of BacForge (bacteria) and Vaxforge, this platform follows the same architectural pattern but is a **fully isolated** installation.
+VirusForge follows the same architectural pattern as BacForge (bacteria) and Vaxforge, but is a separate,
+isolated installation.
 
-## ✨ Highlights
+## Pipeline
 
-- **Automatic routing** — detects read type (short/long/hybrid/assembly) and genome type (DNA/RNA) with no user prompts
-- **Honest output** — no fake/hard-coded results, no invented DOIs, tool mismatches are never hidden; statuses are `PASS · WARNING · FAIL · NOT_APPLICABLE · SKIPPED`
-- **Traceable & reproducible** — every result is recorded in `provenance.json` with tool + database versions and parameters
-- **Professional report** — numbered tables/figures, **circular genome map**, functional-distribution charts, tool+DOI references (self-contained HTML)
-- **Verified tool registry** — every tool's official repository was checked individually (6 wrong/dead repos fixed)
-
-## 🔬 Pipeline
-
-One pipeline, two paths: `V00`–`V01` are shared; after the molecule decision (`--molecule` / geNomad Riboviria)
-the DNA/phage and RNA virus branches split and rejoin at the `V12` report. Read type (short/long/hybrid/assembly)
-is a separate, orthogonal axis. Interactive bilingual diagram: [`docs/pipeline_architecture.html`](docs/pipeline_architecture.html).
+`V00`–`V01` are shared by both paths. After the molecule decision (the `--molecule` option or geNomad's
+Riboviria detection), the DNA/phage and RNA branches split and rejoin at the `V12` report. Read type
+(short/long/hybrid/assembly) is a separate, orthogonal axis. Interactive bilingual diagram:
+[`docs/pipeline_architecture.html`](docs/pipeline_architecture.html).
 
 ```mermaid
 flowchart TB
@@ -68,33 +60,32 @@ flowchart TB
     class V00,V01,D04,R04,V12 sh;
 ```
 
-## 🧩 Modules
+## Modules
 
-Every module branches internally on molecule type; a module that does not fit that path honestly returns **N/A**.
+Each module branches on molecule type; a module that does not fit that path returns `NOT_APPLICABLE`.
 
 | Code | Module | DNA / phage path | RNA virus path |
 |:---:|---|---|---|
-| **V00** | Input & Detect | ↔ **shared** — read type + molecule (geNomad Riboviria / `--molecule`) | ↔ |
-| **V01** | Read QC | ↔ **shared** — fastp · FastQC · NanoPlot · filtlong · MultiQC | ↔ |
-| **V02** | Assembly / Consensus | SPAdes · Flye · Unicycler *(de novo)* | iVar consensus (ref) · rnaviralSPAdes |
-| **V03** | Polishing & Quality | Medaka · QUAST · CheckV | QUAST · coverage (samtools depth) |
-| **V04** | Viral Identification | ↔ **shared** — geNomad (viral confirmation + taxonomy) | ↔ |
-| **V05** | Taxonomy & References | Mash + INPHARED · NJ tree | *N/A — phage-specific* |
-| **V06** | Genome Annotation | Pharokka + circular genome map | VADR + gene map |
-| **V07** | Phage Characterization | PhaBOX (PhaMer/PhaGCN/PhaTYP) | *N/A* |
-| **V08** | AMR & Virulence | AMRFinderPlus | *N/A* |
-| **V09** | Comparative & Phylogeny | BLAST · MAFFT · IQ-TREE2 · taxmyPHAGE · VIRIDIC · synteny | *N/A* |
-| **V10** | Variants & Quasispecies | *N/A — RNA-specific* | iVar variants + LoFreq (type/effect/gene) |
-| **V11** | Lineage / Clade | *N/A — RNA-specific* | Nextclade (clade + PANGO lineage + QC) |
-| **V12** | Report & Export | ↔ **shared** — bilingual (TR+EN) HTML report + provenance | ↔ |
+| V00 | Input & Detect | shared: read type + molecule (geNomad Riboviria / `--molecule`) | shared |
+| V01 | Read QC | shared: fastp · FastQC · NanoPlot · filtlong · MultiQC | shared |
+| V02 | Assembly / Consensus | SPAdes · Flye · Unicycler (de novo) | iVar consensus (ref) · rnaviralSPAdes |
+| V03 | Polishing & Quality | Medaka · QUAST · CheckV | QUAST · coverage (samtools depth) |
+| V04 | Viral Identification | shared: geNomad (viral confirmation + taxonomy) | shared |
+| V05 | Taxonomy & References | Mash + INPHARED · NJ tree | N/A (phage-specific) |
+| V06 | Genome Annotation | Pharokka + circular genome map | VADR + gene map |
+| V07 | Phage Characterization | PhaBOX (PhaMer/PhaGCN/PhaTYP) | N/A |
+| V08 | AMR & Virulence | AMRFinderPlus | N/A |
+| V09 | Comparative & Phylogeny | BLAST · MAFFT · IQ-TREE2 · taxmyPHAGE · VIRIDIC · synteny | N/A |
+| V10 | Variants & Quasispecies | N/A (RNA-specific) | iVar variants + LoFreq (type/effect/gene) |
+| V11 | Lineage / Clade | N/A (RNA-specific) | Nextclade (clade + PANGO lineage + QC) |
+| V12 | Report & Export | shared: bilingual (TR+EN) HTML report + provenance | shared |
 
-## 🚀 Installation
+## Installation
 
 ```bash
 git clone https://github.com/aliarslan47/VirusForge.git
 cd VirusForge
 
-# Isolated conda environment
 conda env create -f environment.yml
 conda activate virusforge
 pip install -e .
@@ -103,34 +94,36 @@ pip install -e .
 bash setup/get_databases.sh
 ```
 
-## 💻 Usage
+## Usage
 
 ```bash
-# Show installed tool versions
+# Installed tool versions
 python -m virusforge.cli info
 
-# Place a sample: samples/<id>/  (short: *_R1/_R2, long: single ONT fastq, assembly: *.fasta)
+# Sample: samples/<id>/  (short: *_R1/_R2, long: single ONT fastq, assembly: *.fasta)
 python -m virusforge.cli run --sample samples/T7_short --out runs --threads 8
 
-# → runs/<timestamp>_<mode>/report.html  (self-contained professional report)
+# Output: runs/<timestamp>_<mode>/report.html
 ```
 
-## 📊 Example result — *Escherichia phage* T7 (short-read, validated)
+## Example: *Escherichia phage* T7 (short-read)
 
-Real ENA data (`ERR3804828`, Illumina MiSeq): **all modules on the DNA/phage path PASS** (V10/V11 RNA modules are N/A for this sample):
+Real ENA data (`ERR3804828`, Illumina MiSeq). All modules on the DNA/phage path PASS; V10/V11 (RNA) are
+N/A for this sample.
 
 | Analysis | Result |
 |---|---|
-| Genome quality (CheckV) | **100% complete · 0% contamination · Complete** |
+| Genome quality (CheckV) | 100% complete · 0% contamination · Complete |
 | Assembly (QUAST) | 45,451 bp · largest contig 40,659 bp · N50 40,659 |
-| Viral ID (geNomad) | Caudoviricetes; **Autographiviridae** (score 0.98) |
+| Viral ID (geNomad) | Caudoviricetes; Autographiviridae (score 0.98) |
 | Closest reference (Mash) | `V01146` (T7 reference) · distance 0.0036 |
-| Annotation (Pharokka) | **76 CDS** · head&packaging 14 · DNA/RNA metab. 16 |
-| Lifestyle (PhaBOX) | **virulent** · subfamily **Studiervirinae** |
+| Annotation (Pharokka) | 76 CDS |
+| Lifestyle (PhaBOX) | virulent · subfamily Studiervirinae |
 
-📄 **Example report:** [view live](https://claude.ai/code/artifact/0541885b-ce14-4011-87db-6eecc212b819)
+## Tool registry
 
-## 🧪 Verified tool registry (core)
+Each tool's official repository and publication were verified; versions are detected at runtime and DOIs
+are the publication source. Full list: [`docs/2026-08-12-virusforge-design.md`](docs/2026-08-12-virusforge-design.md).
 
 | Tool | Role | DOI |
 |---|---|---|
@@ -141,39 +134,35 @@ Real ENA data (`ERR3804828`, Illumina MiSeq): **all modules on the DNA/phage pat
 | [Mash](https://github.com/marbl/Mash) + [INPHARED](https://github.com/RyanCook94/inphared) | Closest reference | 10.1186/s13059-016-0997-x |
 | [Pharokka](https://github.com/gbouras13/pharokka) | Phage annotation | 10.1093/bioinformatics/btac776 |
 | [PhaBOX](https://github.com/KennthShang/PhaBOX) | Phage characterization | 10.1093/bioadv/vbad101 |
+| [VADR](https://github.com/ncbi/vadr) | RNA virus annotation | 10.1186/s12859-020-3537-3 |
+| [Nextclade](https://github.com/nextstrain/nextclade) | Clade + lineage assignment | 10.21105/joss.03773 |
 
-> Full registry: [`docs/2026-08-12-virusforge-design.md`](docs/2026-08-12-virusforge-design.md) · Versions are detected at runtime, DOIs are the publication source — **nothing fabricated**.
+## Roadmap
 
-## 🗺️ Roadmap
+- [x] M1 — DNA/phage core; short, long, hybrid and assembly inputs validated on T7 data
+- [x] M2-A — phage enrichment: V08 AMR & virulence (AMRFinderPlus)
+- [x] M3 — V09 comparative & phylogeny; multi-sample `compare` and clinker
+- [x] M2-B — RNA virus path (iVar consensus, VADR, V10 variants, V11 Nextclade); validated on SARS-CoV-2
+- [ ] Optional: RNA de novo validation · metavirome · additional detection tools (virsorter2/vibrant/kraken2)
 
-- [x] **M1** — DNA/phage core · **short + long + hybrid + assembly validated on real T7 data** (full platform coverage)
-- [x] **M2-A** — phage enrichment: **V08 AMR & virulence (AMRFinderPlus)** · validated on T7
-- [x] **M3** — **V09 comparative & phylogeny** (BLAST + IQ-TREE2 + taxmyPHAGE ICTV + VIRIDIC + synteny) · multi-sample `compare` + clinker · validated on T7
-- [x] **M2-B** — **RNA virus path** (iVar consensus · VADR · V10 iVar/LoFreq variants · V11 Nextclade lineage/clade) · **validated on real SARS-CoV-2 data** (XBB.1.5.52)
-- [ ] Next (optional): RNA de novo (reference-free) validation · metavirome · detection tools (virsorter2/vibrant/kraken2) · RNA lineage add-ons (IRMA)
-
-## 📁 Structure
+## Repository layout
 
 ```
-virusforge/        Python package (modules/ · tools · pipeline · report · registry)
-config/            default + user YAML
-databases/         downloaded DBs           (git-ignored)
-runs/              timestamped runs         (git-ignored)
-samples/           input samples            (git-ignored)
-docs/              design docs + plans
-setup/             DB download scripts
+virusforge/   Python package (modules · tools · pipeline · report · registry)
+config/       default and user YAML
+databases/    downloaded databases   (git-ignored)
+runs/         timestamped runs       (git-ignored)
+samples/      input samples          (git-ignored)
+docs/         design docs and plans
+setup/        database download scripts
 ```
 
-## 🧭 Principles
+## Principles
 
-**Isolation** — VirusForge follows BacForge's architectural pattern but is a separate package/env/installation; no cross-imports.
-**Honesty** — WARNING when there is no value, NOT_APPLICABLE when it does not apply; never a fabricated/hard-coded result.
-**Traceability** — input SHA → tool+version → DB+version → command → output SHA chain.
+- Isolation: separate package, separate environment, no cross-imports.
+- Honesty: `WARNING` when there is no value, `NOT_APPLICABLE` when it does not apply; no hard-coded or fabricated results.
+- Traceability: input SHA → tool + version → database + version → command → output SHA chain (`provenance.json`).
 
----
+## License
 
-<div align="center">
-<sub>Forge family · BacForge (bacteria) · Vaxforge · <b>VirusForge</b> (virus/phage)</sub>
-</div>
-
-*License: [MIT](LICENSE)*
+[MIT](LICENSE). Forge family: BacForge (bacteria) · Vaxforge · VirusForge (virus/phage).
