@@ -288,6 +288,15 @@ yazsın. `v10_variants`: **classify_variant** (iVar ALT kodlaması: `+`=insersiy
 NOT: SNP AA-etkisi (missense/sinonim) yalnız iVar GFF ile REF_AA/ALT_AA gelirse dolar; GFF'siz koşuda SNP etki
 boş ("—"), indel etkisi (frameshift/çerçeve-içi) her zaman hesaplanır. commit 369911b.
 
+## 2026-08-14 — ÇİFT-DİLLİ PIPELINE DAG MİMARİ ŞEMASI (özgün görsel)
+Kullanıcı isteği: DNA/RNA virüs mimarisini profesyonel "workflow editörü" (node-graph) üslubunda çıkar + TR/EN.
+`docs/pipeline_architecture.html` (self-contained, tarayıcıda açılır): nokta-ızgara canvas + tiplenmiş port'lu
+node kartları + eğri bezier bağlantı okları; V00–V01 ortak trunk → `molekül?` karar düğümü → DNA dalı (V02→V09) +
+RNA dalı (V02→V11) → V12'de birleşme. Sağ üstte **Türkçe|English** toggle (JS, ikisi tam çevrili). Rapor paleti
+(mavi #0d6b8f / amber) onurlandırıldı; karanlık/aydınlık tema. Artifact:
+claude.ai/code/artifact/01ebd1f8-1794-4535-8652-0bf581a614d6. commit 56aca27. (Önce swimlane→sonra node-graph;
+kullanıcı node-graph seçti+beğendi.) İLERİDE "uyarla" emriyle bu üslup V12 raporundaki Şekil 1'e taşınabilir.
+
 ## Şu an nerede kaldık (özet)
 - **M2-B RNA yolu TAMAM: Faz 1 (konsensus/VADR) + Faz 2 (V10 varyant+gen anotasyonu) + Faz 3 (V11 soy/klad)** —
   hepsi SARS-CoV-2 gerçek doğrulandı. Rapor: WARNING'siz, araç görselleri+tablolar daima görünür, N/A bölümler
