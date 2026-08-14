@@ -236,9 +236,25 @@ kendi modülü, DNA/faj'da N/A). Sıra V11→**V12**→V10.
 - **175 pytest yeşil** (154→175). **Env:** `vf_nextclade` (v3.22) + dataset. `vf_pangolin` KURULMADI (bilinçli).
   Spec/plan: `docs/superpowers/{specs,plans}/2026-08-14-virusforge-rna-lineage*`.
 
+## 2026-08-14 — RAPOR İYİLEŞTİRMELERİ (WARNING kaldır + görsel garanti + varyant gen anotasyonu)
+Kullanıcı istekleri, hepsi gerçek-veri doğrulandı (SARS-CoV-2 + T7), **179 pytest yeşil** (175→179):
+1. **WARNING'ler rapordan kaldırıldı** — müşteri-yüzü rapor: WARNING statüsü PASS gösterilir (`_disp_status`;
+   pill+pipeline-akış rengi+figür açıklaması+legend). **Gerçek statü summary.json/provenance/pipeline.log'da
+   KORUNUR** (sessiz-hata değil; loglar tam gerçeği tutar — ör. VADR iyi-huylu alert).
+2. **Araç görselleri DAİMA raporda** — `figs_for` gömülen-PNG izler (çift-gömme yok); `section()` her modülün
+   gömülmemiş PNG'lerini otomatik ekler. (T7: V06 genom haritası + V09 VIRIDIC heatmap = 2 PNG, çift yok.)
+3. **Varyant tablosuna GEN/CDS anotasyonu** — "hangi CDS'te değişiklik" için pozisyon→gen haritası
+   (`parse_gene_intervals`+`gene_at`, çeviri gerektirmez). Gen GFF'i config `tools.rna.gene_gff` veya
+   fallback **nextclade dataset'inin `genome_annotation.gff3`'ü** (aynı virüs). V11 varyantları `gene` alır;
+   render "Gen/CDS" kolonu (tr) / "Gene/CDS" (en). **Gerçek: 109 varyant → S=45 (XBB spike yoğunlaşması=doğru),
+   ORF1a=22, ORF1b=14, N=4, 241=intergenik(5'UTR).**
+- **NOT (resume kırılganlığı):** V11'i silip resume edersen `tools.rna.reference` config'te olmalı (yoksa BAM'e
+  rağmen N/A). SARS-CoV-2 için `databases/sarscov2_ref.fa` — kalıcı config'e koymak gerekir. Tüm 5 rapor yenilendi.
+
 ## Şu an nerede kaldık (özet)
-- **M2-B RNA yolu TAMAM: Faz 1 (yönlendirme+konsensus+VADR) + Faz 2 (V11 varyant) + Faz 3 (V12 soy/klad)** —
-  hepsi SARS-CoV-2 gerçek doğrulandı. Rapor V11 sadeleşti + varyant referansı gösteriliyor. Run'lar organizma-klasörlü.
+- **M2-B RNA yolu TAMAM: Faz 1 (yönlendirme+konsensus+VADR) + Faz 2 (V11 varyant+gen anotasyonu) + Faz 3 (V12 soy/klad)** —
+  hepsi SARS-CoV-2 gerçek doğrulandı. Rapor: WARNING'siz, araç görselleri garantili, V11 sadeleşti + varyant
+  referansı+gen/CDS gösteriliyor. Run'lar organizma-klasörlü (`runs/T7/`, `runs/SARS-CoV-2/`).
 - **SIRADA (opsiyonel/sonraki):** RNA de novo (rnaviralSPAdes referanssız) gerçek doğrulama; iVar variants GFF→AA
   etkisi; Item 4 (virsorter2/vibrant/kraken2); M3 kalan fazlar. (Pangolin: ağ/env erişimli ortamda `enabled: true`.)
 - **DÜŞÜK ÖNCELİK / opsiyonel:** rapor-cilalama listesinin Item 4'ü = opsiyonel tespit araçları
