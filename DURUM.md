@@ -265,9 +265,14 @@ Kullanıcı 4 istek; plan modu→onay→uygulama, **178 pytest yeşil**, SARS-Co
    **"Bu analiz bu örnek/yol için uygulanmaz"** sebebini yazar (bölüm-özel çevrili N/A mesajları korunur; modül
    notu TR olduğu için rapora sızdırılmaz). **V10 varyant + V11 soy bölümleri DAİMA render** (DNA'da eskiden hiç
    görünmüyordu → artık N/A sebebiyle görünür).
-4. **RNA GENOM GÖRSELİ:** `v03_polish_qc.plot_coverage` (matplotlib 3.11 Agg) → `depth.tsv`'den genom-boyu
-   kapsama derinliği PNG'si (`06_visualization/coverage.png`, min-derinlik eşiği çizgili); `figs_for("V03")` düzgün
-   başlıkla gömer. DNA'da pharokka genom haritası zaten vardı. matplotlib yok/veri yok → sessizce atla (log'a yaz).
+4. **RNA GENOM GÖRSELİ = GEN HARİTASI** (kullanıcı: DNA'daki gibi olmalı; kapsama grafiği "anlamsız"→kaldırıldı):
+   `v06_annotate.plot_genome_map` (matplotlib Agg) → linear genom haritası: genom ekseni + genler renkli kutu.
+   **Büyük genler (>%6) kutu-içi beyaz etiket** (ORF1a/ORF1b/S), **küçük/sıkışık genler eksenin altında renk
+   lejantı** ("Küçük genler/ORF'ler": ORF3a/E/M/ORF6/ORF7a/ORF7b/ORF8/N/ORF9b) — etiket örtüşmesi çözüldü.
+   V06 RNA (VADR) dalında gen koordinatlarından (config `tools.rna.gene_gff` ya da nextclade dataset
+   `genome_annotation.gff3`) + konsensüs uzunluğundan üretilir → `06_visualization/genome_map.png`; figs_for("V06")
+   düzgün başlıkla gömer. **NEDEN gerekliydi:** DNA'da Pharokka `pharokka_plotter` haritayı üretir; RNA'da VADR
+   (doğru araç ama) görsel üretmez → kendimiz çiziyoruz. matplotlib/gen yok → sessizce atla+log.
 - **Gerçek doğrulama:** SARS-CoV-2 → yeni dizinler, WARNING 0, **kapsama görseli var**, N/A bölümler net sebep
   (Veri yok kalmadı), Pangolin izi yok, XBB.1.5.52, Gen/CDS kolonu. T7 → pipeline V10→V11→V12 sıralı, genom
   haritası 2 PNG, V10/V11 DNA'da N/A sebebiyle görünür. **NOT:** eski run'ları yeniden üretirken eski-adlı
