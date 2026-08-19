@@ -2,9 +2,9 @@
 
 A modular, end-to-end pipeline for whole-genome analysis of RNA and DNA viruses and bacteriophages.
 
-[![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-181%20passing-brightgreen)](tests/)
+[![Pipeline DAG](https://img.shields.io/badge/pipeline-DAG-0d6b8f)](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html)
+[![molecule](https://img.shields.io/badge/molecule-DNA%20%C2%B7%20RNA-2f8f5b)](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html)
+[![reads](https://img.shields.io/badge/reads-short%20%C2%B7%20long%20%C2%B7%20hybrid-c07211)](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html)
 
 [Türkçe](README.md) · English
 

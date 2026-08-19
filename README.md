@@ -2,9 +2,9 @@
 
 RNA ve DNA virüsleri ile bakteriyofajların tam genom analizi için modüler, uçtan uca bir pipeline.
 
-[![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-181%20passing-brightgreen)](tests/)
+[![Pipeline DAG](https://img.shields.io/badge/pipeline-DAG-0d6b8f)](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html)
+[![molekül](https://img.shields.io/badge/molek%C3%BCl-DNA%20%C2%B7%20RNA-2f8f5b)](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html)
+[![okuma](https://img.shields.io/badge/okuma-k%C4%B1sa%20%C2%B7%20uzun%20%C2%B7%20hibrit-c07211)](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html)
 
 Türkçe · [English](README.en.md)
 
