@@ -24,7 +24,7 @@ isolated installation.
 `V00`–`V01` are shared by both paths. After the molecule decision (the `--molecule` option or geNomad's
 Riboviria detection), the DNA/phage and RNA branches split and rejoin at the `V12` report. Read type
 (short/long/hybrid/assembly) is a separate, orthogonal axis. Interactive bilingual diagram:
-[**rendered diagram**](https://claude.ai/code/artifact/f0becb3c-9199-4a54-bd43-18dce7d89d1c) · source: `docs/pipeline_architecture.html`.
+[**rendered diagram**](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html) · source: `docs/pipeline_architecture.html`.
 
 ```mermaid
 flowchart TB

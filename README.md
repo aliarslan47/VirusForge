@@ -23,7 +23,7 @@ VirusForge, BacForge (bakteri) ve Vaxforge ile aynı mimari deseni izler; ayrı 
 `V00`–`V01` her iki yol için ortaktır. Molekül kararından sonra (`--molecule` seçeneği veya geNomad'ın
 Riboviria tespiti) DNA/faj ve RNA dalları ayrılır ve `V12` raporunda birleşir. Okuma tipi
 (short/long/hybrid/assembly) buna dik, ayrı bir eksendir. Etkileşimli çift-dilli şema:
-[**render edilmiş şema**](https://claude.ai/code/artifact/f0becb3c-9199-4a54-bd43-18dce7d89d1c) · kaynak: `docs/pipeline_architecture.html`.
+[**render edilmiş şema**](https://aliarslan47.github.io/VirusForge/pipeline_architecture.html) · kaynak: `docs/pipeline_architecture.html`.
 
 ```mermaid
 flowchart TB
