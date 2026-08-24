@@ -73,4 +73,4 @@ Full tool registry (with DOIs), example runs and the repository layout live in `
 
 ---
 
-Forge family: **VirusForge** (virus/phage) · [BacForge](https://github.com/aliarslan47/BacForge) (bacteria) · [RNAForge](https://github.com/aliarslan47/RNAForge) (bulk RNA-seq) · [PipelineForge](https://github.com/aliarslan47/PipelineForge) (DAG generator). Licensed under [MIT](LICENSE).
+Forge family: [RNAForge](https://github.com/aliarslan47/RNAForge) (bulk RNA-seq) · [BacForge](https://github.com/aliarslan47/BacForge) (bacteria) · **VirusForge** (virus/phage) · [MicrobiomeForge](https://github.com/aliarslan47/MicrobiomeForge) (microbiome) · [Vaxforge](https://github.com/aliarslan47/Vaxforge) (reverse vaccinology) · [ImmForge](https://github.com/aliarslan47/ImmForge) (immune simulation) · [PipelineForge](https://github.com/aliarslan47/PipelineForge) (DAG generator). Licensed under [MIT](LICENSE).
