@@ -4,7 +4,21 @@
 
 **Konum:** `/home/ali/VirusForge/` · **GitHub:** `github.com/aliarslan47/VirusForge`
 **Kimlik:** Forge ailesinin virüs/faj üyesi (kardeşler: BacForge=bakteri, Vaxforge). BacForge deseniyle aynı ama **tamamen izole** (ayrı paket/env, `import bacforge` YOK).
-**Son güncelleme:** 2026-08-13
+**Son güncelleme:** 2026-09-21
+
+## 2026-09-21 — RNA DE NOVO (rnaviralSPAdes, referanssız) GERÇEK DOĞRULAMA + gerçek-veri bulgusu
+"SIRADA (opsiyonel)" listesindeki **RNA de novo referanssız doğrulama** yapıldı. Test suite sağlıklı: **181 pytest yeşil** (0:06:42).
+- **Koşu** `runs/CoV2/20260921_125236_short_read` — SARS-CoV-2 `samples/CoV2_ERR11728561` (referans BOŞ → V02 de novo yolu), `--molecule rna --mode short`. **12/12 modül tamamlandı, rapor üretildi** (`report.html`, V12 PASS).
+- ✅ **V02 rnaviralSPAdes PASS** (de novo doğrulandı): 29.4 kb toplam (3 gerçek contig 18594/8357/2449 bp + küçük gürültü), GC %37.9. **V04 geNomad = Viruses;Riboviria;...;Coronaviridae ✅** (SARS-CoV-2 doğru sınıflandı, referanssız).
+- ✅ Dürüst NOT_APPLICABLE'lar: V05 (INPHARED faj-DB, RNA'da uygulanmaz), V10 (de novo → referans BAM yok → varyant çağrılamaz).
+- ⚠️ **GERÇEK-VERİ BULGUSU (de novo RNA cila-eksiği):** de novo contig'ler assembler'dan **rastgele yönde (bazıları ters-komplement)** ve **parçalı** çıkıyor →
+  - **V06 VADR WARNING (n_fail=15):** REVCOMPLEM alert'leri (NODE_1/3/12 ters-komplement) + küçük gürültü contig'ler (30-99 bp, NO_ANNOTATION). Referans-tabanlı yolda minimap2 contig'i referansa yönlendirdiği için bu sorun YOK.
+  - **V11 Nextclade boş klad** (parçalı/yönsüz assembly → hizalama/klad çağrısı yapamadı).
+- **KÖK NEDEN:** V03 (polish/QC) de novo RNA contig'lerini **yönlendirmiyor + kısa-contig filtresi uygulamıyor** (yalnız en uzun contig'i istatistik için seçiyor).
+- **ÖNERİLEN SONRAKİ İŞ (scoped, TDD gerekli — acele hack YOK):** V03'e RNA-de-novo dalı: (1) `< min_len` contig'leri ele, (2) contig'leri VADR-model referansına minimap2 ile yönlendir (eksi-şerit → revcomp) → VADR/Nextclade temiz çalışır. Genelleştirme (sarscov2 dışı) tasarım gerektirir. **Referans-tabanlı RNA yolu (M2-B ana akış) bu bulgudan ETKİLENMEZ; zaten SARS-CoV-2'de doğrulanmış.**
+
+## Not — proje olgunluğu (2026-09-21 denetimi)
+M1 (short+long+hybrid, T7) + M2-A (V08 AMR) + **M2-B RNA yolu Faz 1/2/3 (V10 varyant, V11 soy, V12 rapor)** + çift-dilli DAG **hepsi TAMAM ve doğrulanmış** (SARS-CoV-2 referans-tabanlı + T7). 181 test. Kalanlar opsiyonel cila: yukarıdaki de novo orient/filter; Item 4 (virsorter2/vibrant/kraken2, config'te var modül yok); M3 kalan fazlar; Pangolin (ağ erişimli ortamda).
 
 ## Ne oldu (2026-08-12)
 - Repo `Phage-Compare-Mini-Pipeline` → **VirusForge** yeniden adlandırıldı (GitHub API teyitli); remote güncellendi. Eski R betiği `legacy/`e taşındı (temel değil).
